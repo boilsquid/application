@@ -44,7 +44,19 @@
   
   <!-- end database info -->
   
-
-  
+	<!-- listen for other xml files in the project via the project classpath-->
+  <listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+		classpath:webConfig/dao-config.xml
+		classpath:webConfig/service-config.xml
+		</param-value>
+	</context-param>
+	
+	
   
   </web-app>

@@ -6,14 +6,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>home</title>
+<title>Users</title>
 </head>
 <body>
-	<p>
-		<a href="${pageContext.request.contextPath}/users">Show users</a>
-	</p>
-	<p>
-		<a href="${pageContext.request.contextPath}/register">Register</a>
-	</p>
+	<c:forEach var="user" items="${users}">
+		<p>
+			<c:out value="${user}"></c:out>
+		</p>
+	</c:forEach>
 </body>
 </html>
