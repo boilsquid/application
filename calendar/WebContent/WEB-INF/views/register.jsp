@@ -2,17 +2,20 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>registration</title>
+<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
 
-	<form role ="form" method="post" action="${pageContext.request.contextPath}/doregister">
+	<sf:form method="post" action="${pageContext.request.contextPath}/doregister" commandName="user">
+
 		<h2>Registration.</h2>
 		<hr class="colorgraph">
 		<div class="row">
@@ -34,14 +37,18 @@
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-6">
 				<div class="form-group">
-					<input type="text" name="id" id="id" class="form-control input-lg"
-						placeholder="student/lecturer id" tabindex="1">
+
+					<select class="form-control" id="streamId">
+						<option>stream1</option>
+						<option>stream2</option>
+
+					</select>
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-6">
 				<div class="form-group">
 
-					<select class="form-control" id="role">
+					<select class="form-control" id="roleId">
 						<option>Student</option>
 						<option>Lecturer</option>
 
@@ -51,9 +58,20 @@
 		</div>
 
 		<div class="form-group">
-			<input type="email" name="email" id="email"
+			<input type="text" name="id" id="id" class="form-control input-lg"
+				placeholder="student/lecturer id" tabindex="1">
+		</div>
+
+
+		<div class="form-group">
+			<sf:input path="email" type="email" name="email" id="email" 
 				class="form-control input-lg" placeholder="Email Address"
-				tabindex="4">
+				tabindex="4"/><br/>
+			<sf:errors path="email"  cssClass="error" cssStyle="color: #ff0000;"></sf:errors>
+		</div>
+		<div>
+			
+			
 		</div>
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-6">
@@ -96,7 +114,7 @@
 				<a href="#" class="btn btn-success btn-block btn-lg">Sign In</a>
 			</div>
 		</div>
-	</form>
-
+	</sf:form>
+	
 </body>
 </html>

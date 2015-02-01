@@ -40,13 +40,14 @@ public class UserDao {
 			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 				User user = new User();
 
-				user.setId(rs.getInt("id"));
+				user.setId(rs.getString("id"));
 				user.setFirstName(rs.getString("firstName"));
 				user.setLastName(rs.getString("lastName"));
 				user.setEmail(rs.getString("email"));
-				user.setPhone(rs.getInt("phone"));
-				user.setRole(rs.getString("role"));
-				user.setStream(rs.getString("stream"));
+				user.setPhone(rs.getString("phone"));
+				user.setRoleId(rs.getString("roleId"));
+				user.setStreamId(rs.getString("streamId"));
+				user.setPassword(rs.getString("password"));
 				
 
 				return user;
@@ -59,7 +60,7 @@ public class UserDao {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
 		
 		return jdbc.update("update user set firstName=:firstName, lastName=:lastName, "
-				+ "email=:email phone=:phone role=:role stream=:stream  "
+				+ "email=:email, phone=:phone, roleId=:roleId, streamId=:stream, passowrd=:password  "
 				+ "where id=:id", params) == 1;
 	}
 	
@@ -67,23 +68,21 @@ public class UserDao {
 		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
 		
-		return jdbc.update("insert into User (id,firstName, lastName, email, phone, role,stream) "
-				+ "values (:id,:firstName, :lastName, :email, :phone, :role, :stream)", params) == 1;
+		return jdbc.update("insert into User (id,firstName, lastName, email, phone, roleId,streamId,password) "
+				+ "values (:id,:firstName, :lastName, :email, :phone, :roleId, :streamId, :password)", params) == 1;
 	}
 	
 
-	
-	
-	
-	
 	@Transactional
 	public int[] create(List<User> user) {
 		
 		SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(user.toArray());
+		return jdbc.batchUpdate("insert into User (id,firstName, lastName, email, phone, roleId,streamId,password) "
+				+ "values (:id,:firstName, :lastName, :email, :phone, :roleId, :streamId, :password)", params);
 		
-		return jdbc.batchUpdatedbc.update("insert into User (id,firstName, lastName, email, phone, role,stream) "
-				+ "values (:id,:firstName, :lastName, :email, :phone, :role, :stream)", params);
 	}
+	
+	
 	
 	public boolean delete(int id) {
 		MapSqlParameterSource params = new MapSqlParameterSource("id", id);
@@ -102,13 +101,13 @@ public class UserDao {
 					public User mapRow(ResultSet rs, int rowNum)
 							throws SQLException {
 						User user = new User();
-						user.setId(rs.getInt("id"));
+						user.setId(rs.getString("id"));
 						user.setFirstName(rs.getString("firstName"));
 						user.setLastName(rs.getString("lastName"));
 						user.setEmail(rs.getString("email"));
-						user.setPhone(rs.getInt("phone"));
-						user.setRole(rs.getString("role"));
-						user.setStream(rs.getString("stream"));
+						user.setPhone(rs.getString("phone"));
+						user.setRoleId(rs.getString("roleId"));
+						user.setStreamId(rs.getString("streamId"));
 						
 
 						return user;
