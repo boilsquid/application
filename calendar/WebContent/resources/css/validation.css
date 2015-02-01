@@ -1,8 +1,13 @@
-@CHARSET "ISO-8859-1";
-html .error{
+
+.error{
+	
 	color:blue;
 	
 }
 .control{
 	
+}
+h2
+{
+	color: red;
 }

@@ -9,7 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>registration</title>
-<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/css/validation.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
