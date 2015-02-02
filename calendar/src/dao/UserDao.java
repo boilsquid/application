@@ -18,13 +18,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component("UserDao")
-public class UserDao {
+public class UserDao  {
 
 	private NamedParameterJdbcTemplate jdbc;
 	
-	public UserDao() {
-		System.out.println("Successfully loaded user DAO");
-	}
 
 	@Autowired
 	public void setDataSource(DataSource jdbc) {

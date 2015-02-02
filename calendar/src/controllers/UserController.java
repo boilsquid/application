@@ -13,19 +13,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import service.UserService;
+import dao.StreamDao;
+import dao.Stream;
 import dao.User;
+import dao.UserDao;
 
 @Controller
 public class UserController {
 	
-private UserService userService;
-	
+private UserDao userDao;
+private StreamDao streamDao;	
 	
 
 @Autowired
-public void setUserService(UserService userService) {
-	this.userService = userService;
+public void setUserDao(UserDao userDao, StreamDao streamDao) {
+	this.userDao = userDao;
+	this.streamDao = streamDao;
 }
 
 
@@ -34,7 +37,7 @@ public void setUserService(UserService userService) {
 	@RequestMapping("/users")
 	public String showUsers(Model model) {
 		
-		List<User> users = userService.getCurrent();
+		List<User> users = userDao.getUsers();
 		
 		model.addAttribute("users", users);
 		
@@ -44,7 +47,14 @@ public void setUserService(UserService userService) {
 
 	@RequestMapping("/register")
 	public String registerUser(Model model) {
+		
 		model.addAttribute("user", new User());
+		model.addAttribute("stream", new Stream());
+		
+		List<Stream> streams = streamDao.getStreams();
+		
+		model.addAttribute("streams", streams);
+		
 		return "register";
 	}
 	
@@ -53,9 +63,13 @@ public void setUserService(UserService userService) {
 		
 		if(result.hasErrors()) {
 			return "register";
+		}else{
+			userDao.create(user);
+			return "users";
 		}
 		
-		return "doregister";
+		
+		
 	}
 	
 

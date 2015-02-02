@@ -14,8 +14,6 @@ public class User {
 	
 	}
 
-	
-	
 
 
 
@@ -44,6 +42,8 @@ public class User {
 		this.streamId = streamId;
 		this.password = password;
 	}
+	
+	
 
 
 
@@ -103,13 +103,13 @@ public class User {
 
 
 
-	@NotEmpty
+	//@NotEmpty
 	private String id;
-	@Size(min=5, max=100, message="Name must be between 5 and 100 characters.")
+	//@Size(min=5, max=100, message="Name must be between 5 and 100 characters.")
 	private String firstName;
 	private String lastName;
-	@Email
-	@Pattern(regexp=".*\\@umail.*\\..*", message="This does not appear to be a valid ucc umail email address")
+	//@Email
+	//@Pattern(regexp=".*\\@umail.*\\..*", message="This does not appear to be a valid ucc umail email address")
 	private String email;
 	private String phone;
 	private String roleId;

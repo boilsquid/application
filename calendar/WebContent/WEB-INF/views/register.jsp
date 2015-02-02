@@ -13,23 +13,23 @@
 </head>
 <body>
 
-
 	<sf:form method="post" action="${pageContext.request.contextPath}/doregister" commandName="user">
-
 		<h2>Registration.</h2>
 		<hr class="colorgraph">
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-6">
 				<div class="form-group">
-					<input type="text" name="firstName" id="firstName"
+					<sf:input type="text" path ="firstName" name="firstName" id="firstName"
 						class="form-control input-lg" placeholder="First Name"
-						tabindex="1">
+						tabindex="1"/>
+					<sf:errors path="firstName"  cssClass="error" cssStyle="color: #ff0000;"></sf:errors>
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-6">
 				<div class="form-group">
-					<input type="text" name="lastName" id="lastName"
-						class="form-control input-lg" placeholder="Last Name" tabindex="2">
+					<sf:input type="text" path="lastName" name="lastName" id="lastName"
+						class="form-control input-lg" placeholder="Last Name" tabindex="2"/><br/>
+					<sf:errors path="lastName"  cssClass="error" cssStyle="color: #ff0000;"></sf:errors>
 				</div>
 			</div>
 		</div>
@@ -38,9 +38,13 @@
 			<div class="col-xs-12 col-sm-6 col-md-6">
 				<div class="form-group">
 
-					<select class="form-control" id="streamId">
-						<option>stream1</option>
-						<option>stream2</option>
+					<select class="form-control" name="streamId" id="streamId">
+						
+						<c:forEach var="stream" items="${streams}">
+							<option value="${stream.getStreamId()}">
+								${stream.getStream()}
+							</option>
+							</c:forEach>
 
 					</select>
 				</div>
@@ -48,9 +52,9 @@
 			<div class="col-xs-12 col-sm-6 col-md-6">
 				<div class="form-group">
 
-					<select class="form-control" id="roleId">
+					<select class="form-control" name="roleId" id="roleId">
 						<option>Student</option>
-						<option>Lecturer</option>
+						<option>Lecture</option><!-- need to change database to take more than 8 chars -->
 
 					</select>
 				</div>
@@ -69,8 +73,14 @@
 				tabindex="4"/><br/>
 			<sf:errors path="email"  cssClass="error" cssStyle="color: #ff0000;"></sf:errors>
 		</div>
+		
 		<div>
-			
+			<div class="form-group">
+			<sf:input path="phone" type="phone" name="phone" id="phone" 
+				class="form-control input-lg" placeholder="Cell Phone"
+				tabindex="4"/><br/>
+			<sf:errors path="phone"  cssClass="error" cssStyle="color: #ff0000;"></sf:errors>
+		</div>
 			
 		</div>
 		<div class="row">
