@@ -11,7 +11,8 @@
 <body>
 	<c:forEach var="user" items="${users}">
 		<p>
-			<c:out value="${user}"></c:out>
+			<c:out value="${user.getId()}"></c:out>
+			
 			
 		</p>
 	</c:forEach>
