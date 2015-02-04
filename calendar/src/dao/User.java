@@ -107,6 +107,7 @@ public class User {
 	private String id;
 	//@Size(min=5, max=100, message="Name must be between 5 and 100 characters.")
 	private String firstName;
+	//@Size(min=5, max=100, message="Name must be between 5 and 100 characters.")
 	private String lastName;
 	//@Email
 	//@Pattern(regexp=".*\\@umail.*\\..*", message="This does not appear to be a valid ucc umail email address")

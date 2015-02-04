@@ -29,12 +29,22 @@
 				<div class="form-group">
 					<sf:input type="text" path="lastName" name="lastName" id="lastName"
 						class="form-control input-lg" placeholder="Last Name" tabindex="2"/><br/>
-					<sf:errors path="lastName"  cssClass="error" cssStyle="color: #ff0000;"></sf:errors>
+					<sf:errors path="lastName"  cssClass="error"></sf:errors>
 				</div>
 			</div>
 		</div>
 
 		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-6">
+				<div class="form-group">
+
+					<select class="form-control" name="roleId" id="roleId">
+						<option value="student">Student</option>
+						<option value="lecturer">Lecture</option><!-- need to change database to take more than 8 chars -->
+
+					</select>
+				</div>
+			</div>
 			<div class="col-xs-12 col-sm-6 col-md-6">
 				<div class="form-group">
 
@@ -45,16 +55,6 @@
 								${stream.getStream()}
 							</option>
 							</c:forEach>
-
-					</select>
-				</div>
-			</div>
-			<div class="col-xs-12 col-sm-6 col-md-6">
-				<div class="form-group">
-
-					<select class="form-control" name="roleId" id="roleId">
-						<option>Student</option>
-						<option>Lecture</option><!-- need to change database to take more than 8 chars -->
 
 					</select>
 				</div>
@@ -126,5 +126,8 @@
 		</div>
 	</sf:form>
 	
+	<!-- include js files here -->
+	<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/hideShowStreams.js"></script>
 </body>
 </html>

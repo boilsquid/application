@@ -65,7 +65,7 @@ public class UserDao  {
 		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
 		
-		return jdbc.update("insert into User (id,firstName, lastName, email, phone, roleId,streamId,password) "
+		return jdbc.update("insert IGNORE into User (id,firstName, lastName, email, phone, roleId,streamId,password) "
 				+ "values (:id,:firstName, :lastName, :email, :phone, :roleId, :streamId, :password)", params) == 1;
 	}
 	

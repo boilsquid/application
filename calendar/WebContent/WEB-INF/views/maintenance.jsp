@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-the site is under maintenance please try
+the site is under maintenance please try later
 </body>
 </html>
