@@ -15,5 +15,8 @@
 	<p>
 		<a href="${pageContext.request.contextPath}/register">Register</a>
 	</p>
+	<p>
+		<a href="${pageContext.request.contextPath}/testDao">testDao</a>
+	</p>
 </body>
 </html>

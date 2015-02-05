@@ -3,12 +3,12 @@ package dao;
 
 
 public class Stream {
-			
-	private String streamId;
+		
+	private int streamId;
 	private String year;
 	private String stream;
 	
-	public Stream(String streamId, String year, String stream) {
+	public Stream(int streamId, String year, String stream) {
 		super();
 		this.streamId = streamId;
 		this.year = year;
@@ -19,12 +19,15 @@ public class Stream {
 		
 	}
 	
-	public String getStreamId() {
+	
+	public int getStreamId() {
 		return streamId;
 	}
-	public void setStreamId(String streamId) {
+
+	public void setStreamId(int streamId) {
 		this.streamId = streamId;
 	}
+
 	public String getYear() {
 		return year;
 	}

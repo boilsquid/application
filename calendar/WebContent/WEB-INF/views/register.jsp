@@ -12,7 +12,8 @@
 <link href="${pageContext.request.contextPath}/resources/css/validation.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-
+	
+	<!-- I'm referring to form by command name "user" in UserController mapping doregister -->
 	<sf:form method="post" action="${pageContext.request.contextPath}/doregister" commandName="user">
 		<h2>Registration.</h2>
 		<hr class="colorgraph">
@@ -22,7 +23,7 @@
 					<sf:input type="text" path ="firstName" name="firstName" id="firstName"
 						class="form-control input-lg" placeholder="First Name"
 						tabindex="1"/>
-					<sf:errors path="firstName"  cssClass="error" cssStyle="color: #ff0000;"></sf:errors>
+					<sf:errors path="firstName"  cssClass="error"></sf:errors>
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-6">
@@ -62,8 +63,9 @@
 		</div>
 
 		<div class="form-group">
-			<input type="text" name="id" id="id" class="form-control input-lg"
-				placeholder="student/lecturer id" tabindex="1">
+			<sf:input type="text" path="userName" name="userName" id="userId" class="form-control input-lg"
+				placeholder="userName" tabindex="1"/><br/>
+			<sf:errors path="userName"  cssClass="error" cssStyle="color: #ff0000;"></sf:errors>
 		</div>
 
 
@@ -86,15 +88,17 @@
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-6">
 				<div class="form-group">
-					<input type="password" name="password" id="password"
-						class="form-control input-lg" placeholder="Password" tabindex="5">
+					<sf:input type="password" path="password" name="password" id="password"
+						class="form-control input-lg" placeholder="Password" tabindex="5"/>
+					<sf:errors path="password"  cssClass="error" cssStyle="color: #ff0000;"></sf:errors>
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-6">
 				<div class="form-group">
-					<input type="password" name="password_confirmation"
-						id="password_confirmation" class="form-control input-lg"
-						placeholder="Confirm Password" tabindex="6">
+					<sf:input type="password" path="passwordConfirmation" name="passwordConfirmation" 
+					id="passwordConfirmation" class="form-control input-lg"
+						placeholder="Confirm Password" tabindex="6"/>
+					<sf:errors path="password"  cssClass="error" cssStyle="color: #ff0000;"></sf:errors>
 				</div>
 			</div>
 		</div>

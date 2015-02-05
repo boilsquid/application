@@ -13,7 +13,7 @@
 	
 	
 	
-	<jee:jndi-lookup jndi-name="jdbc/testDave" id="dataSource"
+	<jee:jndi-lookup jndi-name="jdbc/spring" id="dataSource"
 		expected-type="javax.sql.DataSource">
 	</jee:jndi-lookup>
 </beans>
