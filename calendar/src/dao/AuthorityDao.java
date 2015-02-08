@@ -62,7 +62,7 @@ public class AuthorityDao implements DaoInterface<Authority>  {
 	}
 	
 
-	@Transactional
+	//@Transactional
 	public int[] create(List<Authority> authority) {
 		
 		SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(authority.toArray());

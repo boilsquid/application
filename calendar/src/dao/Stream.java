@@ -1,9 +1,17 @@
 package dao;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
+@Entity
+@Table(name="streams")
 public class Stream {
-		
+	
+	@Id 
 	private int streamId;
 	private String year;
 	private String stream;
@@ -11,6 +19,7 @@ public class Stream {
 	public Stream(int streamId, String year, String stream) {
 		super();
 		this.streamId = streamId;
+		
 		this.year = year;
 		this.stream = stream;
 	}

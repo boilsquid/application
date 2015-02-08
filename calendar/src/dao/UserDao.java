@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,8 @@ public class UserDao implements DaoInterface<User> {
 
 	private NamedParameterJdbcTemplate jdbc;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	public void setDataSource(DataSource jdbc) {
@@ -73,7 +76,9 @@ public class UserDao implements DaoInterface<User> {
 		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
 		
-		return jdbc.update("insert IGNORE into Users (firstName, lastName,userName, email, phone, roleId,streamId,password, passwordConfirmation,"
+
+		
+		return jdbc.update("insert into Users (firstName, lastName,userName, email, phone, roleId,streamId,password, passwordConfirmation,"
 				+ "createdAt, updatedAt, signInCount,enabled) "
 				+ "values( :firstName, :lastName, :userName, :email, :phone, :roleId,:streamId,:password, :passwordConfirmation,"
 				+ "now(), now(), :signInCount, :enabled) ", params) == 1;
@@ -84,7 +89,7 @@ public class UserDao implements DaoInterface<User> {
 	public int[] create(List<User> user) {
 		
 		SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(user.toArray());
-		return jdbc.batchUpdate("insert IGNORE into Users (firstName, lastName,userName; email, phone, roleId,streamId,password, passwordConfirmation,"
+		return jdbc.batchUpdate("insert into Users (firstName, lastName,userName; email, phone, roleId,streamId,password, passwordConfirmation,"
 				+ "createdAt, updatedAt, signInCount, enabled) "
 				+ "values( :firstName, :lastName, :userName, :email, :phone, :roleId,:streamId,:password, :passwordConfirmation,"
 				+ "now(), now(), :signInCount, :enabled) ", params);

@@ -19,9 +19,15 @@
 	<p>
 		<a href="${pageContext.request.contextPath}/testDao">testDao</a>
 	</p>
-		<p>
+	<p>
 		<a href="${pageContext.request.contextPath}/edittimetable">edit timetable</a>
 	</p>
+	<p>
+		<a href="${pageContext.request.contextPath}/admin">admin</a>
+	</p>
+	
+	<!-- log out link set up in spring security which forwards to /register -->
+	<p><a href="<c:url value='/j_spring_security_logout'/>">Log out</a></p>
 
 	<c:forEach var="user" items="${users}">
 		<p>
@@ -30,14 +36,14 @@
 		</p>
 	</c:forEach>
 	
-	<!--<c:forEach var="stream" items="${streams}">
+	<c:forEach var="stream" items="${streams}">
 		<p>
 			Streams.getlist: 
 			<c:out value="${stream}"></c:out>
 		</p>
-	</c:forEach>-->
+	</c:forEach>
 	
-	<c:forEach var="lecture" items="${lectures}">
+	<c:forEach var="lecture" items="${leactures}">
 		<p>
 			lecture.getlist: 
 			<c:out value="${lecture}"></c:out>

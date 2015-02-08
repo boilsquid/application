@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -14,13 +16,16 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component("StreamDao")
+
+@Component("streamDao")
 public class StreamDao implements DaoInterface<Stream>  {
 
 	private NamedParameterJdbcTemplate jdbc;
 	
+
 
 	@Autowired
 	public void setDataSource(DataSource jdbc) {
@@ -53,12 +58,14 @@ public class StreamDao implements DaoInterface<Stream>  {
 				+ "where streamId=:streamId", params) == 1;
 	}
 	
+
 	public boolean create(Stream stream) {
 		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(stream);
 		
 		return jdbc.update("insert into streams (stream, year) "
 				+ "values ( :stream, :year)", params) == 1;
+	
 	}
 	
 
@@ -102,4 +109,7 @@ public class StreamDao implements DaoInterface<Stream>  {
 
 				});
 	}
+	
+
+	 
 }

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -23,30 +24,41 @@ import dao.Stream;
 import dao.User;
 import dao.UserDao;
 
+
 @Controller
-@SessionAttributes("streams")/*keep streams in the forms for session*/
 public class TestController {
 	
 private UserDao userDao;
 private ServiceDao service;
 private Validation validation;
+private StreamDao streamDao;
 	
 
 @Autowired
-public TestController(ServiceDao service, Validation validation) {
+public TestController(ServiceDao service, Validation validation , StreamDao streamDao) {
 	this.service = service;
 	this.validation = validation;
+	this.streamDao = streamDao;
 }
 
 	
 	@RequestMapping("/testDao")
 	public String testing(Model model) {
 		
+		//get user with id so I can use it to test parts of code*/
+		User user = service.getUser(2);
+		
+		/*  user with id to be active so he can log in to site*/
+		user.setEnabled(true);
+		
 		model.addAttribute("user", new User());
 		
 		model.addAttribute("stream", new Stream());
 		
+		
 		List<Stream> streams = service.getStreams();
+		
+		
 		
 		model.addAttribute("streams", streams);
 		
