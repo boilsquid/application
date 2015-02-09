@@ -21,7 +21,7 @@ public class User {
 	
 
 	public User(int id, String userName, String firstName, String lastName,
-			String email, String phone, String roleId, String streamId,
+			String email, String phone, String roleId, int streamId,
 			String password, String passwordConfirmation, Timestamp createdAt,
 			Timestamp updatedAt, int signInCount, boolean enabled) {
 		super();
@@ -53,7 +53,7 @@ public class User {
 	private String email;
 	private String phone;
 	private String roleId;
-	private String streamId;
+	private int streamId;
 	private String password;
 	private String passwordConfirmation;
 	private Timestamp createdAt;
@@ -131,12 +131,12 @@ public class User {
 	}
 
 
-	public String getStreamId() {
+	public int getStreamId() {
 		return streamId;
 	}
 
 
-	public void setStreamId(String streamId) {
+	public void setStreamId(int streamId) {
 		this.streamId = streamId;
 	}
 

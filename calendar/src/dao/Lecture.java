@@ -8,7 +8,7 @@ public class Lecture {
 	
 	private int lectureId;
 	private int streamId;
-	private int moduleId;
+	private String moduleId;
 	private String day;
 	private Time startTime;
 	private int duration;
@@ -18,7 +18,7 @@ public class Lecture {
 		
 	}
 	
-	public Lecture(int lectureId, int streamId, int moduleId, String day,
+	public Lecture(int lectureId, int streamId, String moduleId, String day,
 			Time startTime, int duration, String semester) {
 		super();
 		this.lectureId = lectureId;
@@ -41,10 +41,10 @@ public class Lecture {
 	public void setStreamId(int streamId) {
 		this.streamId = streamId;
 	}
-	public int getModuleId() {
+	public String getModuleId() {
 		return moduleId;
 	}
-	public void setModuleId(int moduleId) {
+	public void setModuleId(String moduleId) {
 		this.moduleId = moduleId;
 	}
 	public String getDay() {

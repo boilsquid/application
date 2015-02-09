@@ -40,7 +40,7 @@ public class LectureDao implements DaoInterface<Lecture> {
 				
 				lecture.setLectureId(rs.getInt("lectureId"));
 				lecture.setStreamId(rs.getInt("streamId"));
-				lecture.setModuleId(rs.getInt("moduleId"));
+				lecture.setModuleId(rs.getString("moduleId"));
 				lecture.setDay(rs.getString("day"));
 				lecture.setStartTime(rs.getTime("startTime"));
 				lecture.setDuration(rs.getInt("duration"));
@@ -67,8 +67,8 @@ public class LectureDao implements DaoInterface<Lecture> {
 		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(lecture);
 		
-		return jdbc.update("insert into Lecturemastertimetable (streamId, moduleId, day, startTime, duration, semester) "
-				+ "values ( :streamId, :moduleId, :day, :startTime, :duration, :semester)", params) == 1;
+		return jdbc.update("insert into Lecturemastertimetable ( moduleId, day, startTime, duration, semester) "
+				+ "values ( :moduleId, :day, :startTime, :duration, :semester)", params) == 1;
 	}
 	
 
@@ -76,8 +76,8 @@ public class LectureDao implements DaoInterface<Lecture> {
 	public int[] create(List<Lecture> lecture) {
 		
 		SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(lecture.toArray());
-		return jdbc.batchUpdate("insert into Lecturemastertimetable (lectureId, streamId, moduleId, day, startTime, duration, semester) "
-				+ "values (:lectureId :streamId, :moduleId, :day, :startTime, :duration, :semester)", params);
+		return jdbc.batchUpdate("insert into Lecturemastertimetable ( streamId, moduleId, day, startTime, duration, semester) "
+				+ "values ( :streamId, :moduleId, :day, :startTime, :duration, :semester)", params);
 		
 	}
 	
@@ -103,7 +103,7 @@ public class LectureDao implements DaoInterface<Lecture> {
 						
 						lecture.setLectureId(rs.getInt("lectureId"));
 						lecture.setStreamId(rs.getInt("streamId"));
-						lecture.setModuleId(rs.getInt("moduleId"));
+						lecture.setModuleId(rs.getString("moduleId"));
 						lecture.setDay(rs.getString("day"));
 						lecture.setStartTime(rs.getTime("startTime"));
 						lecture.setDuration(rs.getInt("duration"));

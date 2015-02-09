@@ -40,6 +40,9 @@
 									<input class="form-control" type='password' name='j_password' placeholder="Password"/>
 								</div>
 								<div class="form-group">
+									<input type='checkbox' value="remember me" name='_spring_security_remember_me' checked="checked"/>
+								</div>
+								<div class="form-group">
 									<input class="btn btn-lg btn-success btn-block" name="submit"
 										type="submit" value="Login" />
 								</div>

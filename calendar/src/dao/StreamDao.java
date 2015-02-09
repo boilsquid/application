@@ -83,7 +83,7 @@ public class StreamDao implements DaoInterface<Stream>  {
 	public boolean delete(int streamId) {
 		MapSqlParameterSource params = new MapSqlParameterSource("streamId", streamId);
 		
-		return jdbc.update("delete from Stream where streamId=:streamId", params) == 1;
+		return jdbc.update("delete from Streams where streamId=:streamId", params) == 1;
 	}
 
 	public Stream getItem(int streamId) {
@@ -91,7 +91,7 @@ public class StreamDao implements DaoInterface<Stream>  {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("streamId", streamId);
 
-		return jdbc.queryForObject("select * from Stream where streamId=:streamId", params,
+		return jdbc.queryForObject("select * from Streams where streamId=:streamId", params,
 				new RowMapper<Stream>() {
 
 					public Stream mapRow(ResultSet rs, int rowNum)

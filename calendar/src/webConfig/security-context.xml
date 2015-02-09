@@ -14,7 +14,7 @@
 			</security:user-service>	
 		</security:authentication-provider>
 		<security:authentication-provider>
-			<security:jdbc-user-service data-source-ref="dataSource" />
+			<security:jdbc-user-service data-source-ref="dataSource" id="jdbc" />
 			<security:password-encoder ref="passwordEncoder"></security:password-encoder>
 		</security:authentication-provider>
 	</security:authentication-manager>
@@ -35,7 +35,9 @@
 		<security:intercept-url pattern="/**" access="denyAll" />
 		<security:form-login login-page="/login"
 			authentication-failure-url="/login?error=true" />
-		<security:logout logout-success-url="/register" />
+		<security:logout logout-success-url="/login" />
+		<security:remember-me key="appKey"
+			user-service-ref="jdbc" />
 	</security:http>
 
 	<!-- password encoder bean -->

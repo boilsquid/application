@@ -1,7 +1,11 @@
 package controllers;
 
 
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -15,6 +19,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import service.ServiceDao;
@@ -44,11 +49,12 @@ public TestController(ServiceDao service, Validation validation , StreamDao stre
 	
 	@RequestMapping("/testDao")
 	public String testing(Model model) {
+		/*Principal p = null;
+		String username = p.getName();
+		//get user with id so I can use it to test parts of code
+		User user = service.getUser(username);
 		
-		//get user with id so I can use it to test parts of code*/
-		User user = service.getUser(2);
-		
-		/*  user with id to be active so he can log in to site*/
+		/ user with id to be active so he can log in to site
 		user.setEnabled(true);
 		
 		model.addAttribute("user", new User());
@@ -64,21 +70,46 @@ public TestController(ServiceDao service, Validation validation , StreamDao stre
 		
 		List<Lecture> lectures = service.getLectures();
 		
-		model.addAttribute("lectures", lectures);
+		model.addAttribute("lectures", lectures);*/
 		
 		return "testDao";
 	}
 	
-	@RequestMapping("/edittimetable")
+	/*@RequestMapping("/edittimetable")
 	public String editTimes(Model model) {
 		
+	
 		
 		List<Lecture> lectures = service.getLectures();
 		
 		model.addAttribute("lectures", lectures);
 		
 		return "edittimetable";
-	}
+	}*/
 	
+	
+	@RequestMapping(value="/edittimetable", method=RequestMethod.GET, produces="application/json")
+	@ResponseBody
+	public Map<String, Object> getMessages(Principal principal) {
+		
+		Stream streams2 = null;
+		User user = null;
+		
+		if(principal == null) {
+			streams2 = new Stream();
+		}
+		else {
+			
+			String username = principal.getName();
+			user = service.getUser(username);
+			streams2 = service.getStream(user.getId());
+		}
+		
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("messages", streams2);
+		data.put("number", user);
+		
+		return data;
+	}
 
 }

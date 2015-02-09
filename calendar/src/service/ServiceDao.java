@@ -32,8 +32,13 @@ public class ServiceDao {
 	}
 
 	/* get indivual object ie get a particular user */
-	public User getUser(int id) {
+	public User getUser(String id) {
 		return userDao.getItem(id);
+	}
+	
+	public Stream getStream(int streamId) {
+		// TODO Auto-generated method stub
+		return streamDao.getItem(streamId);
 	}
 
 	/* DAO get lists methods which can be used be the serviceDao object */
@@ -65,5 +70,7 @@ public class ServiceDao {
 	public boolean createAuthority(Authority authority) {
 		return authorityDao.create(authority);
 	}
+
+	
 
 }

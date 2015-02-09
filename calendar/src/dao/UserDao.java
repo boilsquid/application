@@ -49,7 +49,7 @@ public class UserDao implements DaoInterface<User> {
 				user.setEmail(rs.getString("email"));
 				user.setPhone(rs.getString("phone"));
 				user.setRoleId(rs.getString("roleId"));
-				user.setStreamId(rs.getString("streamId"));
+				user.setStreamId(rs.getInt("streamId"));
 				user.setPassword(rs.getString("password"));
 				user.setPasswordConfirmation(rs.getString("passwordConfirmation"));
 				user.setCreatedAt(rs.getTimestamp("createdAt"));
@@ -105,12 +105,12 @@ public class UserDao implements DaoInterface<User> {
 		return jdbc.update("delete from Users where id=:id", params) == 1;
 	}
 
-	public User getItem(int id) {
+	public User getItem(Object userName) {
 
 		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("id", id);
+		params.addValue("userName", userName);
 
-		return jdbc.queryForObject("select * from Users where id=:id", params,
+		return jdbc.queryForObject("select * from Users where userName=:userName", params,
 				new RowMapper<User>() {
 
 					public User mapRow(ResultSet rs, int rowNum)
@@ -124,7 +124,7 @@ public class UserDao implements DaoInterface<User> {
 						user.setEmail(rs.getString("email"));
 						user.setPhone(rs.getString("phone"));
 						user.setRoleId(rs.getString("roleId"));
-						user.setStreamId(rs.getString("streamId"));
+						user.setStreamId(rs.getInt("streamId"));
 						user.setPassword(rs.getString("password"));
 						user.setPasswordConfirmation(rs.getString("passwordConfirmation"));
 						user.setCreatedAt(rs.getTimestamp("createdAt"));

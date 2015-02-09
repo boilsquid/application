@@ -36,7 +36,7 @@ public class AuthorityDao implements DaoInterface<Authority>  {
 			public Authority mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Authority authority = new Authority();
 
-				authority.setId(rs.getInt("id"));
+		
 				authority.setUserName(rs.getString("userName"));
 				authority.setAuthority(rs.getString("authority"));
 			
@@ -91,7 +91,6 @@ public class AuthorityDao implements DaoInterface<Authority>  {
 							throws SQLException {
 						Authority authority = new Authority();
 
-						authority.setId(rs.getInt("id"));
 						authority.setUserName(rs.getString("userName"));
 						authority.setAuthority(rs.getString("authority"));
 					
