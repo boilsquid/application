@@ -79,7 +79,7 @@ public class AuthorityDao implements DaoInterface<Authority>  {
 		return jdbc.update("delete from Stream where streamId=:streamId", params) == 1;
 	}
 
-	public Authority getItem(int id) {
+	public Authority getItem(Object id) {
 
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("id", id);

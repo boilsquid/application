@@ -25,6 +25,8 @@
 		<security:intercept-url pattern="/" access="permitAll" />
 		<security:intercept-url pattern="/admin" access="hasRole('admin')" />
 		<security:intercept-url pattern="/register" access="permitAll" />
+		<security:intercept-url pattern="/getdata" access="permitAll" />
+		<security:intercept-url pattern="/events" access="permitAll" />
 		<security:intercept-url pattern="/doregister" access="permitAll" />
 		<security:intercept-url pattern="/users" access="isAuthenticated()" />
 		<security:intercept-url pattern="/testDao" access="permitAll" />

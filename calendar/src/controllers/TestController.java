@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import service.ServiceDao;
+import dao.Events;
 import dao.Lecture;
 import dao.StreamDao;
 import dao.Stream;
@@ -88,28 +89,43 @@ public TestController(ServiceDao service, Validation validation , StreamDao stre
 	}*/
 	
 	
-	@RequestMapping(value="/edittimetable", method=RequestMethod.GET, produces="application/json")
+	@RequestMapping("/events")
+	public String getEvents(Model model) {
+		
+	
+
+		
+		return "events";
+	}
+	
+	
+	@RequestMapping(value="/getdata", method=RequestMethod.GET, produces="application/json")
 	@ResponseBody
-	public Map<String, Object> getMessages(Principal principal) {
+	public Object getMessages(Principal principal) {
 		
-		Stream streams2 = null;
+		List<Stream> streams2 = null;
 		User user = null;
-		
+		List<Events> events = null;		
 		if(principal == null) {
-			streams2 = new Stream();
+			streams2 =null;
 		}
 		else {
 			
 			String username = principal.getName();
 			user = service.getUser(username);
-			streams2 = service.getStream(user.getId());
+			streams2 = service.getStreams();
+			events = service.getEvents();
+			
 		}
 		
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("messages", streams2);
-		data.put("number", user);
 		
-		return data;
+		Object data2 =events;
+		
+		
+		
+		
+		
+		return data2;
 	}
 
 }

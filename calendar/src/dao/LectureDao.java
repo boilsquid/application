@@ -89,7 +89,7 @@ public class LectureDao implements DaoInterface<Lecture> {
 		return jdbc.update("delete from Lecturemastertimetable where lectureId=:lectureId", params) == 1;
 	}
 
-	public Lecture getItem(int lectureId) {
+	public Lecture getItem(Object lectureId) {
 
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("lectureId", lectureId);

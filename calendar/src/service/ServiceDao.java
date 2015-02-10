@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import dao.Authority;
 import dao.AuthorityDao;
+import dao.Events;
+import dao.EventsDao;
 import dao.Lecture;
 import dao.LectureDao;
 import dao.Stream;
@@ -21,14 +23,16 @@ public class ServiceDao {
 	private StreamDao streamDao;
 	private LectureDao lectureDao;
 	private AuthorityDao authorityDao;
+	private EventsDao eventsDao;
 
 	@Autowired
 	public void setUserDao(UserDao userDao, StreamDao streamDao,
-			LectureDao lectureDao, AuthorityDao authorityDao) {
+			LectureDao lectureDao, AuthorityDao authorityDao, EventsDao eventsDao) {
 		this.userDao = userDao;
 		this.streamDao = streamDao;
 		this.lectureDao = lectureDao;
 		this.authorityDao = authorityDao;
+		this.eventsDao = eventsDao;
 	}
 
 	/* get indivual object ie get a particular user */
@@ -52,6 +56,10 @@ public class ServiceDao {
 
 	public List<Lecture> getLectures() {
 		return lectureDao.getList();
+	}
+	
+	public List<Events> getEvents() {
+		return eventsDao.getList();
 	}
 
 	/* DAO create methods which can be used be the seviceDao object */

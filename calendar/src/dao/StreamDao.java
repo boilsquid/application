@@ -86,7 +86,7 @@ public class StreamDao implements DaoInterface<Stream>  {
 		return jdbc.update("delete from Streams where streamId=:streamId", params) == 1;
 	}
 
-	public Stream getItem(int streamId) {
+	public Stream getItem(Object streamId) {
 
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("streamId", streamId);
