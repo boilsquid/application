@@ -23,8 +23,6 @@ public interface DaoInterface<T> {
 	public List<T> getList();
 	public boolean update(T t);
 	public boolean create(T t);
-	@Transactional
-	public int[] create(List<T> t);
-	public boolean delete(int id);
+	public boolean delete(Object id);
 	public T getItem(Object id);
 }

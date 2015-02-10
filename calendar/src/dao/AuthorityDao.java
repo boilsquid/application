@@ -61,19 +61,10 @@ public class AuthorityDao implements DaoInterface<Authority>  {
 				+ "values ( :userName, :authority)", params) == 1;
 	}
 	
-
-	//@Transactional
-	public int[] create(List<Authority> authority) {
-		
-		SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(authority.toArray());
-		return jdbc.batchUpdate("insert into streams (stream, year) "
-				+ "values (:stream, :year)", params);
-		
-	}
 	
 	
 	
-	public boolean delete(int id) {
+	public boolean delete(Object id) {
 		MapSqlParameterSource params = new MapSqlParameterSource("streamId", id);
 		
 		return jdbc.update("delete from Stream where streamId=:streamId", params) == 1;

@@ -101,7 +101,7 @@ public TestController(ServiceDao service, Validation validation , StreamDao stre
 	
 	@RequestMapping(value="/getdata", method=RequestMethod.GET, produces="application/json")
 	@ResponseBody
-	public Object getMessages(Principal principal) {
+	public  Object getMessages(Principal principal) {
 		
 		List<Stream> streams2 = null;
 		User user = null;
@@ -119,13 +119,13 @@ public TestController(ServiceDao service, Validation validation , StreamDao stre
 		}
 		
 		
-		Object data2 =events;
+		//Map<String, Object> data = new HashMap<String, Object>();
+		//data.put("events", events);
+		//data.put("number", 2);
+		Object data= events;
 		
+		return data;
 		
-		
-		
-		
-		return data2;
 	}
 
 }

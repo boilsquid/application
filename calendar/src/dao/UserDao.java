@@ -42,7 +42,6 @@ public class UserDao implements DaoInterface<User> {
 			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 				User user = new User();
 
-				user.setId(rs.getInt("id"));
 				user.setUserName(rs.getString("userName"));
 				user.setFirstName(rs.getString("firstName"));
 				user.setLastName(rs.getString("lastName"));
@@ -85,22 +84,12 @@ public class UserDao implements DaoInterface<User> {
 	}
 	
 
-	@Transactional
-	public int[] create(List<User> user) {
-		
-		SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(user.toArray());
-		return jdbc.batchUpdate("insert into Users (firstName, lastName,userName; email, phone, roleId,streamId,password, passwordConfirmation,"
-				+ "createdAt, updatedAt, signInCount, enabled) "
-				+ "values( :firstName, :lastName, :userName, :email, :phone, :roleId,:streamId,:password, :passwordConfirmation,"
-				+ "now(), now(), :signInCount, :enabled) ", params);
-
-		
-	}
 	
 	
 	
-	public boolean delete(int id) {
-		MapSqlParameterSource params = new MapSqlParameterSource("id", id);
+	
+	public boolean delete(Object userName) {
+		MapSqlParameterSource params = new MapSqlParameterSource("userName", userName);
 		
 		return jdbc.update("delete from Users where id=:id", params) == 1;
 	}
@@ -117,7 +106,7 @@ public class UserDao implements DaoInterface<User> {
 							throws SQLException {
 						User user = new User();
 
-						user.setId(rs.getInt("id"));
+					
 						user.setUserName(rs.getString("userName"));
 						user.setFirstName(rs.getString("firstName"));
 						user.setLastName(rs.getString("lastName"));
@@ -138,5 +127,10 @@ public class UserDao implements DaoInterface<User> {
 
 				});
 	}
+
+
+
+
+	
 	
 }

@@ -69,18 +69,8 @@ public class StreamDao implements DaoInterface<Stream>  {
 	}
 	
 
-	@Transactional
-	public int[] create(List<Stream> stream) {
-		
-		SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(stream.toArray());
-		return jdbc.batchUpdate("insert into streams (stream, year) "
-				+ "values (:stream, :year)", params);
-		
-	}
 	
-	
-	
-	public boolean delete(int streamId) {
+	public boolean delete(Object streamId) {
 		MapSqlParameterSource params = new MapSqlParameterSource("streamId", streamId);
 		
 		return jdbc.update("delete from Streams where streamId=:streamId", params) == 1;

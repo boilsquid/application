@@ -20,12 +20,12 @@ public class User {
 	}
 	
 
-	public User(int id, String userName, String firstName, String lastName,
+	public User( String userName, String firstName, String lastName,
 			String email, String phone, String roleId, int streamId,
 			String password, String passwordConfirmation, Timestamp createdAt,
 			Timestamp updatedAt, int signInCount, boolean enabled) {
 		super();
-		this.id = id;
+		
 		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -42,7 +42,7 @@ public class User {
 	}
 
 
-	private int id;
+
 	private String userName;
 	//@Size(min=5, max=100, message="Name must be between 5 and 100 characters.")
 	private String firstName;
@@ -61,14 +61,7 @@ public class User {
 	private int signInCount;
 	private boolean enabled;
 	
-	public int getId() {
-		return id;
-	}
 
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 
 	public String getUserName() {
@@ -203,7 +196,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", userName=" + userName + ", firstName="
+		return "User [ userName=" + userName + ", firstName="
 				+ firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", phone=" + phone + ", roleId=" + roleId + ", streamId="
 				+ streamId + ", password=" + password

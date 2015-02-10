@@ -32,7 +32,7 @@ public class RegisterController {
 	private UserDao userDao;
 	private ServiceDao service;
 	private Validation validation;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -68,9 +68,7 @@ public class RegisterController {
 
 	@RequestMapping(value = "/doregister", method = RequestMethod.POST)
 	public String doregister(Model model, @Valid User user, BindingResult result) {
-		
-		
-		
+
 		/* validating email to be restricted in the domain of the college */
 		if (validation.isCollegeEmail(user.getEmail(), user.getRoleId()) == false) {
 			result.rejectValue("email", "error.user",
@@ -83,39 +81,33 @@ public class RegisterController {
 			 */
 			return "register";
 		} else {
+				
+			
 
-			/*
-			 * try to give an authority to user but if the username already
-			 * exists tell user to pick another
-			 */
+			
+		
+
 			try {
 
+				/* encode users password */
+				user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+				/* enable user for testing purposes */
+				user.setEnabled(true);
+				
+				service.createUser(user);
+				
 				Authority authority = new Authority();
 				authority.setAuthority(user.getRoleId());
 				authority.setUserName(user.getUserName());
 				service.createAuthority(authority);
-				
-				
-			} catch (DuplicateKeyException e) {
-				result.rejectValue("userName", "DuplicateKey.user.userName",
-						"This userName already exists pick another!");
-				return "register";
-			}
 
-			try {
 				
-				/*encode users password*/
-				 user.setPassword(passwordEncoder.encode(user.getPassword()));
-				
-				 /*enable user for testing purposes*/
-				 user.setEnabled(true);
-				 
-				service.createUser(user);
 				return "doregister";
 			} catch (DuplicateKeyException e) {
-				
+
 				result.rejectValue("email", "DuplicateKey.user.email",
-						"This email already exists!");
+						"This email or username already exists!");
 				return "register";
 			}
 

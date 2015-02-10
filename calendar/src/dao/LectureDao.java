@@ -72,18 +72,10 @@ public class LectureDao implements DaoInterface<Lecture> {
 	}
 	
 
-	@Transactional
-	public int[] create(List<Lecture> lecture) {
-		
-		SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(lecture.toArray());
-		return jdbc.batchUpdate("insert into Lecturemastertimetable ( streamId, moduleId, day, startTime, duration, semester) "
-				+ "values ( :streamId, :moduleId, :day, :startTime, :duration, :semester)", params);
-		
-	}
 	
 	
 	
-	public boolean delete(int lectureId) {
+	public boolean delete(Object lectureId) {
 		MapSqlParameterSource params = new MapSqlParameterSource("lectureId", lectureId);
 		
 		return jdbc.update("delete from Lecturemastertimetable where lectureId=:lectureId", params) == 1;
