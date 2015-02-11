@@ -101,6 +101,7 @@ public class RegisterController {
 				authority.setAuthority(user.getRoleId());
 				authority.setUserName(user.getUserName());
 				service.createAuthority(authority);
+				service.sendRegistrationMail(user.getEmail(),"springuccproject@gmail.com", "You have registerd", "Congradulations you have registerd for the application.");
 
 				
 				return "doregister";

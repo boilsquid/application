@@ -8,8 +8,11 @@
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
 		<config>src/webConfig/security-context.xml</config>
+		<config>src/webConfig/email-config.xml</config>
 	</configs>
 	<autoconfigs>
+		<config>src/webConfig/service-config.xml</config>
+		<config>src/webConfig/dao-config.xml</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>

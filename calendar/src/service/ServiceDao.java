@@ -15,6 +15,7 @@ import dao.Stream;
 import dao.StreamDao;
 import dao.User;
 import dao.UserDao;
+import mailers.registrationMailer;
 
 @Service("ServiceDao")
 public class ServiceDao {
@@ -24,15 +25,17 @@ public class ServiceDao {
 	private LectureDao lectureDao;
 	private AuthorityDao authorityDao;
 	private EventsDao eventsDao;
+	private registrationMailer mailer;
 
 	@Autowired
 	public void setUserDao(UserDao userDao, StreamDao streamDao,
-			LectureDao lectureDao, AuthorityDao authorityDao, EventsDao eventsDao) {
+			LectureDao lectureDao, AuthorityDao authorityDao, EventsDao eventsDao, registrationMailer mailer) {
 		this.userDao = userDao;
 		this.streamDao = streamDao;
 		this.lectureDao = lectureDao;
 		this.authorityDao = authorityDao;
 		this.eventsDao = eventsDao;
+		this.mailer = mailer;
 	}
 
 	/* get indivual object ie get a particular user */
@@ -79,6 +82,8 @@ public class ServiceDao {
 		return authorityDao.create(authority);
 	}
 
-	
+	public void sendRegistrationMail(String to, String from, String subject, String msg){
+		mailer.sendMail(from, to, subject, msg);
+	}
 
 }
