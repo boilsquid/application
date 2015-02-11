@@ -1,13 +1,12 @@
 
 .error{
 	
-	color:blue;
+	color:red;
 	
 }
 .control{
 	
 }
-h2
-{
-	color: red;
+.valid{
+	color:green;
 }
