@@ -7,11 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
-@Entity
-@Table(name="streams")
+
 public class Stream {
 	
-	@Id 
+	
 	private int streamId;
 	private String year;
 	private String stream;

@@ -19,29 +19,8 @@ public class User {
 	
 	}
 	
-
-	public User( String userName, String firstName, String lastName,
-			String email, String phone, String roleId, int streamId,
-			String password, String passwordConfirmation, Timestamp createdAt,
-			Timestamp updatedAt, int signInCount, boolean enabled) {
-		super();
-		
-		this.userName = userName;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.phone = phone;
-		this.roleId = roleId;
-		this.streamId = streamId;
-		this.password = password;
-		this.passwordConfirmation = passwordConfirmation;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.signInCount = signInCount;
-		this.enabled = enabled;
-	}
-
-
+	
+	
 
 	private String userName;
 	//@Size(min=5, max=100, message="Name must be between 5 and 100 characters.")
@@ -59,9 +38,77 @@ public class User {
 	private Timestamp createdAt;
 	private Timestamp updatedAt;
 	private int signInCount;
+	private String activationToken;
+	private Timestamp activationTokenUpdatedAt;
+	private String passwordResetToken;
+	private Timestamp passwordTokentUpdatedAt;
 	private boolean enabled;
 	
+	public User(String userName, String firstName, String lastName,
+			String email, String phone, String roleId, int streamId,
+			String password, String passwordConfirmation, Timestamp createdAt,
+			Timestamp updatedAt, int signInCount, boolean enabled,
+			String activationToken, Timestamp activationTokenUpdatedAt,
+			String passwordResetToken, Timestamp passwordTokentUpdatedAt) {
+		super();
+		this.userName = userName;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phone = phone;
+		this.roleId = roleId;
+		this.streamId = streamId;
+		this.password = password;
+		this.passwordConfirmation = passwordConfirmation;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.signInCount = signInCount;
+		this.enabled = enabled;
+		this.activationToken = activationToken;
+		this.activationTokenUpdatedAt = activationTokenUpdatedAt;
+		this.passwordResetToken = passwordResetToken;
+		this.passwordTokentUpdatedAt = passwordTokentUpdatedAt;
+	}
 
+
+	public String getActivationToken() {
+		return activationToken;
+	}
+
+
+	public void setActivationToken(String activationToken) {
+		this.activationToken = activationToken;
+	}
+
+
+	public Timestamp getActivationTokenUpdatedAt() {
+		return activationTokenUpdatedAt;
+	}
+
+
+	public void setActivationTokenUpdatedAt(Timestamp activationTokenUpdatedAt) {
+		this.activationTokenUpdatedAt = activationTokenUpdatedAt;
+	}
+
+
+	public String getPasswordResetToken() {
+		return passwordResetToken;
+	}
+
+
+	public void setPasswordResetToken(String passwordResetToken) {
+		this.passwordResetToken = passwordResetToken;
+	}
+
+
+	public Timestamp getPasswordTokentUpdatedAt() {
+		return passwordTokentUpdatedAt;
+	}
+
+
+	public void setPasswordTokentUpdatedAt(Timestamp passwordTokentUpdatedAt) {
+		this.passwordTokentUpdatedAt = passwordTokentUpdatedAt;
+	}
 
 
 	public String getUserName() {
@@ -196,14 +243,21 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [ userName=" + userName + ", firstName="
-				+ firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", phone=" + phone + ", roleId=" + roleId + ", streamId="
-				+ streamId + ", password=" + password
-				+ ", passwordConfirmation=" + passwordConfirmation
-				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
-				+ ", signInCount=" + signInCount + ", enabled=" + enabled + "]";
+		return "User [userName=" + userName + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", email=" + email + ", phone="
+				+ phone + ", roleId=" + roleId + ", streamId=" + streamId
+				+ ", password=" + password + ", passwordConfirmation="
+				+ passwordConfirmation + ", createdAt=" + createdAt
+				+ ", updatedAt=" + updatedAt + ", signInCount=" + signInCount
+				+ ", enabled=" + enabled + ", activationToken="
+				+ activationToken + ", activationTokenUpdatedAt="
+				+ activationTokenUpdatedAt + ", passwordResetToken="
+				+ passwordResetToken + ", passwordTokentUpdatedAt="
+				+ passwordTokentUpdatedAt + "]";
 	}
+
+
+
 
 
 	

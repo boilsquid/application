@@ -3,6 +3,7 @@ package dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -36,14 +37,16 @@ public class LectureDao implements DaoInterface<Lecture> {
 
 			public Lecture mapRow(ResultSet rs, int rowNum) throws SQLException {
 				
+				
 				Lecture lecture = new Lecture();
 				
 				lecture.setLectureId(rs.getInt("lectureId"));
 				lecture.setStreamId(rs.getInt("streamId"));
 				lecture.setModuleId(rs.getString("moduleId"));
 				lecture.setDay(rs.getString("day"));
-				lecture.setStartTime(rs.getTime("startTime"));
-				lecture.setDuration(rs.getInt("duration"));
+				lecture.setStart(rs.getTimestamp("start"));
+				lecture.setEnd(rs.getTimestamp("end"));
+				lecture.setRecurring(rs.getInt("recurring"));
 				lecture.setSemester(rs.getString("semester"));
 				
 				
@@ -54,12 +57,11 @@ public class LectureDao implements DaoInterface<Lecture> {
 	}
 	
 	
-	
 	public boolean update(Lecture lecture) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(lecture);
 		
 		return jdbc.update("update Lecturemastertimetable set streamId=:streamId, moduleId=:moduleId,"
-				+ "day=:day, startTime=:startTime, duration=:duration, semester:=semester "
+				+ "day=:day, start=:start, end=:end, recurring=:recurring , semester:=semester "
 				+ "where lectureId=:lectureId", params) == 1;
 	}
 	
@@ -67,8 +69,8 @@ public class LectureDao implements DaoInterface<Lecture> {
 		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(lecture);
 		
-		return jdbc.update("insert into Lecturemastertimetable ( moduleId, day, startTime, duration, semester) "
-				+ "values ( :moduleId, :day, :startTime, :duration, :semester)", params) == 1;
+		return jdbc.update("insert into Lecturemastertimetable ( streamId, moduleId, day, start, end, recurring, semester) "
+				+ "values ( steamId:, :moduleId, :day, :start, :end, :recurring, :semester)", params) == 1;
 	}
 	
 
@@ -93,12 +95,14 @@ public class LectureDao implements DaoInterface<Lecture> {
 							throws SQLException {
 						Lecture lecture = new Lecture();
 						
+
 						lecture.setLectureId(rs.getInt("lectureId"));
 						lecture.setStreamId(rs.getInt("streamId"));
 						lecture.setModuleId(rs.getString("moduleId"));
 						lecture.setDay(rs.getString("day"));
-						lecture.setStartTime(rs.getTime("startTime"));
-						lecture.setDuration(rs.getInt("duration"));
+						lecture.setStart(rs.getTimestamp("start"));
+						lecture.setEnd(rs.getTimestamp("end"));
+						lecture.setRecurring(rs.getInt("recurring"));
 						lecture.setSemester(rs.getString("semester"));
 						
 						

@@ -54,91 +54,131 @@
 <script
 	src='${pageContext.request.contextPath}/resources/js/fullcalendar.js'></script>
 <script type="text/javascript">
-$(document).ready(function() {
-	/*
-    // page is now ready, initialize the calendar...
-    function getJsonData() {
-	$.getJSON("<c:url value="/getdata"/>", useJsonData);
+	$(document).ready(function() {
+		var startDate;
+		/*
+		// page is now ready, initialize the calendar...
+		function getJsonData() {
+		$.getJSON("<c:url value="/getdata"/>", useJsonData);
+		}
+		function useJsonData(data) {
+			alert(data[0].title);
+			
+		}
+		getJsonData();
+		 */
+		$('#calendar').fullCalendar({
+			editable : true,
+			selectable : true,
+			selectHelper : true,
+			ignoreTimezone : false,
+			allDayDefault : false,
+			defaultView : 'agendaWeek',
+			//defaultView : agendaWeek,
+			//controls for calendar show by day, week, month etc
+			header : {
+				left : 'prev,next today',
+				center : 'title',
+				right : 'month,agendaWeek,agendaDay',
+				border : 0
+			},
+
+			dayClick : function(date, jsEvent, view) {
+
+				startDate = date.format();
+
+				$("#start").val(startDate);
+
+				$("#popup").show();
+
+			},
+
+			eventSources : [
+
+			// your event source
+			{
+				url : '<c:url value="/getdata"/>', // use the `url` property
+				color : 'green', // an option!
+				textColor : 'white' // an option!
+			}
+
+			// any other sources...
+
+			]
+		//end event sources
+
+		})//end fullcalendar
+
+		$('#cancel').click(function() {
+			$("#popup").hide();
+		});
+
+	});//end document ready
+
+	function onLoad() {
+		$("#popup").hide();
+
 	}
-    function useJsonData(data) {
-    	alert(data[0].title);
-    	
-    }
-    getJsonData();
-  */
-    $('#calendar').fullCalendar({
-        editable: true,
-        selectable: true,
-        selectHelper: true,
-        
-        //controls for calendar show by day, week, month etc
-        header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay',
-            border: 0
-        },
-        
-        /*this function not doing anything yet*/
-        eventClick: function(event) {
-        	var decision = confirm("Do you really want to do that?"); 
-        	if (decision) {
-        	$.ajax({
-        	type: "POST",
-        	url: '<c:url value="/getdata"/>',
 
-        	data: "&id=" + event.id
-        	});
-        	$('#calendar2').fullCalendar('removeEvents', event.id);
-
-        	} else {
-        	}
-        	},
-        
-        eventSources: [
-
-                       // your event source
-                       {
-                           url: '<c:url value="/getdata"/>', // use the `url` property
-                           color: 'yellow',    // an option!
-                           textColor: 'black'  // an option!
-                       }
-
-                       // any other sources...
-
-                   ]//end event sources
-        		
-        
-      
-        
-    })//end fullcalendar
-
-});//end document ready
-
-/*
-function useJsonData(data) {
-	alert(data.events[0].title);
-	
-}
-
-function onLoad() {
-	getJsonData();
-	window.setInterval(getJsonData, 5000);
-}
-
-function getJsonData() {
-	$.getJSON("<c:url value="/getdata"/>", useJsonData);
-}
-
-$(document).ready(onLoad)*/
+	$(document).ready(onLoad)
 </script>
 
 </head>
 
 <body>
+	<div class="row" id="popup">
+		<div class="col-lg-12">
+			<div class="col-md-4">
+				<div class="login-panel panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Calendar Entry</h3>
+					</div>
+					<div class="panel-body">
+						<form action="${pageContext.request.contextPath}/createevent" role="form">
+							<fieldset>
+								<div class="form-group">
+									<select name="title" form="title">
+										<option value="volvo">cs333</option>
+										<option value="saab">cs333</option>
+										<option value="opel">cs3344</option>
+										<option value="audi">vs2005</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<input class="form-control" placeholder="location"
+										name="location" type="text" value="">
+								</div>
+								<div class="form-group">
+									<input class="form-control" placeholder="Start Time" id="start"
+										name="start" type="text" value="">
+								</div>
+								<div class="form-group">
+									<select name="end" form="Duration">
+										<option value="volvo">15</option>
+										<option value="saab">30</option>
+										<option value="opel">1 Hour</option>
+										<option value="audi">2 Hours</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label>Description</label>
+									<textarea class="form-control" rows="3"></textarea>
+								</div>
+
+								<button type="submit" class="btn btn-lg btn-success">Create</button>
+								<button id="cancel" type="button" class="btn btn-lg btn-success">Cancel</button>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /.col-lg-12 -->
+
 
 	<div id="wrapper">
-		
+
 		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-static-top" role="navigation"
 			style="margin-bottom: 0">
@@ -161,8 +201,7 @@ $(document).ready(onLoad)*/
 				<ul class="dropdown-menu dropdown-user">
 					<li><a href="profile.html"><i class="fa fa-user fa-fw"></i>
 							User Profile</a></li>
-					<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-					</li>
+					<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a></li>
 					<li class="divider"></li>
 					<li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>
 							Logout</a></li>
@@ -186,8 +225,8 @@ $(document).ready(onLoad)*/
 					</li>
 					<li><a class="active" href="index.html"><i
 							class="fa fa-calendar fa-fw"></i>Calendar</a></li>
-					<li><a class="" href="entry.html"><i
-							class="fa fa-calendar-o fa-fw"></i>Create Entry</a></li>
+					<li><a class="" href="${pageContext.request.contextPath}/setgroupview"><i
+							class="fa fa-calendar-o fa-fw"></i>Show availability of Group
 					<li><a class="" href="meeting.html"><i
 							class="fa fa-comments-o fa-fw"></i>Requset Meeting</a></li>
 				</ul>
@@ -230,6 +269,5 @@ $(document).ready(onLoad)*/
 			$('#dataTables-example').dataTable();
 		});
 	</script>
-
 </body>
 </html>

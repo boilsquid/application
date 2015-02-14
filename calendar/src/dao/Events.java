@@ -7,20 +7,28 @@ public class Events {
 	public Events() {
 
 	}
+	
+
 
 	private int id;
 	private String userName;
 	private Timestamp start;
 	private Timestamp end;
+	private int recurring;
+	private String eventType;
+	private int typeId;
 	private String title;
-
-	public Events(int id, String userName, Timestamp start,
-			Timestamp end, String title) {
+	
+	public Events(int id, String userName, Timestamp start, Timestamp end,
+			int recurring, String eventType, int typeId, String title) {
 		super();
 		this.id = id;
 		this.userName = userName;
 		this.start = start;
 		this.end = end;
+		this.recurring = recurring;
+		this.eventType = eventType;
+		this.typeId = typeId;
 		this.title = title;
 	}
 
@@ -56,6 +64,30 @@ public class Events {
 		this.end = end;
 	}
 
+	public int getRecurring() {
+		return recurring;
+	}
+
+	public void setRecurring(int recurring) {
+		this.recurring = recurring;
+	}
+
+	public String getEventType() {
+		return eventType;
+	}
+
+	public void setEventType(String eventType) {
+		this.eventType = eventType;
+	}
+
+	public int getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -66,9 +98,15 @@ public class Events {
 
 	@Override
 	public String toString() {
-		return "Events [id=" + id + ", userName=" + userName + ", startTime="
-				+ start + ", endTime=" + end + ", title=" + title + "]";
+		return "Events [id=" + id + ", userName=" + userName + ", start="
+				+ start + ", end=" + end + ", recurring=" + recurring
+				+ ", eventType=" + eventType + ", typeId=" + typeId
+				+ ", title=" + title + "]";
 	}
+
+
+	
+	
 	
 	
 

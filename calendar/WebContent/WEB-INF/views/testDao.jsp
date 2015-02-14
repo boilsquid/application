@@ -20,7 +20,7 @@
 		<a href="${pageContext.request.contextPath}/testDao">testDao</a>
 	</p>
 	<p>
-		<a href="${pageContext.request.contextPath}/edittimetable">edit timetable</a>
+		<a href="${pageContext.request.contextPath}/editlectures">edit timetable</a>
 	</p>
 	<p>
 		<a href="${pageContext.request.contextPath}/admin">admin</a>

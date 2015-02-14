@@ -3,6 +3,7 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class UserDao implements DaoInterface<User> {
 
 			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 				User user = new User();
-
+			
 				user.setUserName(rs.getString("userName"));
 				user.setFirstName(rs.getString("firstName"));
 				user.setLastName(rs.getString("lastName"));
@@ -55,7 +56,10 @@ public class UserDao implements DaoInterface<User> {
 				user.setUpdatedAt(rs.getTimestamp("updatedAt"));
 				user.setSignInCount(rs.getInt("signInCount"));
 				user.setEnabled(rs.getBoolean("enabled"));
-
+				user.setActivationToken(rs.getString("activationToken"));
+				user.setActivationTokenUpdatedAt(rs.getTimestamp("activationTokenUpdatedAt"));
+				user.setPasswordResetToken(rs.getString("passwordResetToken"));
+				user.setPasswordTokentUpdatedAt(rs.getTimestamp("passwordTokentUpdatedAt"));
 				return user;
 			}
 
@@ -64,10 +68,11 @@ public class UserDao implements DaoInterface<User> {
 	
 	public boolean update(User user) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
-		
+
 		return jdbc.update("update users set firstName=:firstName, lastName=:lastName, userName=:userName"
 				+ "email=:email, phone=:phone, roleId=:roleId, streamId=:stream, passowrd=:password, "
-				+ "passwordConfirmation=:passwordConfirmation,enabled=:enabled"
+				+ "passwordConfirmation=:passwordConfirmation,activationToken:=activationToken,activationTokenUpdatedAt:=activationTokenUpdatedAt,"
+				+ "passwordResetToken:=passwordResetToken,passwordTokentUpdatedAt:=passwordTokentUpdatedAt, enabled=:enabled "
 				+ "where id=:id", params) == 1;
 	}
 	
@@ -78,9 +83,9 @@ public class UserDao implements DaoInterface<User> {
 
 		
 		return jdbc.update("insert into Users (firstName, lastName,userName, email, phone, roleId,streamId,password, passwordConfirmation,"
-				+ "createdAt, updatedAt, signInCount,enabled) "
+				+ "createdAt, updatedAt, signInCount,activationToken,activationTokenUpdatedAt,passwordResetToken,passwordTokentUpdatedAt, enabled) "
 				+ "values( :firstName, :lastName, :userName, :email, :phone, :roleId,:streamId,:password, :passwordConfirmation,"
-				+ "now(), now(), :signInCount, :enabled) ", params) == 1;
+				+ "now(), now(), :signInCount,'temp',now(),'temp',now(), :enabled) ", params) == 1;
 	}
 	
 
@@ -120,6 +125,10 @@ public class UserDao implements DaoInterface<User> {
 						user.setUpdatedAt(rs.getTimestamp("updatedAt"));
 						user.setSignInCount(rs.getInt("signInCount"));
 						user.setEnabled(rs.getBoolean("enabled"));
+						user.setActivationToken(rs.getString("activationToken"));
+						user.setActivationTokenUpdatedAt(rs.getTimestamp("activationTokenUpdatedAt"));
+						user.setPasswordResetToken(rs.getString("passwordResetToken"));
+						user.setPasswordTokentUpdatedAt(rs.getTimestamp("passwordTokentUpdatedAt"));
 
 						return user;
 						

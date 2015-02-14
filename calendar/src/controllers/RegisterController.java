@@ -1,6 +1,9 @@
 package controllers;
 
+import java.security.Principal;
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -10,6 +13,8 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +24,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import service.ServiceDao;
 import dao.Authority;
+import dao.Events;
+import dao.Lecture;
 import dao.StreamDao;
 import dao.Stream;
 import dao.User;
@@ -83,8 +90,6 @@ public class RegisterController {
 		} else {
 				
 			
-
-			
 		
 
 			try {
@@ -103,7 +108,7 @@ public class RegisterController {
 				service.createAuthority(authority);
 
 				
-				return "doregister";
+				return "editlectures";
 			} catch (DuplicateKeyException e) {
 
 				result.rejectValue("email", "DuplicateKey.user.email",
@@ -113,6 +118,64 @@ public class RegisterController {
 
 		}
 
+	}
+	
+	@RequestMapping("/editlectures")
+	public String editLectures(Model model, Principal principal) {
+		//get logged in users username
+		String userName = principal.getName();
+		
+		/* create a user that is the currently logged in one*/
+		User user = new User();
+		user = service.getUser(userName);
+		
+	
+
+		List<Lecture> lectures = service.getLectures();
+
+		model.addAttribute("lectures", lectures);
+		model.addAttribute("user", user);
+
+		return "editlectures";
+	}
+	
+	@RequestMapping(value = "/changelectures", method = RequestMethod.POST)
+	public String editLectures(@RequestParam("lectureId") int[] lectureId, Principal p) {
+		
+		String username = p.getName();
+		User user = service.getUser(username);
+		
+		/*delete all users lecture events as user is re adding them*/
+		service.deleteFromWhere("userEvents", username, "lecture");
+		
+		for(int item: lectureId){
+			
+		
+			/* get the lecture from lectureid sec#lected in form*/
+			Lecture lecture = service.getLecture(item);
+			
+			/*create an event to add to the users events calender
+			 * and add the events data
+			 */
+			
+			Events event = new Events();
+			event.setUserName(username);
+			event.setStart(lecture.getStart());
+			event.setEnd(lecture.getEnd());
+			event.setRecurring(lecture.getRecurring());
+			event.setEventType("lecture");// hard coded for now
+			event.setTypeId(lecture.getLectureId());
+			event.setTitle(lecture.getModuleId());
+			service.createEvent(event);
+			
+		}
+		
+		
+		
+		return "events";
+		
+		
+		
 	}
 
 }
