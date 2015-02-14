@@ -11,6 +11,7 @@ import dao.Events;
 import dao.EventsDao;
 import dao.Lecture;
 import dao.LectureDao;
+import dao.Sql;
 import dao.Stream;
 import dao.StreamDao;
 import dao.User;
@@ -30,8 +31,9 @@ public class ServiceDao {
 
 	@Autowired
 	public void setUserDao(UserDao userDao, StreamDao streamDao,
-			LectureDao lectureDao, AuthorityDao authorityDao, EventsDao eventsDao, Sql sql) {
-		
+			LectureDao lectureDao, AuthorityDao authorityDao,
+			EventsDao eventsDao, Sql sql) {
+
 		this.userDao = userDao;
 		this.streamDao = streamDao;
 		this.lectureDao = lectureDao;
@@ -45,10 +47,19 @@ public class ServiceDao {
 	public User getUser(String id) {
 		return userDao.getItem(id);
 	}
-	
+
 	public Stream getStream(int streamId) {
 		// TODO Auto-generated method stub
 		return streamDao.getItem(streamId);
+	}
+
+	public Lecture getLecture(int lectureId) {
+		return lectureDao.getItem(lectureId);
+	}
+
+	public Events getEvent(int id) {
+		// TODO Auto-generated method stub
+		return eventsDao.getItem(id);
 	}
 
 	/* DAO get lists methods which can be used be the serviceDao object */
@@ -63,7 +74,7 @@ public class ServiceDao {
 	public List<Lecture> getLectures() {
 		return lectureDao.getList();
 	}
-	
+
 	public List<Events> getEvents() {
 		return eventsDao.getList();
 	}
@@ -85,9 +96,36 @@ public class ServiceDao {
 		return authorityDao.create(authority);
 	}
 
-	public void sendRegistrationMail(String to, String from, String subject, String msg){
+	public boolean createEvent(Events event) {
+
+		return eventsDao.create(event);
+
+	}
+
+	public void sendRegistrationMail(String to, String from, String subject,
+			String msg) {
 		mailer.sendMail(from, to, subject, msg);
 	}
-	
+
+	/* update operations */
+
+	public boolean updateEvent(Events event) {
+		return eventsDao.update(event);
+	}
+
+	/* extra sql other than crud operations */
+	public List<Events> getUserEvents(String userName) {
+		return sql.getUserEvents(userName);
+	}
+
+	/*
+	 * Delete, from, where, generic type sql call
+	 */
+	public boolean deleteFromWhere(Object table, Object username,
+			Object eventtype) {
+
+		return sql.deleteFromWhere(table, username, eventtype);
+	}
+
 
 }
