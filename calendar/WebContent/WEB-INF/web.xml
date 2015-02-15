@@ -36,6 +36,7 @@
 		classpath:webConfig/dao-config.xml
 		classpath:webConfig/service-config.xml
 		classpath:webConfig/security-context.xml
+		classpath:webConfig/email-config.xml
 		<!--  classpath:webConfig/datasource.xml-->
 		
 		</param-value>
