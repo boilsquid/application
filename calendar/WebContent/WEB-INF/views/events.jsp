@@ -56,6 +56,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		var startDate;
+		var test;
 		/*
 		// page is now ready, initialize the calendar...
 		function getJsonData() {
@@ -67,13 +68,18 @@
 		}
 		getJsonData();
 		 */
+
 		$('#calendar').fullCalendar({
+			defaultDate : moment('2015-09-25'),/* default date when calendar opens for testing*/
 			editable : true,
 			selectable : true,
 			selectHelper : true,
-			ignoreTimezone : false,
-			allDayDefault : false,
+
 			defaultView : 'agendaWeek',
+			minTime : "08:00:00",
+			maxTime : "19:00:00",// only show from 8 am to 7 pm on calender
+			weekends : false, //don't show weekends on calender
+
 			//defaultView : agendaWeek,
 			//controls for calendar show by day, week, month etc
 			header : {
@@ -87,7 +93,7 @@
 
 				startDate = date.format();
 
-				$("#start").val(startDate);
+				$("#start").val(startDate);//display this date
 
 				$("#popup").show();
 
@@ -109,8 +115,15 @@
 
 		})//end fullcalendar
 
-		$('#cancel').click(function() {
+		$('#cancel').click(function() {//hide the popup form when you cancel the form
 			$("#popup").hide();
+			$("#check").hide();
+			$('#recurs').val("no");//reset this value, which resets form to default
+			
+			/* enabled fields when user clicks cancel*/
+			$("#numWeeks").prop("disabled", false);
+			$("#start").prop("disabled", false);
+			$("#end").prop("disabled", false);
 		});
 
 	});//end document ready
@@ -121,6 +134,93 @@
 	}
 
 	$(document).ready(onLoad)
+
+	$(document).ready(function() {
+		$("select").change(function() {
+			$("select option:selected").each(function() {// hide and show form values depending if the meeting is recurring
+
+				if ($(this).attr("value") == "no") {
+					$("#amount").hide();
+					$("#check").hide();
+					$("#create").show();
+				}
+				if ($(this).attr("value") == "yes") {
+					$("#amount").show();
+					$("#check").show();
+					$("#create").hide();
+					/*
+					do some test to only show create available test is done
+					for now will just block it altogether
+					 */
+
+				}
+
+			});
+		}).change();
+	});
+	
+	$(document).ready(function(){
+        $("select").change(function(){
+            $( "select option:selected").each(function(){
+               
+                if($(this).attr("value")=="tutorial"){
+                    $("#module").show();
+                }if($(this).attr("value")=="meeting"){
+					$("#module").hide();
+				}if($(this).attr("value")=="personal"){
+					$("#module").hide();
+				}
+               
+            });
+        }).change();
+    });
+
+	function success(data) {
+		alert("This timeslot is available for "+data.allowWeeks);
+		$("#numWeeks").val(data.allowWeeks);
+		$("#numWeeks").prop("disabled", true);
+		$("#start").prop("disabled", true);
+		$("#end").prop("disabled", true);/*disable this fields so user cant create bad events*/
+		$("#create").show();
+	}
+
+	function error(data) {
+		alert("error");
+	}
+
+	function sendMessage() {
+
+		var numWeeks = $("#numWeeks").val();
+		var end = $("#end").val();
+		var start = $("#start").val();
+		var types = $("#types").val();
+		var allowWeeks =0;
+
+		$.ajax({
+			"type" : 'POST',
+			"url" : '<c:url value="/setform" />',
+			"data" : JSON.stringify({
+				"numWeeks" : numWeeks,
+				"end" : end,
+				"start" : start,
+				"types" : types,
+				"allowWeeks": allowWeeks
+			}),
+			"success" : success,
+			"error" : error,
+			contentType : "application/json",
+			dataType : "json"
+		});
+	}
+
+	$(document).ready(function() {
+		$("#check2").click(function() {
+
+			sendMessage();
+
+		});
+
+	});
 </script>
 
 </head>
@@ -134,38 +234,81 @@
 						<h3 class="panel-title">Calendar Entry</h3>
 					</div>
 					<div class="panel-body">
-						<form action="${pageContext.request.contextPath}/createevent" role="form">
+						<form id="createevent" action="${pageContext.request.contextPath}/createevent"
+							method="post" role="form">
 							<fieldset>
 								<div class="form-group">
-									<select name="title" form="title">
-										<option value="volvo">cs333</option>
-										<option value="saab">cs333</option>
-										<option value="opel">cs3344</option>
-										<option value="audi">vs2005</option>
+									<select id="types" name="type" form="type" class="form-control">
+										<c:if test="${personalAllow}">
+											<!-- only allow to book if allowed -->
+											<option value="personal">Personal</option>
+										</c:if>
+										<c:if test="${type==1}">
+											<!-- only allow these options when group view is set -->
+											<c:if test="${meetingAllow}">
+												<!-- only allow to book if allowed -->
+												<option value="meeting">Meeting</option>
+											</c:if>
+											<c:if test="${tutorialAllow}">
+												<!-- only allow to book if allowed -->
+												<option value="tutorial">Tutorial</option>
+											</c:if>
+										</c:if>
 									</select>
 								</div>
+								
 								<div class="form-group">
-									<input class="form-control" placeholder="location"
-										name="location" type="text" value="">
-								</div>
-								<div class="form-group">
-									<input class="form-control" placeholder="Start Time" id="start"
-										name="start" type="text" value="">
-								</div>
-								<div class="form-group">
-									<select name="end" form="Duration">
-										<option value="volvo">15</option>
-										<option value="saab">30</option>
-										<option value="opel">1 Hour</option>
-										<option value="audi">2 Hours</option>
+									<select id="module" name="module" form="recurring"
+										class="form-control">
+										<option id="week" value="cshhk">cdjkk</option>
+										<option id="recur" value="yes">cs2500</option>
+
 									</select>
 								</div>
+								
+
 								<div class="form-group">
-									<label>Description</label>
-									<textarea class="form-control" rows="3"></textarea>
+									<select id="recurs" name="recurring" form="recurring"
+										class="form-control">
+										<option id="week" value="no">One week event</option>
+										<option id="recur" value="yes">Recurring event</option>
+
+									</select>
+								</div>
+								<div id="amount" class="form-group">
+									<select id="numWeeks" name="recuramount" form="recurring"
+										class="form-control">
+										<c:forEach var="i" begin="1" end="${maxWeeks}">
+											<option value="${i}">${i}</option><!-- only allow users book for checked availability of free weeks -->
+										</c:forEach>
+
+									</select>
 								</div>
 
-								<button type="submit" class="btn btn-lg btn-success">Create</button>
+								<div class="form-group">
+									<input class="form-control" placeholder="Start Time" id="start"
+										value="formatStart" name="start" type="text" value="start">
+								</div>
+								<div class="form-group">
+									<select id="end" name="end" value="end" class="form-control">
+										<option value="15">15 minutes</option>
+										<option value="30">30 minutes</option>
+										<option value="60">1 Hour</option>
+										<option value="120">2 Hours</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label>Title</label>
+									<textarea name="title" class="form-control" rows="3"></textarea>
+								</div>
+
+								<div class="form-group" id="check">
+									<button type="button" id="check2" value="check"
+										class="btn btn-lg btn-success">Check Avaiibility</button>
+								</div>
+
+								<button id="create" type="submit" value="create"
+									class="btn btn-lg btn-success">Create</button>
 								<button id="cancel" type="button" class="btn btn-lg btn-success">Cancel</button>
 							</fieldset>
 						</form>
@@ -176,39 +319,31 @@
 	</div>
 	<!-- /.col-lg-12 -->
 
-
 	<div id="wrapper">
 
-		<!-- Navigation -->
-		<nav class="navbar navbar-default navbar-static-top" role="navigation"
-			style="margin-bottom: 0">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target=".navbar-collapse">
-				<span class="sr-only">Toggle navigation</span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="index.html">UCCTimeTabler</a>
-		</div>
-		<!-- /.navbar-header -->
 
-		<ul class="nav navbar-top-links navbar-right">
-			<li class="dropdown"><a class="dropdown-toggle"
-				data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
-					<i class="fa fa-caret-down"></i>
-			</a>
-				<ul class="dropdown-menu dropdown-user">
-					<li><a href="profile.html"><i class="fa fa-user fa-fw"></i>
-							User Profile</a></li>
-					<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a></li>
-					<li class="divider"></li>
-					<li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>
-							Logout</a></li>
-				</ul> <!-- /.dropdown-user --></li>
-			<!-- /.dropdown -->
-		</ul>
-		<!-- /.navbar-top-links -->
+		<!-- buttons to select deselect events type like lectures meeting in calender feed -->
+		<form method="post" action="eventselector">
+			<!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+			<!--  <button name="choice" value="all" type="submit" class="btn btn-primary">All</button>-->
+
+			<!-- Indicates a successful or positive action -->
+			<button name="choice" value="module" type="submit"
+				class="btn btn-success">Modules</button>
+
+			<!-- Contextual button for informational alert messages -->
+			<button name="choice" value="meeting" type="submit"
+				class="btn btn-info">Meetings</button>
+
+			<!-- Indicates caution should be taken with this action -->
+			<button name="choice" value="personal" type="submit"
+				class="btn btn-warning">Personal</button>
+		</form>
+		<!-- end button selectors -->
+
+
+
+
 
 		<div class="navbar-default sidebar" role="navigation">
 			<div class="sidebar-nav navbar-collapse">
@@ -223,17 +358,20 @@
 							</span>
 						</div> <!-- /input-group -->
 					</li>
-					<li><a class="active" href="index.html"><i
-							class="fa fa-calendar fa-fw"></i>Calendar</a></li>
-					<li><a class="" href="${pageContext.request.contextPath}/setgroupview"><i
-							class="fa fa-calendar-o fa-fw"></i>Show availability of Group
+					<li><a class=""
+						href="${pageContext.request.contextPath}/setpersonalview"><i
+							class="fa fa-calendar-o fa-fw"></i>Personal Calender</a></li>
 					<li><a class="" href="meeting.html"><i
-							class="fa fa-comments-o fa-fw"></i>Requset Meeting</a></li>
+							class="fa fa-comments-o fa-fw"></i>Pick Group</a></li>
+					<li><a class=""
+						href="${pageContext.request.contextPath}/setgroupview"><i
+							class="fa fa-calendar-o fa-fw"></i>Show availability of Group</a></li>
 				</ul>
 			</div>
 			<!-- /.sidebar-collapse -->
 		</div>
-		<!-- /.navbar-static-side --> </nav>
+		<!-- /.navbar-static-side -->
+		</nav>
 
 		<div id="page-wrapper">
 			<div class="row">

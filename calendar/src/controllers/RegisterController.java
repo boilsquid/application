@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import service.ServiceDao;
 import dao.Authority;
 import dao.Events;
+import dao.Group;
+import dao.GroupMember;
 import dao.Lecture;
 import dao.StreamDao;
 import dao.Stream;
@@ -108,7 +110,7 @@ public class RegisterController {
 				service.createAuthority(authority);
 
 				
-				return "editlectures";
+				return "login";
 			} catch (DuplicateKeyException e) {
 
 				result.rejectValue("email", "DuplicateKey.user.email",
@@ -145,14 +147,34 @@ public class RegisterController {
 		String username = p.getName();
 		User user = service.getUser(username);
 		
-		/*delete all users lecture events as user is re adding them*/
+		/*delete the user from userEvents where type is lecture*/
 		service.deleteFromWhere("userEvents", username, "lecture");
+		/*delete all entries in group members created by admin*/
+		service.deleteFromGroupMembers("groupMembers", username, "administration");
 		
+		/*need to delete them from groups
+		 * get group id
+		 * delete group member from members with group id
+		 */
+		
+		int prevGroupId=0;//record the previous groupId
 		for(int item: lectureId){
 			
 		
 			/* get the lecture from lectureid sec#lected in form*/
 			Lecture lecture = service.getLecture(item);
+			
+			/* get the group id corresponding to lecture(module)
+			 * insert user into group members
+			 */
+			Group group=service.getGroupByName(lecture.getModuleId());
+			GroupMember member = new GroupMember();
+			int groupId = group.getGroupId();
+			member.setGroupId(groupId);
+			member.setUserName(username);
+			if(groupId!=prevGroupId){//only insert user into group members if user is not in group
+				service.createGroupMember(member);
+			}
 			
 			/*create an event to add to the users events calender
 			 * and add the events data
@@ -167,6 +189,8 @@ public class RegisterController {
 			event.setTypeId(lecture.getLectureId());
 			event.setTitle(lecture.getModuleId());
 			service.createEvent(event);
+			
+			prevGroupId = groupId;
 			
 		}
 		

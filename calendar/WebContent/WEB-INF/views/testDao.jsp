@@ -52,6 +52,7 @@
 			<c:out value="${lecture}"></c:out>
 		</p>
 	</c:forEach>
+		
 
 </body>
 </html>

@@ -13,8 +13,9 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
-@Component("eventsDao")
-public class EventsDao implements DaoInterface<Events>{
+
+@Component("groupEventDao")
+public class GroupEventDao implements DaoInterface<GroupEvent>{
 	
 	private NamedParameterJdbcTemplate jdbc;
 	
@@ -25,23 +26,22 @@ public class EventsDao implements DaoInterface<Events>{
 	
 
 	
-	public List<Events> getList() {
+	public List<GroupEvent> getList() {
 
-		return jdbc.query("select * from UserEvents", new RowMapper<Events>() {
+		return jdbc.query("select * from Groupevents", new RowMapper<GroupEvent>() {
 
-			public Events mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Events events = new Events();
+			public GroupEvent mapRow(ResultSet rs, int rowNum) throws SQLException {
+				GroupEvent events = new GroupEvent();
 				
-
-				events.setId(rs.getInt("id"));
+				events.setGroupEventId(rs.getInt("groupEventId"));
+				events.setGroupId(rs.getInt("groupId"));
 				events.setUserName(rs.getString("userName"));
 				events.setStart(rs.getTimestamp("start"));
 				events.setEnd(rs.getTimestamp("end"));
 				events.setRecurring(rs.getInt("recurring"));
 				events.setEventType(rs.getString("eventType"));
-				events.setTypeId(rs.getInt("typeId"));
 				events.setTitle(rs.getString("title"));
-				events.setColor(rs.getString("color"));
+				
 				
 			
 				return events;
@@ -50,55 +50,55 @@ public class EventsDao implements DaoInterface<Events>{
 		});
 	}
 	
-	public boolean update(Events event) {
+	
+	public boolean update(GroupEvent event) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(event);
 		
-		return jdbc.update("update UserEvents set userName=:userName, start=:start, end=:end, recurring=:recurring,"
-				+ " eventType=:eventType, typeId=:typeId, title=:title, color=:color "
+		return jdbc.update("update GroupEvents set groupId=:groupId, userName=:userName, start=:start, end=:end, recurring=:recurring,"
+				+ " eventType=:eventType, title=:title "
 				+ " where id=:id", params) == 1;
 	}
 	
 
-	public boolean create(Events event) {
+	public boolean create(GroupEvent event) {
 		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(event);
 		
-		return jdbc.update("insert into UserEvents (userName, start, end, recurring,"
-				+ " eventType, typeId, title, color) "
-				+ "values (:userName, :start, :end, :recurring,"
-				+ " :eventType, :typeId, :title, :color)", params) == 1;
+		return jdbc.update("insert into GroupEvent (groupId, userName, start, end, recurring,"
+				+ " eventType, title) "
+				+ "values (:groupId, :userName, :start, :end, :recurring,"
+				+ " :eventType, :title)", params) == 1;
 	
 	}
 	
 
 	
-	public boolean delete(Object id) {
-		MapSqlParameterSource params = new MapSqlParameterSource("id", id);
+	public boolean delete(Object groupEventId) {
+		MapSqlParameterSource params = new MapSqlParameterSource("groupEventId", groupEventId);
 		
-		return jdbc.update("delete from UserEvents where id=:id", params) == 1;
+		return jdbc.update("delete from UserEvents where groupEventId=:groupEventId", params) == 1;
 	}
 
-	public Events getItem(Object id) {
+	public GroupEvent getItem(Object groupEventId) {
 
 		MapSqlParameterSource params = new MapSqlParameterSource();
-		params.addValue("id", id);
+		params.addValue("groupEventId", groupEventId);
 
-		return jdbc.queryForObject("select * from UserEvents where id=:id", params,
-				new RowMapper<Events>() {
+		return jdbc.queryForObject("select * from GroupEvents where groupEventId=:groupEventId", params,
+				new RowMapper<GroupEvent>() {
 
-					public Events mapRow(ResultSet rs, int rowNum)
+					public GroupEvent mapRow(ResultSet rs, int rowNum)
 							throws SQLException {
-						Events events = new Events();
-
-						events.setId(rs.getInt("id"));
+						GroupEvent events = new GroupEvent();
+						
+						events.setGroupEventId(rs.getInt("groupEventId"));
+						events.setGroupId(rs.getInt("groupId"));
 						events.setUserName(rs.getString("userName"));
 						events.setStart(rs.getTimestamp("start"));
 						events.setEnd(rs.getTimestamp("end"));
 						events.setRecurring(rs.getInt("recurring"));
 						events.setEventType(rs.getString("eventType"));
-						events.setTypeId(rs.getInt("typeId"));
 						events.setTitle(rs.getString("title"));
-						events.setColor(rs.getString("color"));
 					
 						return events;
 						

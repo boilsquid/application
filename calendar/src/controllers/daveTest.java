@@ -1,9 +1,11 @@
 package controllers;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
+import dao.Sql;
 import dao.User;
 import dao.UserDao;
 
@@ -21,7 +23,6 @@ public class daveTest {
 			System.out.println(v.getErrorMessageCollegeEmail());
 			System.out.println("email is valid");
 		}*/
-		
 		
 		
 	}

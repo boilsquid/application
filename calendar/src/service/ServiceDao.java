@@ -1,14 +1,26 @@
 package service;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
 
 import dao.Authority;
 import dao.AuthorityDao;
 import dao.Events;
 import dao.EventsDao;
+import dao.Group;
+import dao.GroupDao;
+import dao.GroupEvent;
+import dao.GroupEventDao;
+import dao.GroupMember;
+import dao.GroupMemberDao;
 import dao.Lecture;
 import dao.LectureDao;
 import dao.Sql;
@@ -26,13 +38,17 @@ public class ServiceDao {
 	private LectureDao lectureDao;
 	private AuthorityDao authorityDao;
 	private EventsDao eventsDao;
+	private GroupDao groupDao;
+	private GroupMemberDao groupMemberDao;
 	private Sql sql;
+	private GroupEventDao groupEventDao;
 	private registrationMailer mailer;
 
 	@Autowired
 	public void setUserDao(UserDao userDao, StreamDao streamDao,
 			LectureDao lectureDao, AuthorityDao authorityDao,
-			EventsDao eventsDao, Sql sql) {
+			EventsDao eventsDao, Sql sql, GroupMemberDao groupMemberDao,
+			GroupEventDao groupEventDao) {
 
 		this.userDao = userDao;
 		this.streamDao = streamDao;
@@ -40,7 +56,10 @@ public class ServiceDao {
 		this.authorityDao = authorityDao;
 		this.eventsDao = eventsDao;
 		this.sql = sql;
+		this.groupDao = groupDao;
 		this.mailer = mailer;
+		this.groupMemberDao = groupMemberDao;
+		this.groupEventDao = groupEventDao;
 	}
 
 	/* get indivual object ie get a particular user */
@@ -102,6 +121,18 @@ public class ServiceDao {
 
 	}
 
+	public boolean createGroupMember(GroupMember member) {
+
+		return groupMemberDao.create(member);
+
+	}
+
+	public boolean createGroupEvent(GroupEvent event) {
+
+		return groupEventDao.create(event);
+
+	}
+
 	public void sendRegistrationMail(String to, String from, String subject,
 			String msg) {
 		mailer.sendMail(from, to, subject, msg);
@@ -127,5 +158,20 @@ public class ServiceDao {
 		return sql.deleteFromWhere(table, username, eventtype);
 	}
 
+	public boolean deleteFromGroupMembers(Object table, Object username,
+			Object createdBy) {
+		return sql.deleteFromGroupMembers(table, username, createdBy);
+	}
+
+	/* get a group by groupname */
+	public Group getGroupByName(Object groupName) {
+
+		return sql.getGroupByName(groupName);
+	}
+
+	/* update minutes in userevents end time */
+	public boolean updateMinutes(Object id, int min, Timestamp start) {
+		return sql.updateMinutes(id, min, start);
+	}
 
 }

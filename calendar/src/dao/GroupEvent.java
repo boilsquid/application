@@ -2,55 +2,50 @@ package dao;
 
 import java.sql.Timestamp;
 
-public class Events {
-
-	public Events() {
-
-	}
+public class GroupEvent {
 	
-
-
-	private int id;
+	  
+	private int groupEventId;
+	private int groupId;
 	private String userName;
 	private Timestamp start;
 	private Timestamp end;
 	private int recurring;
 	private String eventType;
-	private int typeId;
 	private String title;
-	private String color;
 	
-	public Events(int id, String userName, Timestamp start, Timestamp end,
-			int recurring, String eventType, int typeId, String title, String color) {
+	public GroupEvent(){
+		
+	}
+
+	public GroupEvent(int groupEventId, int groupId, String userName,
+			Timestamp start, Timestamp end, int recurring, String eventType,
+			String title) {
 		super();
-		this.id = id;
+		this.groupEventId = groupEventId;
+		this.groupId = groupId;
 		this.userName = userName;
 		this.start = start;
 		this.end = end;
 		this.recurring = recurring;
 		this.eventType = eventType;
-		this.typeId = typeId;
 		this.title = title;
-		this.color =color;
-	}
-	
-
-	public String getColor() {
-		return color;
 	}
 
-
-	public void setColor(String color) {
-		this.color = color;
+	public int getGroupEventId() {
+		return groupEventId;
 	}
 
-
-	public int getId() {
-		return id;
+	public void setGroupEventId(int groupEventId) {
+		this.groupEventId = groupEventId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public int getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
 	}
 
 	public String getUserName() {
@@ -93,14 +88,6 @@ public class Events {
 		this.eventType = eventType;
 	}
 
-	public int getTypeId() {
-		return typeId;
-	}
-
-	public void setTypeId(int typeId) {
-		this.typeId = typeId;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -111,16 +98,11 @@ public class Events {
 
 	@Override
 	public String toString() {
-		return "Events [id=" + id + ", userName=" + userName + ", start="
-				+ start + ", end=" + end + ", recurring=" + recurring
-				+ ", eventType=" + eventType + ", typeId=" + typeId
-				+ ", title=" + title + "]";
+		return "GroupEvent [groupEventId=" + groupEventId + ", groupId="
+				+ groupId + ", userName=" + userName + ", start=" + start
+				+ ", end=" + end + ", recurring=" + recurring + ", eventType="
+				+ eventType + ", title=" + title + "]";
 	}
 
-
 	
-	
-	
-	
-
 }

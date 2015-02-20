@@ -33,7 +33,11 @@
 		<security:intercept-url pattern="/users" access="isAuthenticated()" />
 		<security:intercept-url pattern="/editlectures" access="isAuthenticated()" />
 		<security:intercept-url pattern="/changelectures" access="isAuthenticated()" />
+		<security:intercept-url pattern="/createevent" access="isAuthenticated()" />
 		<security:intercept-url pattern="/setgroupview" access="isAuthenticated()" />
+		<security:intercept-url pattern="/setpersonalview" access="isAuthenticated()" />
+		<security:intercept-url pattern="/eventselector" access="isAuthenticated()" />
+		<security:intercept-url pattern="/setform" access="isAuthenticated()" />
 		<security:intercept-url pattern="/testDao" access="permitAll" />
 		<security:intercept-url pattern="/edittimetable" access="isAuthenticated()" />
 		<security:intercept-url pattern="/resources/**" access="permitAll" />
