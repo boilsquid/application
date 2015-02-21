@@ -34,6 +34,7 @@
 		<security:intercept-url pattern="/editlectures" access="isAuthenticated()" />
 		<security:intercept-url pattern="/changelectures" access="isAuthenticated()" />
 		<security:intercept-url pattern="/createevent" access="isAuthenticated()" />
+		<security:intercept-url pattern="/deleteevent" access="isAuthenticated()" />
 		<security:intercept-url pattern="/setgroupview" access="isAuthenticated()" />
 		<security:intercept-url pattern="/setpersonalview" access="isAuthenticated()" />
 		<security:intercept-url pattern="/eventselector" access="isAuthenticated()" />

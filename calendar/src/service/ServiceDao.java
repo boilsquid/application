@@ -132,6 +132,11 @@ public class ServiceDao {
 		return groupEventDao.create(event);
 
 	}
+	
+	/* returns the auto generated primary key*/
+	public int createWithKey(GroupEvent event) {
+		return groupEventDao.createWithKey(event);
+	}
 
 	public void sendRegistrationMail(String to, String from, String subject,
 			String msg) {
@@ -173,5 +178,12 @@ public class ServiceDao {
 	public boolean updateMinutes(Object id, int min, Timestamp start) {
 		return sql.updateMinutes(id, min, start);
 	}
+	
+	/* get a list of users in a group*/
+	public List<User> getUsersInGroup(int groupId){
+		return sql.getUsersInGroup(groupId);
+	}
+	
+	
 
 }

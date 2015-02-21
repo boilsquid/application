@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import service.ServiceDao;
 import dao.Events;
+import dao.GroupEvent;
 import dao.Lecture;
 import dao.Sql;
 import dao.StreamDao;
@@ -48,7 +49,7 @@ public class EventController {
 	private StreamDao streamDao;
 	private Sql sql;
 
-	private List<User> group;
+	private List<User> groupMembers = new ArrayList<>();
 	private String eventType;
 	private int groupId = 0;
 	private int type = 0;
@@ -93,7 +94,6 @@ public class EventController {
 		model.addAttribute("tutorialAllow", tutorialAllowed);
 		model.addAttribute("maxWeeks", maxWeeks);
 
-		group = null;
 
 		return "events";
 	}
@@ -112,26 +112,8 @@ public class EventController {
 		model.addAttribute("maxWeeks", maxWeeks);
 
 		String username = p.getName();
-		Events ev = service.getEvent(51);
 		
-		/*get the group id groupId = getgroup
-		 * insert group members into a list
-		 * 
-		 */
-
-		group = service.getUsers();
-		Timestamp time = ev.getStart();
-		System.out.println("the date is being checked is: " + time);
-
-		// List<Events> e = sql.minList(username,time, 1, 120);
-		// System.out.println("next week event: "+e);
-		System.out.println("");
-		int test = checkPersonAvail(username, time, 120, groupId,
-				"tutorial");
-		System.out.println("person available for: " + test);
-		System.out.println("");
-		
-		
+		/*needs to be changedd to get groupId method*/
 		groupId=8;
 
 		return "events";
@@ -182,7 +164,7 @@ public class EventController {
 
 		/* run the availability test return a number of weels */
 		System.out.println("");
-		allowWeeks = checkPersonAvail(username, ts, mins, groupId, types);
+		allowWeeks = checkPersonAvail(username, ts, mins, groupId, types);//change 0 to a group Id
 		System.out.println("person available for: " + allowWeeks);
 		System.out.println("");
 
@@ -202,6 +184,24 @@ public class EventController {
 
 		return rval;
 	}
+	
+	
+	@RequestMapping(value="/deleteevent", method=RequestMethod.POST, produces="application/json")
+	@ResponseBody
+	public Map<String, Object> deleteEvent(Principal principal, @RequestBody Map<String, Object> data) {
+		
+		
+		
+		int id = (Integer)data.get("sendId");
+		System.out.println("got id: "+id);
+		/* add function to delete event if the user is allowed*/
+		
+		Map<String, Object> rval = new HashMap<String, Object>();
+		rval.put("success", true);
+	
+		
+		return rval;
+	}
 
 	@RequestMapping(value = "/createevent", method = RequestMethod.POST)
 	public String createEvents(Model model,
@@ -213,57 +213,84 @@ public class EventController {
 		model.addAttribute("meetingAllow", meetingAllowed);
 		model.addAttribute("tutorialAllow", tutorialAllowed);
 		model.addAttribute("maxWeeks", maxWeeks);
-
+		
+		System.out.println("in group "+groupMembers);
+		/*add the logged in user to the group*/
 		String username = p.getName();
+		User user = service.getUser(username);
+		groupMembers.add(user);
+		
 
 		System.out.println(params);
 		String start = params.get("start");
 		System.out.println(params);
 
-		/* reformat the string time/date to a Timestamp formay */
+		/* reformat the string time/date to a Timestamp format */
 		String reformatted = "";
 		SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
-
 			reformatted = output.format(input.parse(start));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		Timestamp ts = Timestamp.valueOf(reformatted);
-		/*-------------------*/
+	
+		/* format user input*/
+		int weeks = Integer.parseInt(params.get("recuramount"));
+		int mins = Integer.parseInt(params.get("end"));								
+		long t = ts.getTime();
+		long m = mins * 60 * 1000;
+		Timestamp end = new Timestamp(t + m);// calcute end time of event
 		
-		/*need to create tutorial/meeting*/
-		
-		
-		/*need to for through group when creating the userevents for group
-		 * have logged in user in Array group
-		 * add members to group if its group thing
-		 * */
+		/*if its a group event, create a group event*/
+		if(groupId!=0){
+			
+			groupMembers = service.getUsersInGroup(groupId);
+			System.out.println("in group "+groupMembers);
+			GroupEvent groupEvent = new GroupEvent();
+			
+			groupEvent.setGroupId(groupId);
+			groupEvent.setEventType(params.get("type"));
+			groupEvent.setUserName(username);
+			groupEvent.setStart(ts);
+			groupEvent.setRecurring(weeks);
+			groupEvent.setEnd(end);
+			groupEvent.setTitle(params.get("title"));
+			
+			
+		    
+		    
+		    /* set type to groupEventId this id refers userEvents to groupEvents*/
+			type = service.createWithKey(groupEvent);
+			System.out.println("the fucking type is "+type);
+		}
 		
 
 		System.out.println(" Date " + ts);
 
+		/*create an event for each user in the group
+		 * can be just member in group, the logged in user
+		 */
+		for(User member: groupMembers){
+			
+		String memberName = member.getUserName();
+		/*set the event details*/
 		Events event = new Events();
 		event.setTitle(params.get("title"));
 		event.setStart(ts);
 		event.setEventType(params.get("type"));
-		event.setUserName(username);
-		event.setTypeId(0);// 0 for personal event
-		int weeks = Integer.parseInt(params.get("recuramount"));// convert
-																// string weeks
-																// recurring to
-																// int
-		event.setRecurring(weeks);
-		int mins = Integer.parseInt(params.get("end"));// convert string minute
-														// to int
-		long t = ts.getTime();
-		long m = mins * 60 * 1000;
-		Timestamp end = new Timestamp(t + m);// calcute end time of event
+		event.setUserName(memberName);
+		event.setTypeId(type);
+		event.setRecurring(weeks);	
 		event.setEnd(end);
-
-		service.createEvent(event);// finally create the event and upload to
-									// database
+		
+		/*create the event*/
+		service.createEvent(event);
+		}	
+		
+		/* empty out the List for next create operation*/
+		groupMembers.clear();
 
 		return "events";
 	}
@@ -435,7 +462,7 @@ public class EventController {
 
 				Events event = new Events();
 
-				event.setId(id * (i + 1));
+				event.setId(id );
 				event.setUserName(item.getUserName());
 				event.setStart(new Timestamp(newStart.getTimeInMillis()));
 				event.setEnd(new Timestamp(newEnd.getTimeInMillis()));

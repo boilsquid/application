@@ -12,6 +12,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 @Component("groupEventDao")
@@ -64,11 +66,25 @@ public class GroupEventDao implements DaoInterface<GroupEvent>{
 		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(event);
 		
-		return jdbc.update("insert into GroupEvent (groupId, userName, start, end, recurring,"
+		return jdbc.update("insert into GroupEvents (groupId, userName, start, end, recurring,"
 				+ " eventType, title) "
 				+ "values (:groupId, :userName, :start, :end, :recurring,"
-				+ " :eventType, :title)", params) == 1;
+				+ " :eventType, :title)", params)==1 ;
+		
 	
+	}
+	
+	/* returns the auto generated primary key*/
+	public int createWithKey(GroupEvent event) {
+		
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(event);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		 jdbc.update("insert into GroupEvents (groupId, userName, start, end, recurring,"
+				+ " eventType, title) "
+				+ "values (:groupId, :userName, :start, :end, :recurring,"
+				+ " :eventType, :title)", params,keyHolder);
+
+		 		return keyHolder.getKey().intValue();
 	}
 	
 
@@ -76,7 +92,7 @@ public class GroupEventDao implements DaoInterface<GroupEvent>{
 	public boolean delete(Object groupEventId) {
 		MapSqlParameterSource params = new MapSqlParameterSource("groupEventId", groupEventId);
 		
-		return jdbc.update("delete from UserEvents where groupEventId=:groupEventId", params) == 1;
+		return jdbc.update("delete from GroupEvents where groupEventId=:groupEventId", params) == 1;
 	}
 
 	public GroupEvent getItem(Object groupEventId) {

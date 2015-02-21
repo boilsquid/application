@@ -34,6 +34,7 @@
 	href="${pageContext.request.contextPath}/resources/css/sb-admin-2.css"
 	rel="stylesheet">
 
+
 <!-- Custom Fonts -->
 <link href="font-awesome-4.1.0/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
@@ -53,10 +54,21 @@
 	src='${pageContext.request.contextPath}/resources/lib/moment.min.js'></script>
 <script
 	src='${pageContext.request.contextPath}/resources/js/fullcalendar.js'></script>
+
+<!-- Include jQuery Popup Overlay -->
+<script
+	src='${pageContext.request.contextPath}/resources/js/jquery.popupoverlay.js'></script>
+
+
 <script type="text/javascript">
+
 	$(document).ready(function() {
 		var startDate;
 		var test;
+		var newId;
+		
+		
+
 		/*
 		// page is now ready, initialize the calendar...
 		function getJsonData() {
@@ -74,7 +86,7 @@
 			editable : true,
 			selectable : true,
 			selectHelper : true,
-
+			allDay : false,
 			defaultView : 'agendaWeek',
 			minTime : "08:00:00",
 			maxTime : "19:00:00",// only show from 8 am to 7 pm on calender
@@ -95,7 +107,25 @@
 
 				$("#start").val(startDate);//display this date
 
-				$("#popup").show();
+				$("#popup").popup('show');
+
+			},
+
+			/* edit function on click*/
+			eventClick : function(calEvent, jsEvent, view) {
+
+				newId = calEvent.id;
+				alert('Event: ' + newId);
+				$("#deletePopup").popup('show');
+
+				$('#delete').click(function() {
+					if (confirm('Do you wan\'t to delete this item?')) {
+						deleteEvent(calEvent.id);
+						$("#deletePopup").popup('hide');
+					} else {
+						$("#deletePopup").popup('hide');
+					}
+				});
 
 			},
 
@@ -116,26 +146,29 @@
 		})//end fullcalendar
 
 		$('#cancel').click(function() {//hide the popup form when you cancel the form
-			$("#popup").hide();
+			$("#popup").popup('hide');
 			$("#check").hide();
 			$('#recurs').val("no");//reset this value, which resets form to default
-			
+
 			/* enabled fields when user clicks cancel*/
 			$("#numWeeks").prop("disabled", false);
 			$("#start").prop("disabled", false);
 			$("#end").prop("disabled", false);
 		});
 
-	});//end document ready
+		$('#create').click(function() {//enable fields before form is submitted
 
-	function onLoad() {
-		$("#popup").hide();
+			/* enabled fields when user clicks create*/
+			$("#numWeeks").prop("disabled", false);
+			$("#start").prop("disabled", false);
+			$("#end").prop("disabled", false);
+		});
+		
+		 // Initialize the plugin
+	      $('#deletePopup').popup();
+	      $('#popup').popup();
 
-	}
-
-	$(document).ready(onLoad)
-
-	$(document).ready(function() {
+	
 		$("select").change(function() {
 			$("select option:selected").each(function() {// hide and show form values depending if the meeting is recurring
 
@@ -157,26 +190,28 @@
 
 			});
 		}).change();
-	});
-	
-	$(document).ready(function(){
-        $("select").change(function(){
-            $( "select option:selected").each(function(){
-               
-                if($(this).attr("value")=="tutorial"){
-                    $("#module").show();
-                }if($(this).attr("value")=="meeting"){
-					$("#module").hide();
-				}if($(this).attr("value")=="personal"){
+	});//end document ready
+
+	$(document).ready(function() {
+		$("select").change(function() {
+			$("select option:selected").each(function() {
+
+				if ($(this).attr("value") == "tutorial") {
+					$("#module").show();
+				}
+				if ($(this).attr("value") == "meeting") {
 					$("#module").hide();
 				}
-               
-            });
-        }).change();
-    });
+				if ($(this).attr("value") == "personal") {
+					$("#module").hide();
+				}
+
+			});
+		}).change();
+	});
 
 	function success(data) {
-		alert("This timeslot is available for "+data.allowWeeks);
+		alert("This timeslot is available for " + data.allowWeeks);
 		$("#numWeeks").val(data.allowWeeks);
 		$("#numWeeks").prop("disabled", true);
 		$("#start").prop("disabled", true);
@@ -194,7 +229,7 @@
 		var end = $("#end").val();
 		var start = $("#start").val();
 		var types = $("#types").val();
-		var allowWeeks =0;
+		var allowWeeks = 0;
 
 		$.ajax({
 			"type" : 'POST',
@@ -204,10 +239,35 @@
 				"end" : end,
 				"start" : start,
 				"types" : types,
-				"allowWeeks": allowWeeks
+				"allowWeeks" : allowWeeks
 			}),
 			"success" : success,
 			"error" : error,
+			contentType : "application/json",
+			dataType : "json"
+		});
+	}
+
+	function success2(data) {
+		alert("Event deleted ");
+	}
+
+	function error2(data) {
+		alert("error2");
+	}
+
+	function deleteEvent(id) {
+		var test = "help";
+		var sendId = id;
+		$.ajax({
+			"type" : 'POST',
+			"url" : '<c:url value="/deleteevent" />',
+			"data" : JSON.stringify({
+				"sendId" : sendId,
+				"test" : test
+			}),
+			"success" : success2,
+			"error" : error2,
 			contentType : "application/json",
 			dataType : "json"
 		});
@@ -225,20 +285,32 @@
 
 </head>
 
+<!-- delete event button will produce a warning before event is deleletd -->
+
+<div id="deletePopup">
+	<button id="delete" type="button" class="btn btn-lg btn-success">Delete
+		Event</button>
+</div>
+
+
+
 <body>
-	<div class="row" id="popup">
-		<div class="col-lg-12">
-			<div class="col-md-4">
+
+	<div id ="popup">
+	
 				<div class="login-panel panel panel-default">
+				
 					<div class="panel-heading">
 						<h3 class="panel-title">Calendar Entry</h3>
 					</div>
+					
 					<div class="panel-body">
-						<form id="createevent" action="${pageContext.request.contextPath}/createevent"
-							method="post" role="form">
+						<form id="createevent"
+							action="${pageContext.request.contextPath}/createevent"
+							method="post" ">
 							<fieldset>
 								<div class="form-group">
-									<select id="types" name="type" form="type" class="form-control">
+									<select id="types" name="type"  class="form-control">
 										<c:if test="${personalAllow}">
 											<!-- only allow to book if allowed -->
 											<option value="personal">Personal</option>
@@ -256,19 +328,11 @@
 										</c:if>
 									</select>
 								</div>
-								
-								<div class="form-group">
-									<select id="module" name="module" form="recurring"
-										class="form-control">
-										<option id="week" value="cshhk">cdjkk</option>
-										<option id="recur" value="yes">cs2500</option>
 
-									</select>
-								</div>
-								
+
 
 								<div class="form-group">
-									<select id="recurs" name="recurring" form="recurring"
+									<select id="recurs" name="recurring" 
 										class="form-control">
 										<option id="week" value="no">One week event</option>
 										<option id="recur" value="yes">Recurring event</option>
@@ -276,21 +340,22 @@
 									</select>
 								</div>
 								<div id="amount" class="form-group">
-									<select id="numWeeks" name="recuramount" form="recurring"
+									<select id="numWeeks" name="recuramount" 
 										class="form-control">
 										<c:forEach var="i" begin="1" end="${maxWeeks}">
-											<option value="${i}">${i}</option><!-- only allow users book for checked availability of free weeks -->
+											<option value="${i}">${i}</option>
+											<!-- only allow users book for checked availability of free weeks -->
 										</c:forEach>
 
 									</select>
 								</div>
 
 								<div class="form-group">
-									<input class="form-control" placeholder="Start Time" id="start"
+									<input class="form-control"  id="start"
 										value="formatStart" name="start" type="text" value="start">
 								</div>
 								<div class="form-group">
-									<select id="end" name="end" value="end" class="form-control">
+									<select id="end" name="end"  class="form-control">
 										<option value="15">15 minutes</option>
 										<option value="30">30 minutes</option>
 										<option value="60">1 Hour</option>
@@ -312,8 +377,7 @@
 								<button id="cancel" type="button" class="btn btn-lg btn-success">Cancel</button>
 							</fieldset>
 						</form>
-					</div>
-				</div>
+				
 			</div>
 		</div>
 	</div>
@@ -348,16 +412,7 @@
 		<div class="navbar-default sidebar" role="navigation">
 			<div class="sidebar-nav navbar-collapse">
 				<ul class="nav" id="side-menu">
-					<li class="sidebar-search">
-						<div class="input-group custom-search-form">
-							<input type="text" class="form-control" placeholder="Search...">
-							<span class="input-group-btn">
-								<button class="btn btn-default" type="button">
-									<i class="fa fa-search"></i>
-								</button>
-							</span>
-						</div> <!-- /input-group -->
-					</li>
+
 					<li><a class=""
 						href="${pageContext.request.contextPath}/setpersonalview"><i
 							class="fa fa-calendar-o fa-fw"></i>Personal Calender</a></li>

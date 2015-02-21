@@ -125,7 +125,7 @@ public class Sql {
 		params.addValue("week", week);
 		params.addValue("username", username);
 		params.addValue("min", min);
-		params.addValue("groupid", groupId);
+		params.addValue("groupId", groupId);
 		
 		/* run this for personal events for one user */
 		String sql1 = "Select * from userevents where start >=( SELECT TIMESTAMPADD(WEEK,:week,:date)) "
@@ -184,4 +184,48 @@ public class Sql {
 					+"set end =(SELECT TIMESTAMPADD(MINUTE,:min,:start)) "
 					+"where id =:id;", params) == 1;
 	}
-}
+	
+	
+	/* get a list of users in a group*/
+	public List<User> getUsersInGroup(int groupId) {
+		
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("groupId", groupId);
+		
+		String sql ="Select * from users where username IN("
+				+"Select userName from groupmembers where groupId =:groupId)";
+
+		return jdbc.query(sql,params, new RowMapper<User>() {
+
+			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+				User user = new User();
+			
+				user.setUserName(rs.getString("userName"));
+				user.setFirstName(rs.getString("firstName"));
+				user.setLastName(rs.getString("lastName"));
+				user.setEmail(rs.getString("email"));
+				user.setPhone(rs.getString("phone"));
+				user.setRoleId(rs.getString("roleId"));
+				user.setStreamId(rs.getInt("streamId"));
+				user.setPassword(rs.getString("password"));
+				user.setPasswordConfirmation(rs.getString("passwordConfirmation"));
+				user.setCreatedAt(rs.getTimestamp("createdAt"));
+				user.setUpdatedAt(rs.getTimestamp("updatedAt"));
+				user.setSignInCount(rs.getInt("signInCount"));
+				user.setEnabled(rs.getBoolean("enabled"));
+				user.setActivationToken(rs.getString("activationToken"));
+				user.setActivationTokenUpdatedAt(rs.getTimestamp("activationTokenUpdatedAt"));
+				user.setPasswordResetToken(rs.getString("passwordResetToken"));
+				user.setPasswordTokentUpdatedAt(rs.getTimestamp("passwordTokentUpdatedAt"));
+				return user;
+			}
+
+		});
+	}
+	
+	
+	
+}//end class
+
+
+
