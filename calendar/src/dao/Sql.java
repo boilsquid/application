@@ -137,7 +137,7 @@ public class Sql {
 		
 		/* run this for personal events for one user */
 		String sql1 = "Select * from userevents where start >=( SELECT TIMESTAMPADD(WEEK,:week,:date)) "
-				+ "and end<=(SELECT timestampadd(MINUTE,:min,( SELECT TIMESTAMPADD(WEEK,:week,:date))))"
+				+ "AND end<=(SELECT timestampadd(MINUTE,:min,( SELECT TIMESTAMPADD(WEEK,:week,:date))))"
 				+ " and username=:username";
 
 		/* run this sql to find free times for tutorials group */

@@ -123,7 +123,7 @@
 			eventClick : function(calEvent, jsEvent, view) {
 
 				newId = calEvent.id;
-				alert('Event: ' + newId);
+				
 				$("#deletePopup").popup('show');
 
 				$('#delete').click(function() {
@@ -234,7 +234,7 @@
 	});//end document ready
 
 	function success(data) {
-		alert("This timeslot is available for " + data.allowWeeks);
+		alert("This timeslot is available for " + data.allowWeeks +" weeks");
 		$("#numWeeks").val(data.allowWeeks);
 		$("#numWeeks").prop("disabled", true);
 		$("#start").prop("disabled", true);
@@ -272,8 +272,8 @@
 	}
 
 	function success2(data) {
-		alert("Event deleted ");
-		location.reload();
+		/* redirect to events page after delete*/
+		top.location.href = '<c:url value="/events" />';
 	}
 
 	function error2(data) {
