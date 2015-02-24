@@ -8,7 +8,9 @@
 	<context:annotation-config></context:annotation-config>
 	<context:component-scan base-package="mailers"></context:component-scan>
 	
-	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />
 		<property name="port" value="587" />
 		<property name="username" value="springuccproject@gmail.com" />
@@ -21,5 +23,4 @@
 	       	   </props>
 		</property>
 	</bean>
- 
 </beans>

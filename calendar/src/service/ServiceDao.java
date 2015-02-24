@@ -48,7 +48,7 @@ public class ServiceDao {
 	public void setUserDao(UserDao userDao, StreamDao streamDao,
 			LectureDao lectureDao, AuthorityDao authorityDao,
 			EventsDao eventsDao, Sql sql, GroupMemberDao groupMemberDao,
-			GroupEventDao groupEventDao) {
+			GroupEventDao groupEventDao, registrationMailer mailer) {
 
 		this.userDao = userDao;
 		this.streamDao = streamDao;
@@ -66,7 +66,15 @@ public class ServiceDao {
 	public User getUser(String id) {
 		return userDao.getItem(id);
 	}
-
+	
+	public User findUser(String column, String value){
+		return userDao.findBy(column, value);
+	}
+	
+	public boolean updateUser(User user){
+		return userDao.update(user);
+	}
+	
 	public Stream getStream(int streamId) {
 		// TODO Auto-generated method stub
 		return streamDao.getItem(streamId);
@@ -142,10 +150,15 @@ public class ServiceDao {
 	public int createWithKey(GroupEvent event) {
 		return groupEventDao.createWithKey(event);
 	}
-
+	
+	/* Registration Mail and Password Reset Mail */
 	public void sendRegistrationMail(String to, String from, String subject,
 			String msg) {
 		mailer.sendMail(from, to, subject, msg);
+	}
+	
+	public void passwordResetMail(String to, String from, String subject, String msg){
+		mailer.passwordReset(to, from, subject, msg);
 	}
 
 	/* update operations */
@@ -203,7 +216,6 @@ public class ServiceDao {
 	public List<User> getUsersInGroup(int groupId){
 		return sql.getUsersInGroup(groupId);
 	}
-	
 	
 
 }

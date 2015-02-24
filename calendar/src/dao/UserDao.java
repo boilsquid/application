@@ -68,12 +68,10 @@ public class UserDao implements DaoInterface<User> {
 	
 	public boolean update(User user) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
-
-		return jdbc.update("update users set firstName=:firstName, lastName=:lastName, userName=:userName"
-				+ "email=:email, phone=:phone, roleId=:roleId, streamId=:stream, passowrd=:password, "
+		return jdbc.update("update users set firstName=:firstName, lastName=:lastName, userName=:userName, email=:email, phone=:phone, roleId=:roleId, password=:password, "
 				+ "passwordConfirmation=:passwordConfirmation,activationToken:=activationToken,activationTokenUpdatedAt:=activationTokenUpdatedAt,"
 				+ "passwordResetToken:=passwordResetToken,passwordTokentUpdatedAt:=passwordTokentUpdatedAt, enabled=:enabled "
-				+ "where id=:id", params) == 1;
+				+ "where userName=:userName", params) == 1;
 	}
 	
 	public boolean create(User user) {
@@ -135,6 +133,40 @@ public class UserDao implements DaoInterface<User> {
 					}
 
 				});
+	}
+	
+	public User findBy(Object column, Object value){
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("value", value);
+		
+		String co = (String) column;
+
+		return jdbc.queryForObject("select * from Users where " + co + " =:value", params, new RowMapper<User>() {
+			public User mapRow(ResultSet rs, int rowNum) throws SQLException{
+				User user = new User();
+				
+				user.setUserName(rs.getString("userName"));
+				user.setFirstName(rs.getString("firstName"));
+				user.setLastName(rs.getString("lastName"));
+				user.setEmail(rs.getString("email"));
+				user.setPhone(rs.getString("phone"));
+				user.setRoleId(rs.getString("roleId"));
+				user.setStreamId(rs.getInt("streamId"));
+				user.setPassword(rs.getString("password"));
+				user.setPasswordConfirmation(rs.getString("passwordConfirmation"));
+				user.setCreatedAt(rs.getTimestamp("createdAt"));
+				user.setUpdatedAt(rs.getTimestamp("updatedAt"));
+				user.setSignInCount(rs.getInt("signInCount"));
+				user.setEnabled(rs.getBoolean("enabled"));
+				user.setActivationToken(rs.getString("activationToken"));
+				user.setActivationTokenUpdatedAt(rs.getTimestamp("activationTokenUpdatedAt"));
+				user.setPasswordResetToken(rs.getString("passwordResetToken"));
+				user.setPasswordTokentUpdatedAt(rs.getTimestamp("passwordTokentUpdatedAt"));
+
+				return user;
+				
+			}
+		});
 	}
 	
 
