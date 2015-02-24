@@ -73,6 +73,14 @@ public class Sql {
 				+ " where username=:username and " + "eventtype=:eventtype",
 				params) == 1;
 	}
+	
+	/*delete a group event from usersEvents table*/
+	public boolean deleteEventWithID(int typeId) {
+		SqlParameterSource params = new MapSqlParameterSource()
+				.addValue("typeId", typeId);
+		String sql ="delete from userevents where typeId=:typeId";
+		return jdbc.update(sql,params) == 1;
+	}
 
 	/*
 	 * Delete, from, groupMembers generic type sql call Delete all events from a

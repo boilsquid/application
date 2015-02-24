@@ -136,9 +136,7 @@ public class UserDao implements DaoInterface<User> {
 
 				});
 	}
-
-
-
+	
 
 	
 	

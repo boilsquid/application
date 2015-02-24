@@ -79,42 +79,48 @@ public class EventController {
 
 	@RequestMapping("/testDao")
 	public String testing(Model model) {
-	
 
 		return "testDao";
 	}
 
-
-
 	@RequestMapping("/events")
-	public String getEvents(Model model) {
+	public String getEvents(Model model, Principal p) {
+		String username = p .getName();
+		User user =service.getUser(username);
+		String role = user.getRoleId();
+		
 		model.addAttribute("type", type);
 		model.addAttribute("personalAllow", personalAllowed);
 		model.addAttribute("meetingAllow", meetingAllowed);
 		model.addAttribute("tutorialAllow", tutorialAllowed);
 		model.addAttribute("maxWeeks", maxWeeks);
-
-
+		model.addAttribute("role", role);
+		model.addAttribute("groupId", groupId);
+		
 		return "events";
 	}
 
-	
-
 	@RequestMapping("/setgroupview")
 	public String createEvents(Model model, Principal p) {
+		String username = p .getName();
+		User user =service.getUser(username);
+		String role = user.getRoleId();
+		
+		/* needs to be changedd to get groupId method */
+		groupId = 8;
 
 		/* allow all type of events to be booked */
 		type = 1;
+		
 		model.addAttribute("type", type);
 		model.addAttribute("personalAllow", personalAllowed);
 		model.addAttribute("meetingAllow", meetingAllowed);
 		model.addAttribute("tutorialAllow", tutorialAllowed);
 		model.addAttribute("maxWeeks", maxWeeks);
+		model.addAttribute("role", role);
+		model.addAttribute("groupId", groupId);
 
-		String username = p.getName();
-		
-		/*needs to be changedd to get groupId method*/
-		groupId=8;
+	
 
 		return "events";
 	}
@@ -123,13 +129,14 @@ public class EventController {
 	public String viewPersonalEvents(Model model) {
 		/* only allow personal events to be booked */
 		type = 0;
+		groupId = 0;
+		
 		model.addAttribute("type", type);
 		model.addAttribute("personalAllow", personalAllowed);
 		model.addAttribute("meetingAllow", meetingAllowed);
 		model.addAttribute("tutorialAllow", tutorialAllowed);
 		model.addAttribute("maxWeeks", maxWeeks);
-
-		groupId=0;
+		model.addAttribute("groupId", groupId);
 
 		return "events";
 	}
@@ -164,7 +171,12 @@ public class EventController {
 
 		/* run the availability test return a number of weels */
 		System.out.println("");
-		allowWeeks = checkPersonAvail(username, ts, mins, groupId, types);//change 0 to a group Id
+		allowWeeks = checkPersonAvail(username, ts, mins, groupId, types);// change
+																			// 0
+																			// to
+																			// a
+																			// group
+																			// Id
 		System.out.println("person available for: " + allowWeeks);
 		System.out.println("");
 
@@ -184,22 +196,49 @@ public class EventController {
 
 		return rval;
 	}
-	
-	
-	@RequestMapping(value="/deleteevent", method=RequestMethod.POST, produces="application/json")
+
+	@RequestMapping(value = "/deleteevent", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public Map<String, Object> deleteEvent(Principal principal, @RequestBody Map<String, Object> data) {
-		
-		
-		
-		int id = (Integer)data.get("sendId");
-		System.out.println("got id: "+id);
-		/* add function to delete event if the user is allowed*/
-		
+	public Map<String, Object> deleteEvent(Principal principal,
+			@RequestBody Map<String, Object> data) {
+
+		/* get the logged in users name */
+		String username = principal.getName();
+
+		int id = (Integer) data.get("sendId");
+		System.out.println("got id: " + id);
+
+		/* get the user event to be deleted */
+		Events userEvent = service.getEvent(id);
+
+		/* get the typeID which will be used to check the groupEvents */
+		int typeId = userEvent.getTypeId();
+		System.out.println("type id is: "+typeId);
+
+		/* get the groupEvent if typeId is greater than 0 
+		 * and delete the group event
+		 */
+		if (typeId != 0) {
+			GroupEvent groupEvent = service.getGroupEvent(typeId);
+
+			/* get the username who created the group event */
+			String userCreatedEvent = groupEvent.getUserName();
+
+			/* if the user created the group event let them delete it */
+			if (username.equals(userCreatedEvent)) {
+				/* delete the group event8 */
+				service.deleteGroupEvent(typeId);
+				/* delete the event from everyones personal events feed*/
+				service.deleteEventWithID(typeId);
+			}
+		}
+
+		/* delete the user event */
+		service.deleteUserEvent(id);
+
 		Map<String, Object> rval = new HashMap<String, Object>();
 		rval.put("success", true);
-	
-		
+
 		return rval;
 	}
 
@@ -213,13 +252,13 @@ public class EventController {
 		model.addAttribute("meetingAllow", meetingAllowed);
 		model.addAttribute("tutorialAllow", tutorialAllowed);
 		model.addAttribute("maxWeeks", maxWeeks);
+		model.addAttribute("groupId", groupId);
 		
-		System.out.println("in group "+groupMembers);
-		/*add the logged in user to the group*/
+		System.out.println("in group " + groupMembers);
+		/* add the logged in user to the group */
 		String username = p.getName();
 		User user = service.getUser(username);
 		groupMembers.add(user);
-		
 
 		System.out.println(params);
 		String start = params.get("start");
@@ -235,21 +274,21 @@ public class EventController {
 			e.printStackTrace();
 		}
 		Timestamp ts = Timestamp.valueOf(reformatted);
-	
-		/* format user input*/
+
+		/* format user input */
 		int weeks = Integer.parseInt(params.get("recuramount"));
-		int mins = Integer.parseInt(params.get("end"));								
+		int mins = Integer.parseInt(params.get("end"));
 		long t = ts.getTime();
 		long m = mins * 60 * 1000;
 		Timestamp end = new Timestamp(t + m);// calcute end time of event
-		
-		/*if its a group event, create a group event*/
-		if(groupId!=0){
-			
+
+		/* if its a group event, create a group event */
+		if (groupId != 0) {
+
 			groupMembers = service.getUsersInGroup(groupId);
-			System.out.println("in group "+groupMembers);
+			System.out.println("in group " + groupMembers);
 			GroupEvent groupEvent = new GroupEvent();
-			
+
 			groupEvent.setGroupId(groupId);
 			groupEvent.setEventType(params.get("type"));
 			groupEvent.setUserName(username);
@@ -257,39 +296,36 @@ public class EventController {
 			groupEvent.setRecurring(weeks);
 			groupEvent.setEnd(end);
 			groupEvent.setTitle(params.get("title"));
-			
-			
-		    
-		    
-		    /* set type to groupEventId this id refers userEvents to groupEvents*/
+
+			/* set type to groupEventId this id refers userEvents to groupEvents */
 			type = service.createWithKey(groupEvent);
-			System.out.println("the fucking type is "+type);
+			System.out.println("the fucking type is " + type);
 		}
-		
 
 		System.out.println(" Date " + ts);
 
-		/*create an event for each user in the group
-		 * can be just member in group, the logged in user
+		/*
+		 * create an event for each user in the group can be just member in
+		 * group, the logged in user
 		 */
-		for(User member: groupMembers){
-			
-		String memberName = member.getUserName();
-		/*set the event details*/
-		Events event = new Events();
-		event.setTitle(params.get("title"));
-		event.setStart(ts);
-		event.setEventType(params.get("type"));
-		event.setUserName(memberName);
-		event.setTypeId(type);
-		event.setRecurring(weeks);	
-		event.setEnd(end);
-		
-		/*create the event*/
-		service.createEvent(event);
-		}	
-		
-		/* empty out the List for next create operation*/
+		for (User member : groupMembers) {
+
+			String memberName = member.getUserName();
+			/* set the event details */
+			Events event = new Events();
+			event.setTitle(params.get("title"));
+			event.setStart(ts);
+			event.setEventType(params.get("type"));
+			event.setUserName(memberName);
+			event.setTypeId(type);
+			event.setRecurring(weeks);
+			event.setEnd(end);
+
+			/* create the event */
+			service.createEvent(event);
+		}
+
+		/* empty out the List for next create operation */
 		groupMembers.clear();
 
 		return "events";
@@ -332,7 +368,7 @@ public class EventController {
 			perIsSet = !perIsSet;
 
 			if (perIsSet) {
-				personalAllowed = true;
+				personalAllowed = perIsSet & meetIsSet;
 			} else {
 				personalAllowed = false;
 			}
@@ -345,6 +381,7 @@ public class EventController {
 		model.addAttribute("meetingAllow", meetingAllowed);
 		model.addAttribute("tutorialAllow", tutorialAllowed);
 		model.addAttribute("maxWeeks", maxWeeks);
+		model.addAttribute("groupId", groupId);
 
 		/* print for testing */
 		System.out.println("mod is: " + modIsSet);
@@ -462,7 +499,7 @@ public class EventController {
 
 				Events event = new Events();
 
-				event.setId(id );
+				event.setId(id);
 				event.setUserName(item.getUserName());
 				event.setStart(new Timestamp(newStart.getTimeInMillis()));
 				event.setEnd(new Timestamp(newEnd.getTimeInMillis()));

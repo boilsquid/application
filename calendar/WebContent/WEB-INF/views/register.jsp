@@ -7,24 +7,81 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>Register</title>
+
+<!-- Bootstrap Core CSS -->
 <link
 	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"
-	rel="stylesheet" type="text/css" />
+	rel="stylesheet">
+
+<!-- MetisMenu CSS -->
 <link
-	href="${pageContext.request.contextPath}/resources/css/bootstrap-theme.min.css"
-	rel="stylesheet" type="text/css" />
+	href="${pageContext.request.contextPath}/resources/css/plugins/metisMenu/metisMenu.min.css"
+	rel="stylesheet">
+
+<!-- Timeline CSS -->
+<link
+	href="${pageContext.request.contextPath}/resources/css/plugins/timeline.css"
+	rel="stylesheet">
+
+<!-- Custom CSS -->
+<link
+	href="${pageContext.request.contextPath}/resources/css/sb-admin-2.css"
+	rel="stylesheet">
+	
+<!-- MetisMenu CSS -->
+    <link href="${pageContext.request.contextPath}/resources/css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+
+
+<!-- Custom Fonts -->
+<link href="${pageContext.request.contextPath}/resources/font-awesome-4.1.0/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+	
 <link
 	href="${pageContext.request.contextPath}/resources/css/validation.css"
 	rel="stylesheet" type="text/css" />
 
-<script language="javascript" type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-<title>Registration</title>
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<link rel='stylesheet'
+	href='${pageContext.request.contextPath}/resources/css/fullcalendar.css' />
+<script
+	src='${pageContext.request.contextPath}/resources/lib/jquery.min.js'></script>
+<script
+	src='${pageContext.request.contextPath}/resources/lib/moment.min.js'></script>
+<script
+	src='${pageContext.request.contextPath}/resources/js/fullcalendar.js'></script>
+
+<!-- Include jQuery Popup Overlay -->
+<script
+	src='${pageContext.request.contextPath}/resources/js/jquery.popupoverlay.js'></script>
+<!-- include validation jquery plugin -->	
+<script
+	src='${pageContext.request.contextPath}/resources/js/jquery.validate.js'></script>
+
 
 </head>
+
+
 <body>
 
+<!--  include the header -->
+	<jsp:include page="header.jsp" />
+	
+	<section style="margin-top: 100px;">
 
 	<div class="container">
 		<div class="row">
@@ -175,6 +232,8 @@
 			</div>
 		</div>
 	</div>
+	
+	</section><!-- end main content -->
 
 
 	<!-- include js files here -->
@@ -183,5 +242,17 @@
 		src="${pageContext.request.contextPath}/resources/js/hideShowStreams.js"></script>
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/js/passMatch.js"></script>
+		
+	<!-- Bootstrap Core JavaScript -->
+	<script
+		src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+
+	<!-- Metis Menu Plugin JavaScript -->
+	<script
+		src="${pageContext.request.contextPath}/resources/js/plugins/metisMenu/metisMenu.min.js"></script>
+
+	<!-- Custom Theme JavaScript -->
+	<script
+		src="${pageContext.request.contextPath}/resources/js/sb-admin-2.js"></script>
 </body>
 </html>

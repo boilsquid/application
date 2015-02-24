@@ -1,0 +1,67 @@
+/*this is for the mobile site and ipad-- extra not in bootstrap--------------------------*/
+@media only screen and (max-device-width: 800px)
+{
+	html #headerText
+	{
+		width:130%;
+		margin-left: 1%;
+	}
+}
+
+header
+{	
+	 background-color: #2F2F35;
+}
+
+#signup
+{
+    margin-top: .75%;
+	margin-bottom: .75%;
+}
+
+#headerText 
+{
+	width: 40%;
+	margin-bottom: 0%;
+}
+
+p
+{
+	font-family:myr;
+	font-size: 150%;
+	color: #86866E;
+	padding-right: 5%;
+}
+
+section h2
+{
+	font-size: 250%;
+	color: #434337;
+	font-family:myr;
+}
+
+#main 
+{
+	padding:2%;
+}
+
+@font-face 
+{
+    font-family: myr;
+    src: url(../fonts/myriad.otf);
+}
+
+#foot1
+{
+	background-color:#2F2F35;
+	color:#82827D;
+	height:100px;
+	margin-top: 5%;
+}
+
+#foot2
+{
+	background-color:#0D0D0C;
+	color:#82827D;
+	height:35px;
+}

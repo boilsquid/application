@@ -12,7 +12,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>SB Admin 2 - Bootstrap Admin Theme</title>
+<title>Events</title>
 
 <!-- Bootstrap Core CSS -->
 <link
@@ -33,10 +33,14 @@
 <link
 	href="${pageContext.request.contextPath}/resources/css/sb-admin-2.css"
 	rel="stylesheet">
+	
+<!-- MetisMenu CSS -->
+    <link href="${pageContext.request.contextPath}/resources/css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+
 
 
 <!-- Custom Fonts -->
-<link href="font-awesome-4.1.0/css/font-awesome.min.css"
+<link href="${pageContext.request.contextPath}/resources/font-awesome-4.1.0/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -58,6 +62,10 @@
 <!-- Include jQuery Popup Overlay -->
 <script
 	src='${pageContext.request.contextPath}/resources/js/jquery.popupoverlay.js'></script>
+<!-- include validation jquery plugin -->	
+<<script
+	src='${pageContext.request.contextPath}/resources/js/jquery.validate.js'></script>
+
 
 
 <script type="text/javascript">
@@ -82,7 +90,7 @@
 		 */
 
 		$('#calendar').fullCalendar({
-			defaultDate : moment('2015-09-25'),/* default date when calendar opens for testing*/
+			defaultDate : moment('2015-01-06'),/* default date when calendar opens for testing*/
 			editable : true,
 			selectable : true,
 			selectHelper : true,
@@ -119,12 +127,16 @@
 				$("#deletePopup").popup('show');
 
 				$('#delete').click(function() {
-					if (confirm('Do you wan\'t to delete this item?')) {
+					
 						deleteEvent(calEvent.id);
 						$("#deletePopup").popup('hide');
-					} else {
-						$("#deletePopup").popup('hide');
-					}
+					
+				});
+				$('#cancel2').click(function() {
+					
+					
+					$("#deletePopup").popup('hide');
+				
 				});
 
 			},
@@ -166,7 +178,12 @@
 		
 		 // Initialize the plugin
 	      $('#deletePopup').popup();
-	      $('#popup').popup();
+	      $('#popup').popup({
+	    	  outline: true, // optional
+	    	  focusdelay: 400, // optional
+	    	  vertical: 'top' //optional
+	    	});
+	      
 
 	
 		$("select").change(function() {
@@ -190,9 +207,8 @@
 
 			});
 		}).change();
-	});//end document ready
 
-	$(document).ready(function() {
+
 		$("select").change(function() {
 			$("select option:selected").each(function() {
 
@@ -208,7 +224,14 @@
 
 			});
 		}).change();
-	});
+		
+		$("#check2").click(function() {
+
+			sendMessage();
+
+		});
+		
+	});//end document ready
 
 	function success(data) {
 		alert("This timeslot is available for " + data.allowWeeks);
@@ -250,6 +273,7 @@
 
 	function success2(data) {
 		alert("Event deleted ");
+		location.reload();
 	}
 
 	function error2(data) {
@@ -273,14 +297,7 @@
 		});
 	}
 
-	$(document).ready(function() {
-		$("#check2").click(function() {
 
-			sendMessage();
-
-		});
-
-	});
 </script>
 
 </head>
@@ -288,22 +305,25 @@
 <!-- delete event button will produce a warning before event is deleletd -->
 
 <div id="deletePopup">
-	<button id="delete" type="button" class="btn btn-lg btn-success">Delete
+	<button id="delete" type="button" class="btn btn-success">Delete
 		Event</button>
+	<button id="cancel2" type="button" class="btn btn-danger">Cancel</button>
 </div>
 
 
 
 <body>
-
-	<div id ="popup">
+<div id="wrapper">
+	<!--  include the header -->
+	<jsp:include page="header.jsp" />
 	
-				<div class="login-panel panel panel-default">
-				
+	<section style="margin-top: 100px;">
+
+	<div id ="popup" class="row">
+				<div id="panel" class="panel panel-primary" style="width:150%;color:#1975FF;background:#D1F0FF;">
 					<div class="panel-heading">
 						<h3 class="panel-title">Calendar Entry</h3>
 					</div>
-					
 					<div class="panel-body">
 						<form id="createevent"
 							action="${pageContext.request.contextPath}/createevent"
@@ -321,7 +341,7 @@
 												<!-- only allow to book if allowed -->
 												<option value="meeting">Meeting</option>
 											</c:if>
-											<c:if test="${tutorialAllow}">
+											<c:if test="${tutorialAllow && role.equals('lecturer')}">
 												<!-- only allow to book if allowed -->
 												<option value="tutorial">Tutorial</option>
 											</c:if>
@@ -356,34 +376,32 @@
 								</div>
 								<div class="form-group">
 									<select id="end" name="end"  class="form-control">
-										<option value="15">15 minutes</option>
 										<option value="30">30 minutes</option>
 										<option value="60">1 Hour</option>
 										<option value="120">2 Hours</option>
 									</select>
 								</div>
 								<div class="form-group">
-									<label>Title</label>
-									<textarea name="title" class="form-control" rows="3"></textarea>
+									<label for="title">Title</label>
+									<textarea name="title" class="form-control" maxlength="20" rows="3" required ></textarea>
 								</div>
 
 								<div class="form-group" id="check">
-									<button type="button" id="check2" value="check"
-										class="btn btn-lg btn-success">Check Avaiibility</button>
+									<button type="button" id="check2" value="check" style="width:100%;"
+										class="btn btn-warning">Check Avaiibility</button>
 								</div>
 
-								<button id="create" type="submit" value="create"
-									class="btn btn-lg btn-success">Create</button>
-								<button id="cancel" type="button" class="btn btn-lg btn-success">Cancel</button>
+								<button id="create" type="submit" value="create" style="width:45%;"
+									class="btn btn-success">Create</button>
+								<button id="cancel" type="button" style="width:45%;" class="btn btn-danger">Cancel</button>
 							</fieldset>
 						</form>
-				
 			</div>
 		</div>
 	</div>
 	<!-- /.col-lg-12 -->
 
-	<div id="wrapper">
+	
 
 
 		<!-- buttons to select deselect events type like lectures meeting in calender feed -->
@@ -415,12 +433,28 @@
 
 					<li><a class=""
 						href="${pageContext.request.contextPath}/setpersonalview"><i
-							class="fa fa-calendar-o fa-fw"></i>Personal Calender</a></li>
+							class="fa fa-calendar-o fa-fw"></i>Personal Calendar 
+							<c:if test="${groupId==0}">
+								<span style="color:#FF5930;"
+								id="per" class="fa fa-check-square-o fa-fw"></span>
+							</c:if>
+							</a></li>
+							
+							
 					<li><a class="" href="meeting.html"><i
-							class="fa fa-comments-o fa-fw"></i>Pick Group</a></li>
+							class="fa fa-book fa-fw"></i>Pick Group</a></li>
 					<li><a class=""
 						href="${pageContext.request.contextPath}/setgroupview"><i
-							class="fa fa-calendar-o fa-fw"></i>Show availability of Group</a></li>
+							class="fa fa-calendar-o fa-fw"></i>Group Calendar 
+							<c:if test="${groupId!=0}">
+								<span style="color:#FF5930;"
+								id="group" class="fa fa-check-square-o fa-fw"></span>
+							</c:if>
+							</a></li>
+							
+					<li><a class=""
+						href="${pageContext.request.contextPath}/editlectures"><i
+							class="fa fa-pencil fa-fw"></i>Edit Lectures</a></li>
 				</ul>
 			</div>
 			<!-- /.sidebar-collapse -->
@@ -440,6 +474,9 @@
 			</div>
 		</div>
 		<!-- /#page-wrapper -->
+		
+		
+	</section><!-- end main section -->
 
 	</div>
 	<!-- /#wrapper -->
@@ -457,10 +494,8 @@
 	<!-- Custom Theme JavaScript -->
 	<script
 		src="${pageContext.request.contextPath}/resources/js/sb-admin-2.js"></script>
-	<script>
-		$(document).ready(function() {
-			$('#dataTables-example').dataTable();
-		});
-	</script>
+	
+	
+	
 </body>
 </html>

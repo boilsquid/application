@@ -15,4 +15,9 @@ public class HomeController {
 	public String showadmin() {
 		return "admin";
 	}
+	
+	@RequestMapping("/index2")
+	public String showpage() {
+		return "index2";
+	}
 }

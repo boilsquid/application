@@ -28,10 +28,13 @@
 	<p>
 		<a href="${pageContext.request.contextPath}/events">events</a>
 	</p>
+	<p>
+		<a href="${pageContext.request.contextPath}/index2">pagetest</a>
+	</p>
 	
 	<!-- log out link set up in spring security which forwards to /register -->
 	<p><a href="<c:url value='/j_spring_security_logout'/>">Log out</a></p>
-
+	
 	<c:forEach var="user" items="${users}">
 		<p>
 			Users.getlist: 

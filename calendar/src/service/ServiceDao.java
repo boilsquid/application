@@ -80,6 +80,11 @@ public class ServiceDao {
 		// TODO Auto-generated method stub
 		return eventsDao.getItem(id);
 	}
+	
+	public GroupEvent getGroupEvent(int id) {
+		// TODO Auto-generated method stub
+		return groupEventDao.getItem(id);
+	}
 
 	/* DAO get lists methods which can be used be the serviceDao object */
 	public List<User> getUsers() {
@@ -148,6 +153,16 @@ public class ServiceDao {
 	public boolean updateEvent(Events event) {
 		return eventsDao.update(event);
 	}
+	
+	/*crud delete operations*/
+	public boolean deleteGroupEvent(int id) {
+		return groupEventDao.delete(id);
+	}
+	
+	
+	public boolean deleteUserEvent(int id) {
+		return eventsDao.delete(id);
+	}
 
 	/* extra sql other than crud operations */
 	public List<Events> getUserEvents(String userName) {
@@ -161,6 +176,11 @@ public class ServiceDao {
 			Object eventtype) {
 
 		return sql.deleteFromWhere(table, username, eventtype);
+	}
+	
+	/*delete a group event from usersEvents table*/
+	public boolean deleteEventWithID(int typeId) {
+		return sql.deleteEventWithID(typeId);
 	}
 
 	public boolean deleteFromGroupMembers(Object table, Object username,

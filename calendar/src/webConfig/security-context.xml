@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
@@ -11,39 +10,63 @@
 			<security:user-service>
 				<security:user authorities="admin" name="administrator"
 					password="password" />
-			</security:user-service>	
+			</security:user-service>
 		</security:authentication-provider>
 		<security:authentication-provider>
-			<security:jdbc-user-service data-source-ref="dataSource" id="jdbc" />
+			<security:jdbc-user-service
+				data-source-ref="dataSource" id="jdbc" />
 			<security:password-encoder ref="passwordEncoder"
 				hash="bcrypt">
 			</security:password-encoder>
 		</security:authentication-provider>
 	</security:authentication-manager>
-	
-	
-	
+
+
+
 	<security:http use-expressions="true">
 		<security:intercept-url pattern="/" access="permitAll" />
-		<security:intercept-url pattern="/admin" access="hasRole('admin')" />
-		<security:intercept-url pattern="/register" access="permitAll" />
-		<security:intercept-url pattern="/getdata" access="permitAll" />
-		<security:intercept-url pattern="/events" access="permitAll" />
-		<security:intercept-url pattern="/doregister" access="permitAll" />
-		<security:intercept-url pattern="/users" access="isAuthenticated()" />
-		<security:intercept-url pattern="/editlectures" access="isAuthenticated()" />
-		<security:intercept-url pattern="/changelectures" access="isAuthenticated()" />
-		<security:intercept-url pattern="/createevent" access="isAuthenticated()" />
-		<security:intercept-url pattern="/deleteevent" access="isAuthenticated()" />
-		<security:intercept-url pattern="/setgroupview" access="isAuthenticated()" />
-		<security:intercept-url pattern="/setpersonalview" access="isAuthenticated()" />
-		<security:intercept-url pattern="/eventselector" access="isAuthenticated()" />
-		<security:intercept-url pattern="/setform" access="isAuthenticated()" />
-		<security:intercept-url pattern="/testDao" access="permitAll" />
-		<security:intercept-url pattern="/edittimetable" access="isAuthenticated()" />
-		<security:intercept-url pattern="/resources/**" access="permitAll" />
-		<security:intercept-url pattern="/login" access="permitAll" />
-		<security:intercept-url pattern="/register" access="permitAll" />
+		<security:intercept-url pattern="/admin"
+			access="hasRole('admin')" />
+		<security:intercept-url pattern="/register"
+			access="permitAll" />
+		<security:intercept-url pattern="/getdata"
+			access="permitAll" />
+		<security:intercept-url pattern="/events"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/doregister"
+			access="permitAll" />
+		<security:intercept-url pattern="/users"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/editlectures"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/changelectures"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/createevent"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/deleteevent"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/setgroupview"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/setpersonalview"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/eventselector"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/setform"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/testDao"
+			access="permitAll" />
+		<security:intercept-url pattern="/edittimetable"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/resources/**"
+			access="permitAll" />
+		<security:intercept-url pattern="/login"
+			access="permitAll" />
+		<security:intercept-url pattern="/header"
+			access="permitAll" />
+		<security:intercept-url pattern="/index2"
+			access="permitAll" />
+		<security:intercept-url pattern="/register"
+			access="permitAll" />
 		<security:intercept-url pattern="/**" access="denyAll" />
 		<security:form-login login-page="/login"
 			authentication-failure-url="/login?error=true" />
@@ -56,4 +79,7 @@
 	<bean id="passwordEncoder"
 		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 	</bean>
+	
+	
+
 </beans>

@@ -163,6 +163,7 @@ public class RegisterController {
 		
 			/* get the lecture from lectureid sec#lected in form*/
 			Lecture lecture = service.getLecture(item);
+			System.out.println("causing problems "+lecture.getModuleId());//print for testing
 			
 			/* get the group id corresponding to lecture(module)
 			 * insert user into group members
@@ -186,7 +187,7 @@ public class RegisterController {
 			event.setEnd(lecture.getEnd());
 			event.setRecurring(lecture.getRecurring());
 			event.setEventType("lecture");// hard coded for now
-			event.setTypeId(lecture.getLectureId());
+			event.setTypeId(0);
 			event.setTitle(lecture.getModuleId());
 			service.createEvent(event);
 			
