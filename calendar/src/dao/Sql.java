@@ -231,6 +231,64 @@ public class Sql {
 		});
 	}
 	
+	/* get a list of groups created by the admin or the user*/
+	public List<Group> getPersonalGroupList(String username) {
+		
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("username", username);
+		
+		String sql = "select * from groups where createdBy ='Administration' OR username =:username;";
+
+		return jdbc.query(sql, params, new RowMapper<Group>() {
+
+			public Group mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Group group = new Group();
+				
+				group.setGroupId(rs.getInt("groupId"));
+				group.setGroupName(rs.getString("groupName"));
+				group.setCreatedBy(rs.getString("createdBy"));
+				group.setUserName(rs.getString("userName"));
+				group.setDateCreated(rs.getTimestamp("dateCreated"));
+		
+				return group;
+			}
+
+		});
+	}
+	
+	/* get a list of events for a group*/
+	public List<Events> getEventsWithGroupId(int groupId) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("groupId", groupId);
+		
+		String sql= "select  * from userevents Where userName IN("
+				+"Select userName from groupmembers where groupId =:groupId) "
+				+"Group  By title, start, end, recurring, eventType, typeId";
+
+		return jdbc.query(sql,params, new RowMapper<Events>() {
+
+			public Events mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Events events = new Events();
+				
+
+				events.setId(rs.getInt("id"));
+				events.setUserName(rs.getString("userName"));
+				events.setStart(rs.getTimestamp("start"));
+				events.setEnd(rs.getTimestamp("end"));
+				events.setRecurring(rs.getInt("recurring"));
+				events.setEventType(rs.getString("eventType"));
+				events.setTypeId(rs.getInt("typeId"));
+				events.setTitle(rs.getString("title"));
+				events.setColor(rs.getString("color"));
+				
+			
+				return events;
+			}
+
+		});
+	}
+	
+	
 	
 	
 }//end class

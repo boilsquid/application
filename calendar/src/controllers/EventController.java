@@ -101,13 +101,23 @@ public class EventController {
 	}
 
 	@RequestMapping("/setgroupview")
-	public String createEvents(Model model, Principal p) {
+	public String createEvents(Model model, Principal p, HttpServletRequest request) {
+		int newGroupId=0;
+		
+		/* get the groupid from the group controller which is stored in session
+		 * check if the variable have been activated in session
+		 */
+		if(request.getSession().getAttribute("newGroupId")!=null){
+			 newGroupId=(int)request.getSession().getAttribute("newGroupId");
+		}
+		System.out.println("newGroupId: "+newGroupId);//testing print
+		
 		String username = p .getName();
 		User user =service.getUser(username);
 		String role = user.getRoleId();
 		
-		/* needs to be changedd to get groupId method */
-		groupId = 8;
+		/* the newgroupId is got from the group controller*/
+		groupId = newGroupId;
 
 		/* allow all type of events to be booked */
 		type = 1;
@@ -442,8 +452,8 @@ public class EventController {
 		/* if group is not equal 0 show the groups view data */
 		if (groupId != 0) {
 
-			/* getting all user events for testing */
-			events = service.getEvents();
+			/* get user events from the selected group */
+			events = service.getEventsWithGroupId(groupId);
 		}
 
 		ArrayList<Events> data = new ArrayList<>();

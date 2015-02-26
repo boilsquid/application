@@ -16,6 +16,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,8 +72,20 @@ public class GroupDao implements DaoInterface<Group>  {
 		
 		/* insert them into groupmembers even if they are are in there*/
 		return jdbc.update("insert IGNORE into Groups (groupName, createdBy, UserName, dateCreated) "
-				+ "values ( :groupid, :createdBy, :UserName, :dateCreated)", params) == 1;
+				+ "values ( :groupName, :createdBy, :UserName, now())", params) == 1;
 	
+	}
+	
+	/* returns the auto generated primary key*/
+	public int createWithKey(Group group) {
+		
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(group);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		 
+		 jdbc.update("insert into Groups (groupName, createdBy, UserName, dateCreated) "
+					+ "values ( :groupName, :createdBy, :UserName, now())", params, keyHolder);
+		 
+		 		return keyHolder.getKey().intValue();
 	}
 	
 

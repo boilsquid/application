@@ -441,7 +441,7 @@
 							</a></li>
 							
 							
-					<li><a class="" href="meeting.html"><i
+					<li><a class="" href="${pageContext.request.contextPath}/groups"><i
 							class="fa fa-book fa-fw"></i>Pick Group</a></li>
 					<li><a class=""
 						href="${pageContext.request.contextPath}/setgroupview"><i

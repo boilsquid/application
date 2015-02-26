@@ -48,7 +48,7 @@ public class ServiceDao {
 	public void setUserDao(UserDao userDao, StreamDao streamDao,
 			LectureDao lectureDao, AuthorityDao authorityDao,
 			EventsDao eventsDao, Sql sql, GroupMemberDao groupMemberDao,
-			GroupEventDao groupEventDao) {
+			GroupEventDao groupEventDao, registrationMailer mailer, GroupDao groupDao ) {
 
 		this.userDao = userDao;
 		this.streamDao = streamDao;
@@ -66,7 +66,15 @@ public class ServiceDao {
 	public User getUser(String id) {
 		return userDao.getItem(id);
 	}
-
+	
+	public User findUser(String column, String value){
+		return userDao.findBy(column, value);
+	}
+	
+	public boolean updateUser(User user){
+		return userDao.update(user);
+	}
+	
 	public Stream getStream(int streamId) {
 		// TODO Auto-generated method stub
 		return streamDao.getItem(streamId);
@@ -125,6 +133,10 @@ public class ServiceDao {
 		return eventsDao.create(event);
 
 	}
+	
+	public boolean create(Group group) {
+		return groupDao.create(group);
+	}
 
 	public boolean createGroupMember(GroupMember member) {
 
@@ -142,10 +154,20 @@ public class ServiceDao {
 	public int createWithKey(GroupEvent event) {
 		return groupEventDao.createWithKey(event);
 	}
-
+	
+	/* returns the auto generated primary key*/
+	public int createGroupWithKey(Group group) {
+		return groupDao.createWithKey(group);
+	}
+	
+	/* Registration Mail and Password Reset Mail */
 	public void sendRegistrationMail(String to, String from, String subject,
 			String msg) {
 		mailer.sendMail(from, to, subject, msg);
+	}
+	
+	public void passwordResetMail(String to, String from, String subject, String msg){
+		mailer.passwordReset(to, from, subject, msg);
 	}
 
 	/* update operations */
@@ -204,6 +226,14 @@ public class ServiceDao {
 		return sql.getUsersInGroup(groupId);
 	}
 	
+	/* get a list of groups created by the admin or the user*/
+	public List<Group> getPersonalGroupList(String username) {
+		return sql.getPersonalGroupList(username);
+	}
 	
+	/* get a list of events for a group*/
+	public List<Events> getEventsWithGroupId(int groupId) {
+		return sql.getEventsWithGroupId(groupId);
+	}
 
 }

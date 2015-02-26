@@ -12,7 +12,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Events</title>
+<title>Reset Password</title>
 
 <!-- Bootstrap Core CSS -->
 <link
@@ -86,35 +86,20 @@
 			<div class="col-md-4 col-md-offset-4">
 				<div class="login-panel panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">Log In</h3>
+						<h3 class="panel-title">Password</h3>
 					</div>
 					<div class="panel-body">
-						<c:if test="${param.error != null}">
-							<p class="login-error">Login has failed check if Username and
-								Password is Correct.</p>
-						</c:if>
 						<form name='f'
-							action='${pageContext.request.contextPath}/j_spring_security_check'
+							action='${pageContext.request.contextPath}/reset'
 							method='POST' role="form">
 							<fieldset>
 								<div class="form-group">
-									<input class="form-control" type='text' name='j_username'
-										value='' placeholder="Username" autofocus>
-								</div>
-								<div class="form-group">
-									<input class="form-control" type='password' name='j_password'
-										placeholder="Password" />
-								</div>
-								<div class="form-group">
-									<input type='checkbox' value="remember me"
-										name='_spring_security_remember_me' checked="checked" /> Remember me
+									<input class="form-control" type='password' name='password'
+										value='' placeholder="password" autofocus>
 								</div>
 								<div class="form-group">
 									<input class="btn btn-lg btn-success btn-block" name="submit"
-										type="submit" value="Login" />
-								</div>
-								<div class="form-group">
-									<a href="${pageContext.request.contextPath}/reset" class="btn btn-lg btn-success btn-block">Forgot Password</a>
+										type="submit" value="Reset" />
 								</div>
 							</fieldset>
 						</form>

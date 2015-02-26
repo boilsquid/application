@@ -29,7 +29,7 @@
 		<a href="${pageContext.request.contextPath}/events">events</a>
 	</p>
 	<p>
-		<a href="${pageContext.request.contextPath}/index2">pagetest</a>
+		<a href="${pageContext.request.contextPath}/groups">groups</a>
 	</p>
 	
 	<!-- log out link set up in spring security which forwards to /register -->
@@ -49,10 +49,10 @@
 		</p>
 	</c:forEach>
 	
-	<c:forEach var="lecture" items="${leactures}">
+	<c:forEach var="group" items="${groups}">
 		<p>
-			lecture.getlist: 
-			<c:out value="${lecture}"></c:out>
+			group.getlist: 
+			<c:out value="${group}"></c:out>
 		</p>
 	</c:forEach>
 		
