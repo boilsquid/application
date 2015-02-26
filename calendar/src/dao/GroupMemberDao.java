@@ -73,10 +73,10 @@ public class GroupMemberDao implements DaoInterface<GroupMember>  {
 	
 
 	
-	public boolean delete(Object groupMembersId) {
-		MapSqlParameterSource params = new MapSqlParameterSource("groupMembersId", groupMembersId);
+	public boolean delete(Object groupId) {
+		MapSqlParameterSource params = new MapSqlParameterSource("groupId", groupId);
 		
-		return jdbc.update("delete from GroupMembers where groupMembersId=:groupMembersId", params) == 1;
+		return jdbc.update("delete from GroupMembers where groupId=:groupId", params) == 1;
 	}
 
 	public GroupMember getItem(Object groupMembersId) {

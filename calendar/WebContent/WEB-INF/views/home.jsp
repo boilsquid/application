@@ -18,6 +18,9 @@
 	<p>
 		<a href="${pageContext.request.contextPath}/testDao">testDao</a>
 	</p>
+	<p>
+		<a href="${pageContext.request.contextPath}/admin/users">Admin</a>
+	</p>
 	
 	<!-- log out link set up in spring security which forwards to /register -->
 	<p><a href="<c:url value='/j_spring_security_logout'/>">Log out</a></p>

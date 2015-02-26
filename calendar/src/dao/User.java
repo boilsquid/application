@@ -24,6 +24,7 @@ public class User {
 
 	private String userName;
 	//@Size(min=5, max=100, message="Name must be between 5 and 100 characters.")
+	private int id;
 	private String firstName;
 	//@Size(min=5, max=100, message="Name must be between 5 and 100 characters.")
 	private String lastName;
@@ -44,7 +45,7 @@ public class User {
 	private Timestamp passwordTokentUpdatedAt;
 	private boolean enabled;
 	
-	public User(String userName, String firstName, String lastName,
+	public User(String userName, int id, String firstName, String lastName,
 			String email, String phone, String roleId, int streamId,
 			String password, String passwordConfirmation, Timestamp createdAt,
 			Timestamp updatedAt, int signInCount, boolean enabled,
@@ -52,6 +53,7 @@ public class User {
 			String passwordResetToken, Timestamp passwordTokentUpdatedAt) {
 		super();
 		this.userName = userName;
+		this.id= id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -68,6 +70,16 @@ public class User {
 		this.activationTokenUpdatedAt = activationTokenUpdatedAt;
 		this.passwordResetToken = passwordResetToken;
 		this.passwordTokentUpdatedAt = passwordTokentUpdatedAt;
+	}
+
+	
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 
@@ -243,18 +255,21 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [userName=" + userName + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", email=" + email + ", phone="
-				+ phone + ", roleId=" + roleId + ", streamId=" + streamId
-				+ ", password=" + password + ", passwordConfirmation="
-				+ passwordConfirmation + ", createdAt=" + createdAt
-				+ ", updatedAt=" + updatedAt + ", signInCount=" + signInCount
-				+ ", enabled=" + enabled + ", activationToken="
+		return "User [userName=" + userName + ", id=" + id + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", phone=" + phone + ", roleId=" + roleId + ", streamId="
+				+ streamId + ", password=" + password
+				+ ", passwordConfirmation=" + passwordConfirmation
+				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
+				+ ", signInCount=" + signInCount + ", activationToken="
 				+ activationToken + ", activationTokenUpdatedAt="
 				+ activationTokenUpdatedAt + ", passwordResetToken="
 				+ passwordResetToken + ", passwordTokentUpdatedAt="
-				+ passwordTokentUpdatedAt + "]";
+				+ passwordTokentUpdatedAt + ", enabled=" + enabled + "]";
 	}
+
+
+	
 
 
 

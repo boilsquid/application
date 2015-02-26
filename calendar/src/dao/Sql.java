@@ -288,6 +288,63 @@ public class Sql {
 		});
 	}
 	
+	/* get a list of groups created by the user*/
+	public List<Group> getGroupsOfUser(String username) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("username", username);
+		String sql = "select * from groups where username =:username;";
+
+		return jdbc.query(sql,params, new RowMapper<Group>() {
+
+			public Group mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Group group = new Group();
+				
+				group.setGroupId(rs.getInt("groupId"));
+				group.setGroupName(rs.getString("groupName"));
+				group.setCreatedBy(rs.getString("createdBy"));
+				group.setUserName(rs.getString("userName"));
+				group.setDateCreated(rs.getTimestamp("dateCreated"));
+		
+				return group;
+			}
+
+		});
+	}
+	
+	/* get a list of users ordered by roleid where logged in user is not in*/
+	public List<User> getUsersOrdered(String username) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("username", username);
+		String sql ="select * from users where username !=:username order by roleId";
+
+		return jdbc.query(sql, params, new RowMapper<User>() {
+
+			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+				User user = new User();
+			
+				user.setUserName(rs.getString("userName"));
+				user.setFirstName(rs.getString("firstName"));
+				user.setLastName(rs.getString("lastName"));
+				user.setEmail(rs.getString("email"));
+				user.setPhone(rs.getString("phone"));
+				user.setRoleId(rs.getString("roleId"));
+				user.setStreamId(rs.getInt("streamId"));
+				user.setPassword(rs.getString("password"));
+				user.setPasswordConfirmation(rs.getString("passwordConfirmation"));
+				user.setCreatedAt(rs.getTimestamp("createdAt"));
+				user.setUpdatedAt(rs.getTimestamp("updatedAt"));
+				user.setSignInCount(rs.getInt("signInCount"));
+				user.setEnabled(rs.getBoolean("enabled"));
+				user.setActivationToken(rs.getString("activationToken"));
+				user.setActivationTokenUpdatedAt(rs.getTimestamp("activationTokenUpdatedAt"));
+				user.setPasswordResetToken(rs.getString("passwordResetToken"));
+				user.setPasswordTokentUpdatedAt(rs.getTimestamp("passwordTokentUpdatedAt"));
+				return user;
+			}
+
+		});
+	}
+	
 	
 	
 	

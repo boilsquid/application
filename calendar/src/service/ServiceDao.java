@@ -185,6 +185,14 @@ public class ServiceDao {
 	public boolean deleteUserEvent(int id) {
 		return eventsDao.delete(id);
 	}
+	
+	public boolean deleteGroup(Object groupId) {
+		return groupDao.delete(groupId);
+	}
+	
+	public boolean deleteGroupMembers(Object groupId) {
+		return groupMemberDao.delete(groupId);
+	}
 
 	/* extra sql other than crud operations */
 	public List<Events> getUserEvents(String userName) {
@@ -234,6 +242,16 @@ public class ServiceDao {
 	/* get a list of events for a group*/
 	public List<Events> getEventsWithGroupId(int groupId) {
 		return sql.getEventsWithGroupId(groupId);
+	}
+	
+	/* get a list of groups created by the user*/
+	public List<Group> getGroupsOfUser(String username) {
+		return sql.getGroupsOfUser(username);
+	}
+	
+	/* get a list of users ordered by roleid where logged in user is not in*/
+	public List<User> getUsersOrdered(String username) {
+		return sql.getUsersOrdered(username);
 	}
 
 }

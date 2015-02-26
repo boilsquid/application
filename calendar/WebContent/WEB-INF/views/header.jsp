@@ -9,7 +9,7 @@
 	<sec:authentication var="principal" property="principal" />
 	
 	<nav class="navbar navbar-default navbar-fixed-top" role="navigation"
-		style="background-color: #AAAAFF;">
+		style="background-color: #E9E9E9;">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
 				data-target=".navbar-collapse">
@@ -37,7 +37,7 @@
 							</a></li>
 					<li><a href="#"><i class="fa fa-user fa-fw"></i> User
 							Profile</a></li>
-					<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+					<li><a href="${pageContext.request.contextPath}/admin/dashboard"><i class="fa fa-gear fa-fw"></i> Admin</a>
 					</li>
 					<li class="divider"></li>
 					<li><a href="<c:url value='/j_spring_security_logout'/>">

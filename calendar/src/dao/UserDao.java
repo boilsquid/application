@@ -68,7 +68,7 @@ public class UserDao implements DaoInterface<User> {
 	
 	public boolean update(User user) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
-		return jdbc.update("update users set firstName=:firstName, lastName=:lastName, userName=:userName, email=:email, phone=:phone, roleId=:roleId, password=:password, "
+		return jdbc.update("update users set id=:id,firstName=:firstName, lastName=:lastName, userName=:userName, email=:email, phone=:phone, roleId=:roleId, password=:password, "
 				+ "passwordConfirmation=:passwordConfirmation,activationToken:=activationToken,activationTokenUpdatedAt:=activationTokenUpdatedAt,"
 				+ "passwordResetToken:=passwordResetToken,passwordTokentUpdatedAt:=passwordTokentUpdatedAt, enabled=:enabled "
 				+ "where userName=:userName", params) == 1;
