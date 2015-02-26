@@ -54,14 +54,16 @@ public class LoginController {
 		
 		if(user != null){
 			System.out.println(userEmail);
+			System.out.println(" token is "+token);
 			user.setPasswordResetToken(token);
+			user.setLastName("newlastname2");
 			String url = "http://localhost:8080/calendar/passwordreset?username="+ user.getUserName() +"&&token=" + token;
 			service.updateUser(user);
-			System.out.println(service.updateUser(user));
+			System.out.println("the user after update: "+user);
 			service.passwordResetMail(userEmail, "springuccproject@gmail.com", "Password Reset", "Follow this link to reset password <a href="+url+">Click Here</a>");
 		}
 		
-		System.out.println(user);
+		
 		return "login";
 	}
 	

@@ -37,6 +37,10 @@
 							</a></li>
 					<li><a href="#"><i class="fa fa-user fa-fw"></i> User
 							Profile</a></li>
+					<li><a href="${pageContext.request.contextPath}/groups"><i class="fa fa-users fa-fw"></i> Groups
+							</a></li>
+					<li><a href="${pageContext.request.contextPath}/events"><i class="fa fa-calendar-o fa-fw"></i> Calendar
+							</a></li>
 					<li><a href="${pageContext.request.contextPath}/admin/dashboard"><i class="fa fa-gear fa-fw"></i> Admin</a>
 					</li>
 					<li class="divider"></li>

@@ -12,7 +12,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Edit lectures</title>
+<title>Groups</title>
 
 <!-- Bootstrap Core CSS -->
 <link
