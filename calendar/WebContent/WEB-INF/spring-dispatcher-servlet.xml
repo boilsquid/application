@@ -13,6 +13,10 @@
 	<context:component-scan base-package="controllers">
 	</context:component-scan>
 	<mvc:annotation-driven></mvc:annotation-driven>
+	
+	<context:component-scan base-package="admin">
+	</context:component-scan>
+	<mvc:annotation-driven></mvc:annotation-driven>
    
 
 	<bean id="jspViewResolver"

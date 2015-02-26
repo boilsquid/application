@@ -25,7 +25,15 @@
 
 	<security:http use-expressions="true">
 		<security:intercept-url pattern="/" access="permitAll" />
-		<security:intercept-url pattern="/admin"
+		<security:intercept-url pattern="/admin/users"
+			access="hasRole('admin')" />
+		<security:intercept-url pattern="/admin/users/new"
+			access="hasRole('admin')" />
+		<security:intercept-url pattern="/admin/users/edit"
+			access="hasRole('admin')" />
+		<security:intercept-url pattern="/admin/users/create"
+			access="hasRole('admin')" />
+		<security:intercept-url pattern="/admin/users/delete"
 			access="hasRole('admin')" />
 		<security:intercept-url pattern="/register"
 			access="permitAll" />
