@@ -132,23 +132,46 @@ public class Sql {
 		params.addValue("date", startTime);
 		params.addValue("week", week);
 		params.addValue("username", username);
-		params.addValue("min", min);
+		params.addValue("min", min -1);// minus one min so events starting and ending at same time still remain available
 		params.addValue("groupId", groupId);
 		
-		/* run this for personal events for one user */
+		/* run this for personal events for one user 
 		String sql1 = "Select * from userevents where start >=( SELECT TIMESTAMPADD(WEEK,:week,:date)) "
 				+ "AND end<=(SELECT timestampadd(MINUTE,:min,( SELECT TIMESTAMPADD(WEEK,:week,:date))))"
+				+ " and username=:username";*/
+		
+		/* run this for personal events for one user */
+		String sql1 = "Select * from userevents where start BETWEEN( SELECT TIMESTAMPADD(WEEK,:week,:date)) "
+				+ "AND (SELECT timestampadd(MINUTE,:min,( SELECT TIMESTAMPADD(WEEK,:week,:date)))) "
+				+ " OR end BETWEEN (SELECT timestampadd(MINUTE,1,( SELECT TIMESTAMPADD(WEEK,:week,:date)))) "// add one min so events starting and ending at same time still remain available
+				+ "AND (SELECT timestampadd(MINUTE,:min,( SELECT TIMESTAMPADD(WEEK,:week,:date)))) "
 				+ " and username=:username";
 
-		/* run this sql to find free times for tutorials group */
+		/* run this sql to find free times for tutorials group 
 		String sql2 = "Select * from userevents where start >=( SELECT TIMESTAMPADD(WEEK,:week,:date)) "
 				+ "and end<=(SELECT timestampadd(MINUTE,:min,( SELECT TIMESTAMPADD(WEEK,:week,:date))))"
 				+ " and (eventType='lecture' OR eventType='tutorial')"
+		+ " and username IN(SELECT username from groupMembers where groupId=:groupId)";*/
+		
+		/* run this sql to find free times for tutorials group */
+		String sql2 = "Select * from userevents where start BETWEEN(( SELECT TIMESTAMPADD(WEEK,:week,:date)) "
+				+ "AND (SELECT timestampadd(MINUTE,:min,( SELECT TIMESTAMPADD(WEEK,:week,:date)))) "
+				+ " OR end BETWEEN (SELECT timestampadd(MINUTE,1,( SELECT TIMESTAMPADD(WEEK,:week,:date)))) "// add one min so events starting and ending at same time still remain available
+				+ "AND (SELECT timestampadd(MINUTE,:min,( SELECT TIMESTAMPADD(WEEK,:week,:date))))) "
+				+ " and (eventType='lecture' OR eventType='tutorial')"
 		+ " and username IN(SELECT username from groupMembers where groupId=:groupId)";
 		
-		/* run this for free time for meeting events for a group */
+		/* run this for free time for meeting events for a group 
 		String sql3 = "Select * from userevents where start >=( SELECT TIMESTAMPADD(WEEK,:week,:date)) "
 				+ "and end<=(SELECT timestampadd(MINUTE,:min,( SELECT TIMESTAMPADD(WEEK,:week,:date))))"
+				+ " and username IN(SELECT username from groupMembers where groupId=:groupId)";*/
+		
+		/* run this for free time for meeting events for a group */
+		String sql3 = "Select * from userevents where start BETWEEN(( SELECT TIMESTAMPADD(WEEK,:week,:date)) "
+				+ "AND (SELECT timestampadd(MINUTE,:min,( SELECT TIMESTAMPADD(WEEK,:week,:date)))) "
+				+ " OR end BETWEEN (SELECT timestampadd(MINUTE,1,( SELECT TIMESTAMPADD(WEEK,:week,:date)))) "// add one min so events starting and ending at same time still remain available
+				+ "AND (SELECT timestampadd(MINUTE,:min,( SELECT TIMESTAMPADD(WEEK,:week,:date))))) "
+				+ " and (eventType='lecture' OR eventType='tutorial' or eventType='meeting')"
 				+ " and username IN(SELECT username from groupMembers where groupId=:groupId)";
 
 		String sql = sql1;
