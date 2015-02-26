@@ -25,6 +25,8 @@
 
 	<security:http use-expressions="true">
 		<security:intercept-url pattern="/" access="permitAll" />
+		<security:intercept-url pattern="/admin/dashboard"
+			access="hasRole('admin')" />
 		<security:intercept-url pattern="/admin/users"
 			access="hasRole('admin')" />
 		<security:intercept-url pattern="/admin/users/new"

@@ -37,7 +37,7 @@
 							</a></li>
 					<li><a href="#"><i class="fa fa-user fa-fw"></i> User
 							Profile</a></li>
-					<li><a href="${pageContext.request.contextPath}/admin/users"><i class="fa fa-gear fa-fw"></i> Admin</a>
+					<li><a href="${pageContext.request.contextPath}/admin/dashboard"><i class="fa fa-gear fa-fw"></i> Admin</a>
 					</li>
 					<li class="divider"></li>
 					<li><a href="<c:url value='/j_spring_security_logout'/>">

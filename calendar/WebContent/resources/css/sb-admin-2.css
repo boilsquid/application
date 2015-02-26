@@ -18,6 +18,14 @@ body {
     background-color: #fff;
 }
 
+#main-content{
+	padding-top: 52px;
+}
+
+.user-graph-panel{
+	max-width: 1000px;
+}
+
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;
