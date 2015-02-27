@@ -1,6 +1,8 @@
 package controllers;
 
+import java.math.BigInteger;
 import java.security.Principal;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +43,8 @@ public class RegisterController {
 	private UserDao userDao;
 	private ServiceDao service;
 	private Validation validation;
+	private SecureRandom random = new SecureRandom();
+	private String token = secureToken();
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -50,7 +54,11 @@ public class RegisterController {
 		this.service = service;
 		this.validation = validation;
 	}
-
+	
+	private String secureToken(){
+		return new BigInteger(130, random).toString(32);
+	}
+	
 	@RequestMapping("/users")
 	public String showUsers(Model model) {
 
@@ -84,23 +92,20 @@ public class RegisterController {
 					validation.getErrorMessageCollegeEmail());
 		}
 
-		if (result.hasErrors()) {
+		if(result.hasErrors()){
 			/*
 			 * return user to register page to fix errors
 			 */
 			return "register";
-		} else {
-				
-			
-		
-
+		}else {
 			try {
-
 				/* encode users password */
 				user.setPassword(passwordEncoder.encode(user.getPassword()));
-
 				/* enable user for testing purposes */
-				user.setEnabled(true);
+				//user.setEnabled(true);
+				
+				user.setActivationToken(token);
+				String url = "http://localhost:8080/calendar/useractivation?username="+ user.getUserName() +"&&token=" + token;
 				
 				service.createUser(user);
 				
@@ -108,19 +113,40 @@ public class RegisterController {
 				authority.setAuthority(user.getRoleId());
 				authority.setUserName(user.getUserName());
 				service.createAuthority(authority);
-
 				
-				return "login";
+				service.sendRegistrationMail(user.getEmail(), "Administration", "Activation", "Please follow this link to activate your email" + url);
+				
+				return "redirect:login";
 			} catch (DuplicateKeyException e) {
-
 				result.rejectValue("email", "DuplicateKey.user.email",
 						"This email or username already exists!");
 				return "register";
 			}
-
 		}
-
 	}
+	
+	@RequestMapping(value = "/useractivation", method = RequestMethod.GET)
+	public String activateUser(@RequestParam(value = "username", required = true) String userName, @RequestParam(value = "token",required = true) String token){
+		// Find the user from the url param username
+		User user = service.findUser("username", userName);
+		// If the user exsits
+		if(user != null){
+			// Set a string usertoken to the users database password reset token
+			String usertoken = user.getActivationToken();
+			// If they are equal return the password reset form
+			if(usertoken.equals(token)){
+				user.setEnabled(true);
+				service.updateUser(user);
+				return "redirect:login?success=Your account has been activated";
+			// Else return the reset page;
+			}else{
+				return "redirect:login?danger=Invalid activation token.";
+			}
+		}else{
+			return "login";
+		}
+	}
+	
 	
 	@RequestMapping("/editlectures")
 	public String editLectures(Model model, Principal principal) {

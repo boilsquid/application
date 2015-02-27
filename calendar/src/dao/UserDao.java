@@ -10,6 +10,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -33,9 +34,6 @@ public class UserDao implements DaoInterface<User> {
 		this.jdbc = new NamedParameterJdbcTemplate(jdbc);
 	}
 	
-
-
-
 	public List<User> getList() {
 
 		return jdbc.query("select * from users", new RowMapper<User>() {
@@ -81,13 +79,8 @@ public class UserDao implements DaoInterface<User> {
 		return jdbc.update("insert into Users (firstName, lastName,userName, email, phone, roleId,streamId,password, passwordConfirmation,"
 				+ "createdAt, updatedAt, signInCount,activationToken,activationTokenUpdatedAt,passwordResetToken,passwordTokentUpdatedAt, enabled) "
 				+ "values( :firstName, :lastName, :userName, :email, :phone, :roleId,:streamId,:password, :passwordConfirmation,"
-				+ "now(), now(), :signInCount,'temp',now(),'temp',now(), :enabled) ", params) == 1;
+				+ "now(), now(), :signInCount,:activationToken,now(),'temp',now(), :enabled) ", params) == 1;
 	}
-	
-
-	
-	
-	
 	
 	public boolean delete(Object userName) {
 		MapSqlParameterSource params = new MapSqlParameterSource("userName", userName);
@@ -138,33 +131,33 @@ public class UserDao implements DaoInterface<User> {
 		params.addValue("value", value);
 		
 		String co = (String) column;
-
-		return jdbc.queryForObject("select * from Users where " + co + " =:value", params, new RowMapper<User>() {
-			public User mapRow(ResultSet rs, int rowNum) throws SQLException{
-				User user = new User();
-				
-				user.setUserName(rs.getString("userName"));
-				user.setFirstName(rs.getString("firstName"));
-				user.setLastName(rs.getString("lastName"));
-				user.setEmail(rs.getString("email"));
-				user.setPhone(rs.getString("phone"));
-				user.setRoleId(rs.getString("roleId"));
-				user.setStreamId(rs.getInt("streamId"));
-				user.setPassword(rs.getString("password"));
-				user.setPasswordConfirmation(rs.getString("passwordConfirmation"));
-				user.setCreatedAt(rs.getTimestamp("createdAt"));
-				user.setUpdatedAt(rs.getTimestamp("updatedAt"));
-				user.setSignInCount(rs.getInt("signInCount"));
-				user.setEnabled(rs.getBoolean("enabled"));
-				user.setActivationToken(rs.getString("activationToken"));
-				user.setActivationTokenUpdatedAt(rs.getTimestamp("activationTokenUpdatedAt"));
-				user.setPasswordResetToken(rs.getString("passwordResetToken"));
-				user.setPasswordTokentUpdatedAt(rs.getTimestamp("passwordTokentUpdatedAt"));
-
-				return user;
-				
-			}
-		});
+		try{
+			return jdbc.queryForObject("select * from Users where " + co + " =:value", params, new RowMapper<User>() {
+				public User mapRow(ResultSet rs, int rowNum) throws SQLException{
+					User user = new User();				
+					user.setUserName(rs.getString("userName"));
+					user.setFirstName(rs.getString("firstName"));
+					user.setLastName(rs.getString("lastName"));
+					user.setEmail(rs.getString("email"));
+					user.setPhone(rs.getString("phone"));
+					user.setRoleId(rs.getString("roleId"));
+					user.setStreamId(rs.getInt("streamId"));
+					user.setPassword(rs.getString("password"));
+					user.setPasswordConfirmation(rs.getString("passwordConfirmation"));
+					user.setCreatedAt(rs.getTimestamp("createdAt"));
+					user.setUpdatedAt(rs.getTimestamp("updatedAt"));
+					user.setSignInCount(rs.getInt("signInCount"));
+					user.setEnabled(rs.getBoolean("enabled"));
+					user.setActivationToken(rs.getString("activationToken"));
+					user.setActivationTokenUpdatedAt(rs.getTimestamp("activationTokenUpdatedAt"));
+					user.setPasswordResetToken(rs.getString("passwordResetToken"));
+					user.setPasswordTokentUpdatedAt(rs.getTimestamp("passwordTokentUpdatedAt"));
+					return user;
+				}
+			});
+		}catch(IncorrectResultSizeDataAccessException e){
+			return null;
+		}
 	}
 	
 

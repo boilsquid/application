@@ -86,16 +86,17 @@
 			<div class="col-md-4 col-md-offset-4">
 				<div class="login-panel panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">Password</h3>
+						<h3 class="panel-title">New Password</h3>
 					</div>
 					<div class="panel-body">
 						<form name='f'
-							action='${pageContext.request.contextPath}/reset'
+							action='${pageContext.request.contextPath}/passwordreset'
 							method='POST' role="form">
 							<fieldset>
 								<div class="form-group">
 									<input class="form-control" type='password' name='password'
 										value='' placeholder="password" autofocus>
+									<input type="hidden" name="username" value='<%=request.getParameter("username")%>'>
 								</div>
 								<div class="form-group">
 									<input class="btn btn-lg btn-success btn-block" name="submit"

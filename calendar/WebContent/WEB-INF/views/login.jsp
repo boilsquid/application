@@ -75,6 +75,20 @@
 	
 	<section style="margin-top: 100px;">
 	<div class="container">
+		<c:if test="${param.success != null}">
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					<div class="alert alert-success" role="alert">${param.success}</div>
+				</div>
+			</div>
+		</c:if>
+		<c:if test="${param.danger != null}">
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					<div class="alert alert-danger" role="alert">${param.danger}</div>
+				</div>
+			</div>
+		</c:if>
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
 				<img class="ucc_logo"

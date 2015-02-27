@@ -163,7 +163,7 @@ public class ServiceDao {
 	/* Registration Mail and Password Reset Mail */
 	public void sendRegistrationMail(String to, String from, String subject,
 			String msg) {
-		mailer.sendMail(from, to, subject, msg);
+		mailer.sendMail(to, from, subject, msg);
 	}
 	
 	public void passwordResetMail(String to, String from, String subject, String msg){
