@@ -101,12 +101,18 @@ public class RegisterController {
 			try {
 				/* encode users password */
 				user.setPassword(passwordEncoder.encode(user.getPassword()));
+				user.setPasswordConfirmation(passwordEncoder.encode(user.getPassword()));
+				
 				/* enable user for testing purposes */
 				//user.setEnabled(true);
 				
 				user.setActivationToken(token);
 				String url = "http://localhost:8080/calendar/useractivation?username="+ user.getUserName() +"&&token=" + token;
 				
+				/*if the user is a lecturer give him access to all lectures*/
+				if(user.getRoleId().equals("lecturer")){
+					user.setStreamId(1);
+				}
 				service.createUser(user);
 				
 				Authority authority = new Authority();
@@ -114,9 +120,9 @@ public class RegisterController {
 				authority.setUserName(user.getUserName());
 				service.createAuthority(authority);
 				
-				service.sendRegistrationMail(user.getEmail(), "Administration", "Activation", "Please follow this link to activate your email" + url);
+				service.sendRegistrationMail(user.getEmail(), "Administration", "Activation", "Please follow this link to activate your email " + url);
 				
-				return "redirect:login";
+				return "redirect:login?success=Go to your email to activate the account";
 			} catch (DuplicateKeyException e) {
 				result.rejectValue("email", "DuplicateKey.user.email",
 						"This email or username already exists!");

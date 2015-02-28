@@ -75,6 +75,10 @@
 			access="isAuthenticated()" />
 		<security:intercept-url pattern="/groups"
 			access="isAuthenticated()" />
+		<security:intercept-url pattern="/notes"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/deletenotes"
+			access="isAuthenticated()" />
 		<security:intercept-url pattern="/resources/**"
 			access="permitAll" />
 		<security:intercept-url pattern="/login"

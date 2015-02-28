@@ -12,7 +12,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Edit lectures</title>
+<title>Events</title>
 
 <!--  include the css files -->
 <jsp:include page="css.jsp" />
@@ -25,7 +25,8 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
-
+<link rel='stylesheet'
+	href='${pageContext.request.contextPath}/resources/css/fullcalendar.css' />
 <script
 	src='${pageContext.request.contextPath}/resources/lib/jquery.min.js'></script>
 <script
@@ -36,10 +37,9 @@
 <!-- Include jQuery Popup Overlay -->
 <script
 	src='${pageContext.request.contextPath}/resources/js/jquery.popupoverlay.js'></script>
-<!-- include validation jquery plugin -->	
+<!-- include validation jquery plugin -->
 <script
 	src='${pageContext.request.contextPath}/resources/js/jquery.validate.js'></script>
-	
 <script type="text/javascript">
 	$(document)
 			.ready(
@@ -56,57 +56,56 @@
 
 					});//end doc ready
 </script>
-
 </head>
 <body>
-	
+
 	<!--  include the header -->
 	<jsp:include page="header.jsp" />
-	
-	<section style="margin-top: 100px;">
-	
-	
-	<div class="panel panel-primary" style="width: 50%; margin-left: 20%;">
-    <div class="panel-heading">
-        <h3 class="panel-title">Pick Lectures</h3>
-    </div>
-	<form  method="post" role="form" 
-					action="${pageContext.request.contextPath}/changelectures"
-					commandName="event">
-	<c:forEach var="lecture" items="${lectures}">
-		
-			<!-- show a lecturer every lecture in department -->
-			<c:if test="${user.getRoleId().equals('lecturer')}">
-				<div class="checkbox" style="margin-left: 20%;"> 
-					<label><input type="checkbox" name="lectureId"
-						value="${lecture.getLectureId()}">
-						${lecture.getModuleId()}  ${lecture.getStart()} ${lecture.getDay()}</label>
-				 </div>
-			
-			</c:if>
-			<!--show a student lectures relating to students stream-->
-			<c:if test="${user.getRoleId().equals('student')&&lecture.getStreamId().equals(user.getStreamId()) }">
-				<div class="checkbox" style="margin-left: 20%;"> 
-					<label><input type="checkbox" name="lectureId"
-						value="${lecture.getLectureId()}">
-					${lecture.getModuleId()}  ${lecture.getStart()} ${lecture.getDay()}</label>
-				</div>
-			</c:if>
-	</c:forEach>
-		<div class="panel-footer clearfix">
-        <div class="pull-right">
-			<button name="choice" value="module" type="submit" disabled
-				class="btn btn-success">Submit</button>
+
+	<section id="main" style="margin-top: 100px;">
+	<h3>New Events</h3>
+
+
+	<form method="post" id="deletenotes"
+		action="${pageContext.request.contextPath}/deletenotes">
+		<div class="table-responsive">
+			<table class="table table-hover" id="table">
+				<thead style="background-color: #66A3FF;">
+					<tr>
+						<th>From</th>
+						<th>Event</th>
+						<th>Time</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody style="background-color: ##C2FFC2;">
+
+					<c:forEach var="note" items="${notes}">
+						<tr>
+							<td>${note.getCreatedBy()}</td>
+							<td>You are invited to <b>${note.getEventName()}</b></td>
+							<td>${note.getTime()}</td>
+							<td><input id="check" type="checkbox" name="notesId"
+								value="${note.getId()}"></td>
+						</tr>
+					</c:forEach>
+
+				</tbody>
+			</table>
+			<button id="butt" type="submit" disabled style="float: right;"
+				class="btn btn-info">Delete Note</button>
 		</div>
-		</div><!-- end panel footer -->
 	</form>
-	</div><!-- end panel -->
-	
-	</section><!-- end main content -->
-	
+
+	</section>
+	<!-- end main content -->
+
+
 	<!--  include the footer-->
 	<jsp:include page="footer.jsp" />
-	
+
+	<!-- jQuery -->
+
 	<!-- Bootstrap Core JavaScript -->
 	<script
 		src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
@@ -118,8 +117,6 @@
 	<!-- Custom Theme JavaScript -->
 	<script
 		src="${pageContext.request.contextPath}/resources/js/sb-admin-2.js"></script>
-		
-	
 
 </body>
 </html>

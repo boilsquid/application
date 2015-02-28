@@ -16,34 +16,9 @@
 
 <title>Register</title>
 
-<!-- Bootstrap Core CSS -->
-<link
-	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"
-	rel="stylesheet">
+<!--  include the css files -->
+<jsp:include page="css.jsp" />
 
-<!-- MetisMenu CSS -->
-<link
-	href="${pageContext.request.contextPath}/resources/css/plugins/metisMenu/metisMenu.min.css"
-	rel="stylesheet">
-
-<!-- Timeline CSS -->
-<link
-	href="${pageContext.request.contextPath}/resources/css/plugins/timeline.css"
-	rel="stylesheet">
-
-<!-- Custom CSS -->
-<link
-	href="${pageContext.request.contextPath}/resources/css/sb-admin-2.css"
-	rel="stylesheet">
-	
-<!-- MetisMenu CSS -->
-    <link href="${pageContext.request.contextPath}/resources/css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
-
-
-
-<!-- Custom Fonts -->
-<link href="${pageContext.request.contextPath}/resources/font-awesome-4.1.0/css/font-awesome.min.css"
-	rel="stylesheet" type="text/css">
 	
 <link
 	href="${pageContext.request.contextPath}/resources/css/validation.css"
@@ -56,8 +31,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
-<link rel='stylesheet'
-	href='${pageContext.request.contextPath}/resources/css/fullcalendar.css' />
+
 <script
 	src='${pageContext.request.contextPath}/resources/lib/jquery.min.js'></script>
 <script
@@ -100,7 +74,7 @@
 				<sf:form id ="details" method="post"
 					action="${pageContext.request.contextPath}/doregister"
 					commandName="user">
-					<h2>Registration.</h2>
+					<h2>Registration</h2>
 					<hr class="colorgraph">
 					<div class="row">
 						<div class="col-xs-12 col-sm-6 col-md-6">
@@ -128,7 +102,7 @@
 
 								<select class="form-control" name="roleId" id="roleId">
 									<option value="student">Student</option>
-									<option value="lecturer">Lecture</option>
+									<option value="lecturer">Lecturer</option>
 									<!-- need to change database to take more than 8 chars -->
 
 								</select>
@@ -140,9 +114,12 @@
 								<select class="form-control" name="streamId" id="streamId">
 
 									<c:forEach var="stream" items="${streams}">
+										<c:if test="${!stream.getStream().equals('None')}">
 										<option value="${stream.getStreamId()}">
-											
+										
 											${stream.getStream()}</option>
+											</c:if>
+											
 									</c:forEach>
 
 								</select>
@@ -235,6 +212,9 @@
 	</div>
 	
 	</section><!-- end main content -->
+	
+	<!--  include the footer-->
+	<jsp:include page="footer.jsp" />
 
 
 	<!-- include js files here -->

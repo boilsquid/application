@@ -21,19 +21,20 @@ public class User {
 	
 	
 	
-
+	@Size(min=4, max=20, message="userName must be between 4 and 20 characters.")
 	private String userName;
-	//@Size(min=5, max=100, message="Name must be between 5 and 100 characters.")
 	private int id;
+	@Size(min=1, max=20, message="Name must be between 1 and 100 characters.")
 	private String firstName;
-	//@Size(min=5, max=100, message="Name must be between 5 and 100 characters.")
+	@Size(min=1, max=20, message="Name must be between 1 and 100 characters.")
 	private String lastName;
-	//@Email
-	//@Pattern(regexp=".*\\@umail.*\\..*", message="This does not appear to be a valid ucc umail email address")
+	@Email
 	private String email;
+	@Size(min=6, max=15, message="phone number must be between 6 and 15 characters.")
 	private String phone;
 	private String roleId;
 	private int streamId;
+	@Size(min=7, max=15, message="password number must be between 7 and 15 characters.")
 	private String password;
 	private String passwordConfirmation;
 	private Timestamp createdAt;

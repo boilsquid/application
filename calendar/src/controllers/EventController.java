@@ -34,6 +34,7 @@ import service.ServiceDao;
 import dao.Events;
 import dao.GroupEvent;
 import dao.Lecture;
+import dao.Notification;
 import dao.Sql;
 import dao.StreamDao;
 import dao.Stream;
@@ -67,6 +68,9 @@ public class EventController {
 
 	/* return this value to form in events jsp */
 	private int maxWeeks = 12;
+	
+	/*variable to display notifications in users inbox*/
+	private int displayCountNotes=0;
 
 	@Autowired
 	public EventController(ServiceDao service, Validation validation,
@@ -84,10 +88,21 @@ public class EventController {
 	}
 
 	@RequestMapping("/events")
-	public String getEvents(Model model, Principal p) {
+	public String getEvents(Model model, Principal p,HttpServletRequest request) {
 		String username = p .getName();
 		User user =service.getUser(username);
 		String role = user.getRoleId();
+		
+		/*get the notifcation coutn*/
+		displayCountNotes = service.getCountNotes(username);
+		
+		/* get the noteCount from the note controller which is stored in session
+		 * check if the variable have been activated in session
+		 * this secound get notes will update notes when the user uses the notification service
+		 */
+		if(request.getSession().getAttribute("noteCount")!=null){
+			 displayCountNotes=(int)request.getSession().getAttribute("noteCount");
+		}
 		
 		model.addAttribute("type", type);
 		model.addAttribute("personalAllow", personalAllowed);
@@ -96,6 +111,7 @@ public class EventController {
 		model.addAttribute("maxWeeks", maxWeeks);
 		model.addAttribute("role", role);
 		model.addAttribute("groupId", groupId);
+		model.addAttribute("displayCountNotes", displayCountNotes);
 		
 		return "events";
 	}
@@ -129,7 +145,7 @@ public class EventController {
 		model.addAttribute("maxWeeks", maxWeeks);
 		model.addAttribute("role", role);
 		model.addAttribute("groupId", groupId);
-
+		model.addAttribute("displayCountNotes", displayCountNotes);
 	
 
 		return "events";
@@ -147,7 +163,8 @@ public class EventController {
 		model.addAttribute("tutorialAllow", tutorialAllowed);
 		model.addAttribute("maxWeeks", maxWeeks);
 		model.addAttribute("groupId", groupId);
-
+		model.addAttribute("displayCountNotes", displayCountNotes);
+		
 		return "events";
 	}
 
@@ -263,6 +280,7 @@ public class EventController {
 		model.addAttribute("tutorialAllow", tutorialAllowed);
 		model.addAttribute("maxWeeks", maxWeeks);
 		model.addAttribute("groupId", groupId);
+		model.addAttribute("displayCountNotes", displayCountNotes);
 		
 		System.out.println("in group " + groupMembers);
 		/* add the logged in user to the group */
@@ -330,6 +348,14 @@ public class EventController {
 			event.setTypeId(type);
 			event.setRecurring(weeks);
 			event.setEnd(end);
+			
+			/*notify everyone in group about the event*/
+			Notification note = new Notification();
+			note.setEventName(params.get("title"));
+			note.setUserName(memberName);
+			note.setCreatedBy(username);
+			note.setTime(ts);
+			service.createNotification(note);
 
 			/* create the event */
 			service.createEvent(event);
@@ -392,6 +418,7 @@ public class EventController {
 		model.addAttribute("tutorialAllow", tutorialAllowed);
 		model.addAttribute("maxWeeks", maxWeeks);
 		model.addAttribute("groupId", groupId);
+		model.addAttribute("displayCountNotes", displayCountNotes);
 
 		/* print for testing */
 		System.out.println("mod is: " + modIsSet);
@@ -523,8 +550,8 @@ public class EventController {
 		}
 
 		System.out.println(data);// print out json feed for testing
-		JSONFeed = null;// reset set the feed of data
-		return data;/* this is data for a personal events feed */
+		JSONFeed = null;// reset the feed of data
+		return data;/* return the data to be displayed in calendar*/
 
 		/*
 		 * come up with a feed for creating meetings group feed to check

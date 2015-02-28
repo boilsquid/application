@@ -8,9 +8,8 @@
 
 	<sec:authentication var="principal" property="principal" />
 	
-	<nav class="navbar navbar-default navbar-fixed-top" role="navigation"
-		style="background-color: #E9E9E9;">
-		<div class="navbar-header">
+	<nav  id="navHeader" class="navbar navbar-default navbar-fixed-top"  role="navigation">
+		<div  >
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
 				data-target=".navbar-collapse">
 				<span class="sr-only">Toggle navigation</span> <span
@@ -35,14 +34,18 @@
 				<ul class="dropdown-menu dropdown-user">
 					<li><a href="${pageContext.request.contextPath}/"><i class="fa fa-home fa-fw"></i> Home
 							</a></li>
-					<li><a href="#"><i class="fa fa-user fa-fw"></i> User
-							Profile</a></li>
+					<li><a href="${pageContext.request.contextPath}/notes"><i class="fa fa-envelope-o fa-fw"></i> Notifications
+							</a></li>
 					<li><a href="${pageContext.request.contextPath}/groups"><i class="fa fa-users fa-fw"></i> Groups
 							</a></li>
 					<li><a href="${pageContext.request.contextPath}/events"><i class="fa fa-calendar-o fa-fw"></i> Calendar
 							</a></li>
+							
+					<c:if test="${pageContext.request.userPrincipal.name!=null}">
 					<li><a href="${pageContext.request.contextPath}/admin/dashboard"><i class="fa fa-gear fa-fw"></i> Admin</a>
 					</li>
+					</c:if>
+					
 					<li class="divider"></li>
 					<li><a href="<c:url value='/j_spring_security_logout'/>">
 							<i class="fa fa-sign-out fa-fw"></i> Logout

@@ -41,6 +41,8 @@ public class LoginController {
 	
 	@RequestMapping("/login")
 	public String showLogin(){
+		
+		
 		return "login";
 	}
 	
@@ -54,7 +56,6 @@ public class LoginController {
 		User user = service.findUser("email", userEmail);
 		if(user != null){
 			user.setPasswordResetToken(token);
-			user.setLastName("newlastname2");
 			String url = "http://localhost:8080/calendar/passwordreset?username="+ user.getUserName() +"&&token=" + token;
 			service.updateUser(user);
 			service.passwordResetMail(userEmail, "springuccproject@gmail.com", "Password Reset", "Follow this link to reset password "+url);

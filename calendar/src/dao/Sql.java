@@ -369,6 +369,16 @@ public class Sql {
 	}
 	
 	
+	public int countNotes(String username) {
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("username", username);
+	
+		String sql ="select Count(*) from notifications where username=:username;";
+		
+		return jdbc.queryForObject(sql, params, Integer.class) ;
+	}
+	
+	
 	
 	
 }//end class

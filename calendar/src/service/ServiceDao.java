@@ -23,6 +23,8 @@ import dao.GroupMember;
 import dao.GroupMemberDao;
 import dao.Lecture;
 import dao.LectureDao;
+import dao.Notification;
+import dao.NotificationDao;
 import dao.Sql;
 import dao.Stream;
 import dao.StreamDao;
@@ -43,13 +45,16 @@ public class ServiceDao {
 	private Sql sql;
 	private GroupEventDao groupEventDao;
 	private registrationMailer mailer;
+	private NotificationDao noteDao;
 
 	@Autowired
 	public void setUserDao(UserDao userDao, StreamDao streamDao,
 			LectureDao lectureDao, AuthorityDao authorityDao,
 			EventsDao eventsDao, Sql sql, GroupMemberDao groupMemberDao,
-			GroupEventDao groupEventDao, registrationMailer mailer, GroupDao groupDao ) {
-
+			GroupEventDao groupEventDao, registrationMailer mailer, GroupDao groupDao,
+			NotificationDao noteDao) {
+		
+		this.noteDao = noteDao;
 		this.userDao = userDao;
 		this.streamDao = streamDao;
 		this.lectureDao = lectureDao;
@@ -110,6 +115,10 @@ public class ServiceDao {
 	public List<Events> getEvents() {
 		return eventsDao.getList();
 	}
+	
+	public List<Notification> getNotes() {
+		return noteDao.getList();
+	}
 
 	/* DAO create methods which can be used be the seviceDao object */
 	public boolean createUser(User user) {
@@ -150,6 +159,10 @@ public class ServiceDao {
 
 	}
 	
+	public boolean createNotification(Notification note) {
+		return noteDao.create(note);
+	}
+	
 	/* returns the auto generated primary key*/
 	public int createWithKey(GroupEvent event) {
 		return groupEventDao.createWithKey(event);
@@ -181,6 +194,9 @@ public class ServiceDao {
 		return groupEventDao.delete(id);
 	}
 	
+	public boolean deleteNote(int id) {
+		return noteDao.delete(id);
+	}
 	
 	public boolean deleteUserEvent(int id) {
 		return eventsDao.delete(id);
@@ -252,6 +268,17 @@ public class ServiceDao {
 	/* get a list of users ordered by roleid where logged in user is not in*/
 	public List<User> getUsersOrdered(String username) {
 		return sql.getUsersOrdered(username);
+	}
+	
+	/* get a count of users notifications*/
+	public int getCountNotes(String username) {
+		
+		return sql.countNotes(username);
+	}
+	
+	/* get a list of personal notifications*/
+	public List<Notification> getPersonalNotes(String username) {
+		return noteDao.getPersonalNotes(username);
 	}
 
 }

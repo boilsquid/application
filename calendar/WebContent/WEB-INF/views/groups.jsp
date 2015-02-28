@@ -14,41 +14,13 @@
 
 <title>Groups</title>
 
-<!-- Bootstrap Core CSS -->
-<link
-	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"
-	rel="stylesheet">
+<!--  include the css files -->
+<jsp:include page="css.jsp" />
 
-<!-- MetisMenu CSS -->
-<link
-	href="${pageContext.request.contextPath}/resources/css/plugins/metisMenu/metisMenu.min.css"
-	rel="stylesheet">
-
-<!-- Timeline CSS -->
-<link
-	href="${pageContext.request.contextPath}/resources/css/plugins/timeline.css"
-	rel="stylesheet">
-
-<!-- Custom CSS -->
-<link
-	href="${pageContext.request.contextPath}/resources/css/sb-admin-2.css"
-	rel="stylesheet">
-
+<!-- extra css files -->
 <link
 	href="${pageContext.request.contextPath}/resources/css/multi-select.css"
 	rel="stylesheet">
-
-<!-- MetisMenu CSS -->
-<link
-	href="${pageContext.request.contextPath}/resources/css/plugins/metisMenu/metisMenu.min.css"
-	rel="stylesheet">
-
-
-
-<!-- Custom Fonts -->
-<link
-	href="${pageContext.request.contextPath}/resources/font-awesome-4.1.0/css/font-awesome.min.css"
-	rel="stylesheet" type="text/css">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -57,8 +29,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
-<link rel='stylesheet'
-	href='${pageContext.request.contextPath}/resources/css/fullcalendar.css' />
+
 <script
 	src='${pageContext.request.contextPath}/resources/lib/jquery.min.js'></script>
 <script
@@ -99,6 +70,18 @@
 		$('#deletegroup').click(function() {
 
 			$('#popup2').popup('show');
+
+		});
+		
+		$('#cancel').click(function() {
+
+			$('#popup').popup('hide');
+
+		});
+
+		$('#cancel2').click(function() {
+
+			$('#popup2').popup('hide');
 
 		});
 
@@ -233,6 +216,9 @@
 	</div>
 	<!-- end panel --> </section>
 	<!-- end main content -->
+	
+	<!--  include the footer-->
+	<jsp:include page="footer.jsp" />
 
 	<!-- Bootstrap Core JavaScript -->
 	<script
