@@ -31,7 +31,7 @@ public class AuthorityDao implements DaoInterface<Authority>  {
 
 	public List<Authority> getList() {
 
-		return jdbc.query("select * from Authorities", new RowMapper<Authority>() {
+		return jdbc.query("select * from authorities", new RowMapper<Authority>() {
 
 			public Authority mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Authority authority = new Authority();
@@ -67,7 +67,7 @@ public class AuthorityDao implements DaoInterface<Authority>  {
 	public boolean delete(Object id) {
 		MapSqlParameterSource params = new MapSqlParameterSource("streamId", id);
 		
-		return jdbc.update("delete from Stream where streamId=:streamId", params) == 1;
+		return jdbc.update("delete from stream where streamId=:streamId", params) == 1;
 	}
 
 	public Authority getItem(Object id) {

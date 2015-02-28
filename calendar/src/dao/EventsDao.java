@@ -27,7 +27,7 @@ public class EventsDao implements DaoInterface<Events>{
 	
 	public List<Events> getList() {
 
-		return jdbc.query("select * from UserEvents", new RowMapper<Events>() {
+		return jdbc.query("select * from userevents", new RowMapper<Events>() {
 
 			public Events mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Events events = new Events();
@@ -53,7 +53,7 @@ public class EventsDao implements DaoInterface<Events>{
 	public boolean update(Events event) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(event);
 		
-		return jdbc.update("update UserEvents set userName=:userName, start=:start, end=:end, recurring=:recurring,"
+		return jdbc.update("update userevents set userName=:userName, start=:start, end=:end, recurring=:recurring,"
 				+ " eventType=:eventType, typeId=:typeId, title=:title, color=:color "
 				+ " where id=:id", params) == 1;
 	}
@@ -63,7 +63,7 @@ public class EventsDao implements DaoInterface<Events>{
 		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(event);
 		
-		return jdbc.update("insert into UserEvents (userName, start, end, recurring,"
+		return jdbc.update("insert into userevents (userName, start, end, recurring,"
 				+ " eventType, typeId, title, color) "
 				+ "values (:userName, :start, :end, :recurring,"
 				+ " :eventType, :typeId, :title, :color)", params) == 1;
@@ -75,7 +75,7 @@ public class EventsDao implements DaoInterface<Events>{
 	public boolean delete(Object id) {
 		MapSqlParameterSource params = new MapSqlParameterSource("id", id);
 		
-		return jdbc.update("delete from UserEvents where id=:id", params) == 1;
+		return jdbc.update("delete from userevents where id=:id", params) == 1;
 	}
 
 	public Events getItem(Object id) {
@@ -83,7 +83,7 @@ public class EventsDao implements DaoInterface<Events>{
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("id", id);
 
-		return jdbc.queryForObject("select * from UserEvents where id=:id", params,
+		return jdbc.queryForObject("select * from userevents where id=:id", params,
 				new RowMapper<Events>() {
 
 					public Events mapRow(ResultSet rs, int rowNum)

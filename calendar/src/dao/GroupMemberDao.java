@@ -36,7 +36,7 @@ public class GroupMemberDao implements DaoInterface<GroupMember>  {
 
 	public List<GroupMember> getList() {
 
-		return jdbc.query("select * from GroupMembers", new RowMapper<GroupMember>() {
+		return jdbc.query("select * from groupmembers", new RowMapper<GroupMember>() {
 
 			public GroupMember mapRow(ResultSet rs, int rowNum) throws SQLException {
 				GroupMember groupMember = new GroupMember();
@@ -56,7 +56,7 @@ public class GroupMemberDao implements DaoInterface<GroupMember>  {
 	public boolean update(GroupMember groupMember) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(groupMember);
 		
-		return jdbc.update("update GroupMembers set groupId=:groupId, UserName=:UserName "
+		return jdbc.update("update groupmembers set groupId=:groupId, UserName=:UserName "
 				+ "where groupMembersId=:groupMembersId", params) == 1;
 	}
 	
@@ -66,7 +66,7 @@ public class GroupMemberDao implements DaoInterface<GroupMember>  {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(groupMember);
 		
 		/* insert them into groupmembers even if they are are in there*/
-		return jdbc.update("insert IGNORE into GroupMembers (groupId, UserName) "
+		return jdbc.update("insert IGNORE into groupmembers (groupId, UserName) "
 				+ "values ( :groupId, :UserName)", params) == 1;
 	
 	}
@@ -76,7 +76,7 @@ public class GroupMemberDao implements DaoInterface<GroupMember>  {
 	public boolean delete(Object groupId) {
 		MapSqlParameterSource params = new MapSqlParameterSource("groupId", groupId);
 		
-		return jdbc.update("delete from GroupMembers where groupId=:groupId", params) == 1;
+		return jdbc.update("delete from groupmembers where groupId=:groupId", params) == 1;
 	}
 
 	public GroupMember getItem(Object groupMembersId) {
@@ -84,7 +84,7 @@ public class GroupMemberDao implements DaoInterface<GroupMember>  {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("groupMembersId", groupMembersId);
 
-		return jdbc.queryForObject("select * from GroupMembers where groupMembersId=:groupMembersId", params,
+		return jdbc.queryForObject("select * from groupmembers where groupMembersId=:groupMembersId", params,
 				new RowMapper<GroupMember>() {
 
 					public GroupMember mapRow(ResultSet rs, int rowNum)

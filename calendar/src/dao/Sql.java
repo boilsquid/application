@@ -37,7 +37,7 @@ public class Sql {
 		MapSqlParameterSource param = new MapSqlParameterSource();
 		param.addValue("userName", userName);
 
-		return jdbc.query("select * from UserEvents where userName =:userName",
+		return jdbc.query("select * from userevents where userName =:userName",
 				param, new RowMapper<Events>() {
 
 					public Events mapRow(ResultSet rs, int rowNum)
@@ -63,13 +63,13 @@ public class Sql {
 	 * Delete, from, where, generic type sql call Delete all events from a users
 	 * events table according to event type
 	 */
-	public boolean deleteFromWhere(Object table, Object username,
+	public boolean deleteFromWhere( Object username,
 			Object eventtype) {
 		SqlParameterSource params = new MapSqlParameterSource()
 				.addValue("username", username)
-				.addValue("eventtype", eventtype).addValue("table", table);
+				.addValue("eventtype", eventtype);
 
-		return jdbc.update("delete from " + table
+		return jdbc.update("delete from userevents"
 				+ " where username=:username and " + "eventtype=:eventtype",
 				params) == 1;
 	}
@@ -92,7 +92,7 @@ public class Sql {
 				"username", username).addValue("createdBy", createdBy);
 
 		return jdbc
-				.update("delete from groupMembers where username =:username "
+				.update("delete from groupmembers where username =:username "
 						+ " and groupId IN(Select groupId from groups where createdby =:createdBy)",
 						params) == 1;
 	}
@@ -106,7 +106,7 @@ public class Sql {
 		params.addValue("groupName", groupName);
 
 		return jdbc.queryForObject(
-				"select * from Groups where groupName=:groupName", params,
+				"select * from groups where groupName=:groupName", params,
 				new RowMapper<Group>() {
 
 					public Group mapRow(ResultSet rs, int rowNum)

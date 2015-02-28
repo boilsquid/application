@@ -33,7 +33,7 @@ public class LectureDao implements DaoInterface<Lecture> {
 
 	public List<Lecture> getList() {
 
-		return jdbc.query("select * from Lecturemastertimetable", new RowMapper<Lecture>() {
+		return jdbc.query("select * from lecturemastertimetable", new RowMapper<Lecture>() {
 
 			public Lecture mapRow(ResultSet rs, int rowNum) throws SQLException {
 				
@@ -60,7 +60,7 @@ public class LectureDao implements DaoInterface<Lecture> {
 	public boolean update(Lecture lecture) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(lecture);
 		
-		return jdbc.update("update Lecturemastertimetable set streamId=:streamId, moduleId=:moduleId,"
+		return jdbc.update("update lecturemastertimetable set streamId=:streamId, moduleId=:moduleId,"
 				+ "day=:day, start=:start, end=:end, recurring=:recurring , semester:=semester "
 				+ "where lectureId=:lectureId", params) == 1;
 	}
@@ -69,7 +69,7 @@ public class LectureDao implements DaoInterface<Lecture> {
 		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(lecture);
 		
-		return jdbc.update("insert into Lecturemastertimetable ( streamId, moduleId, day, start, end, recurring, semester) "
+		return jdbc.update("insert into lecturemastertimetable ( streamId, moduleId, day, start, end, recurring, semester) "
 				+ "values ( steamId:, :moduleId, :day, :start, :end, :recurring, :semester)", params) == 1;
 	}
 	
@@ -80,7 +80,7 @@ public class LectureDao implements DaoInterface<Lecture> {
 	public boolean delete(Object lectureId) {
 		MapSqlParameterSource params = new MapSqlParameterSource("lectureId", lectureId);
 		
-		return jdbc.update("delete from Lecturemastertimetable where lectureId=:lectureId", params) == 1;
+		return jdbc.update("delete from lecturemastertimetable where lectureId=:lectureId", params) == 1;
 	}
 
 	public Lecture getItem(Object lectureId) {
@@ -88,7 +88,7 @@ public class LectureDao implements DaoInterface<Lecture> {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("lectureId", lectureId);
 
-		return jdbc.queryForObject("select * from Lecturemastertimetable where lectureId=:lectureId", params,
+		return jdbc.queryForObject("select * from lecturemastertimetable where lectureId=:lectureId", params,
 				new RowMapper<Lecture>() {
 
 					public Lecture mapRow(ResultSet rs, int rowNum)

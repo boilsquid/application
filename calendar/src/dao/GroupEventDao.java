@@ -30,7 +30,7 @@ public class GroupEventDao implements DaoInterface<GroupEvent>{
 	
 	public List<GroupEvent> getList() {
 
-		return jdbc.query("select * from Groupevents", new RowMapper<GroupEvent>() {
+		return jdbc.query("select * from groupevents", new RowMapper<GroupEvent>() {
 
 			public GroupEvent mapRow(ResultSet rs, int rowNum) throws SQLException {
 				GroupEvent events = new GroupEvent();
@@ -56,7 +56,7 @@ public class GroupEventDao implements DaoInterface<GroupEvent>{
 	public boolean update(GroupEvent event) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(event);
 		
-		return jdbc.update("update GroupEvents set groupId=:groupId, userName=:userName, start=:start, end=:end, recurring=:recurring,"
+		return jdbc.update("update groupevents set groupId=:groupId, userName=:userName, start=:start, end=:end, recurring=:recurring,"
 				+ " eventType=:eventType, title=:title "
 				+ " where id=:id", params) == 1;
 	}
@@ -66,7 +66,7 @@ public class GroupEventDao implements DaoInterface<GroupEvent>{
 		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(event);
 		
-		return jdbc.update("insert into GroupEvents (groupId, userName, start, end, recurring,"
+		return jdbc.update("insert into groupevents (groupId, userName, start, end, recurring,"
 				+ " eventType, title) "
 				+ "values (:groupId, :userName, :start, :end, :recurring,"
 				+ " :eventType, :title)", params)==1 ;
@@ -79,7 +79,7 @@ public class GroupEventDao implements DaoInterface<GroupEvent>{
 		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(event);
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		 jdbc.update("insert into GroupEvents (groupId, userName, start, end, recurring,"
+		 jdbc.update("insert into groupevents (groupId, userName, start, end, recurring,"
 				+ " eventType, title) "
 				+ "values (:groupId, :userName, :start, :end, :recurring,"
 				+ " :eventType, :title)", params,keyHolder);
@@ -92,7 +92,7 @@ public class GroupEventDao implements DaoInterface<GroupEvent>{
 	public boolean delete(Object groupEventId) {
 		MapSqlParameterSource params = new MapSqlParameterSource("groupEventId", groupEventId);
 		
-		return jdbc.update("delete from GroupEvents where groupEventId=:groupEventId", params) == 1;
+		return jdbc.update("delete from groupevents where groupEventId=:groupEventId", params) == 1;
 	}
 
 	public GroupEvent getItem(Object groupEventId) {
@@ -100,7 +100,7 @@ public class GroupEventDao implements DaoInterface<GroupEvent>{
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("groupEventId", groupEventId);
 
-		return jdbc.queryForObject("select * from GroupEvents where groupEventId=:groupEventId", params,
+		return jdbc.queryForObject("select * from groupevents where groupEventId=:groupEventId", params,
 				new RowMapper<GroupEvent>() {
 
 					public GroupEvent mapRow(ResultSet rs, int rowNum)

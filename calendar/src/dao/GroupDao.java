@@ -39,7 +39,7 @@ public class GroupDao implements DaoInterface<Group>  {
 
 	public List<Group> getList() {
 
-		return jdbc.query("select * from Groups", new RowMapper<Group>() {
+		return jdbc.query("select * from groups", new RowMapper<Group>() {
 
 			public Group mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Group group = new Group();
@@ -61,7 +61,7 @@ public class GroupDao implements DaoInterface<Group>  {
 	public boolean update(Group group) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(group);
 		
-		return jdbc.update("update Groups set groupName=:groupName, createdBy=:createdBy, UserName=:UserName, dateCreated=:dateCreated "
+		return jdbc.update("update groups set groupName=:groupName, createdBy=:createdBy, UserName=:UserName, dateCreated=:dateCreated "
 				+ "where groupId=:groupId", params) == 1;
 	}
 	
@@ -71,7 +71,7 @@ public class GroupDao implements DaoInterface<Group>  {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(group);
 		
 		/* insert them into groupmembers even if they are are in there*/
-		return jdbc.update("insert IGNORE into Groups (groupName, createdBy, UserName, dateCreated) "
+		return jdbc.update("insert IGNORE into groups (groupName, createdBy, UserName, dateCreated) "
 				+ "values ( :groupName, :createdBy, :UserName, now())", params) == 1;
 	
 	}
@@ -82,7 +82,7 @@ public class GroupDao implements DaoInterface<Group>  {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(group);
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		 
-		 jdbc.update("insert into Groups (groupName, createdBy, UserName, dateCreated) "
+		 jdbc.update("insert into groups (groupName, createdBy, UserName, dateCreated) "
 					+ "values ( :groupName, :createdBy, :UserName, now())", params, keyHolder);
 		 
 		 		return keyHolder.getKey().intValue();
@@ -93,7 +93,7 @@ public class GroupDao implements DaoInterface<Group>  {
 	public boolean delete(Object groupId) {
 		MapSqlParameterSource params = new MapSqlParameterSource("groupId", groupId);
 		
-		return jdbc.update("delete from Groups where groupId=:groupId", params) == 1;
+		return jdbc.update("delete from groups where groupId=:groupId", params) == 1;
 	}
 
 	public Group getItem(Object groupId) {
@@ -101,7 +101,7 @@ public class GroupDao implements DaoInterface<Group>  {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("groupId", groupId);
 
-		return jdbc.queryForObject("select * from Groups where groupId=:groupId", params,
+		return jdbc.queryForObject("select * from groups where groupId=:groupId", params,
 				new RowMapper<Group>() {
 
 					public Group mapRow(ResultSet rs, int rowNum)

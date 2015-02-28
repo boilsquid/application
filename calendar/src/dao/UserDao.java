@@ -76,7 +76,7 @@ public class UserDao implements DaoInterface<User> {
 		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
 		
-		return jdbc.update("insert into Users (firstName, lastName,userName, email, phone, roleId,streamId,password, passwordConfirmation,"
+		return jdbc.update("insert into users (firstName, lastName,userName, email, phone, roleId,streamId,password, passwordConfirmation,"
 				+ "createdAt, updatedAt, signInCount,activationToken,activationTokenUpdatedAt,passwordResetToken,passwordTokentUpdatedAt, enabled) "
 				+ "values( :firstName, :lastName, :userName, :email, :phone, :roleId,:streamId,:password, :passwordConfirmation,"
 				+ "now(), now(), :signInCount,:activationToken,now(),'temp',now(), :enabled) ", params) == 1;
@@ -85,7 +85,7 @@ public class UserDao implements DaoInterface<User> {
 	public boolean delete(Object userName) {
 		MapSqlParameterSource params = new MapSqlParameterSource("userName", userName);
 		
-		return jdbc.update("delete from Users where id=:id", params) == 1;
+		return jdbc.update("delete from users where id=:id", params) == 1;
 	}
 
 	public User getItem(Object userName) {
@@ -93,7 +93,7 @@ public class UserDao implements DaoInterface<User> {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("userName", userName);
 
-		return jdbc.queryForObject("select * from Users where userName=:userName", params,
+		return jdbc.queryForObject("select * from users where userName=:userName", params,
 				new RowMapper<User>() {
 
 					public User mapRow(ResultSet rs, int rowNum)
@@ -132,7 +132,7 @@ public class UserDao implements DaoInterface<User> {
 		
 		String co = (String) column;
 		try{
-			return jdbc.queryForObject("select * from Users where " + co + " =:value", params, new RowMapper<User>() {
+			return jdbc.queryForObject("select * from users where " + co + " =:value", params, new RowMapper<User>() {
 				public User mapRow(ResultSet rs, int rowNum) throws SQLException{
 					User user = new User();				
 					user.setUserName(rs.getString("userName"));

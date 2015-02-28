@@ -180,7 +180,7 @@ public class RegisterController {
 		User user = service.getUser(username);
 		
 		/*delete the user from userEvents where type is lecture*/
-		service.deleteFromWhere("userEvents", username, "lecture");
+		service.deleteFromWhere( username, "lecture");
 		/*delete all entries in group members created by admin*/
 		service.deleteFromGroupMembers("groupMembers", username, "administration");
 		

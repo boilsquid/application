@@ -218,10 +218,10 @@ public class ServiceDao {
 	/*
 	 * Delete, from, where, generic type sql call
 	 */
-	public boolean deleteFromWhere(Object table, Object username,
+	public boolean deleteFromWhere( Object username,
 			Object eventtype) {
 
-		return sql.deleteFromWhere(table, username, eventtype);
+		return sql.deleteFromWhere( username, eventtype);
 	}
 	
 	/*delete a group event from usersEvents table*/

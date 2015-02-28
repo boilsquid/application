@@ -29,7 +29,7 @@ public class NotificationDao implements DaoInterface<Notification> {
 
 	public List<Notification> getList() {
 
-		return jdbc.query("select * from Notifications", new RowMapper<Notification>() {
+		return jdbc.query("select * from notifications", new RowMapper<Notification>() {
 
 			public Notification mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Notification note= new Notification();
@@ -52,7 +52,7 @@ public class NotificationDao implements DaoInterface<Notification> {
 				note);
 
 		return jdbc
-				.update("update Groups set groupName=:groupName, createdBy=:createdBy, UserName=:UserName, dateCreated=:dateCreated "
+				.update("update groups set groupName=:groupName, createdBy=:createdBy, UserName=:UserName, dateCreated=:dateCreated "
 						+ "where groupId=:groupId", params) == 1;
 	}
 
@@ -62,7 +62,7 @@ public class NotificationDao implements DaoInterface<Notification> {
 				note);
 		
 		return jdbc.update(
-				"insert into Notifications (createdBy, userName, eventName, time, createdAt) "
+				"insert into notifications (createdBy, userName, eventName, time, createdAt) "
 						+ "values ( :createdBy, :userName, :eventName, :time, now())",
 				params) == 1;
 
@@ -74,7 +74,7 @@ public class NotificationDao implements DaoInterface<Notification> {
 		MapSqlParameterSource params = new MapSqlParameterSource("id",
 				id);
 
-		return jdbc.update("delete from Notifications where id=:id", params) == 1;
+		return jdbc.update("delete from notifications where id=:id", params) == 1;
 	}
 
 	public Notification getItem(Object groupId) {
@@ -83,7 +83,7 @@ public class NotificationDao implements DaoInterface<Notification> {
 		params.addValue("groupId", groupId);
 
 		return jdbc.queryForObject(
-				"select * from Groups where groupId=:groupId", params,
+				"select * from groups where groupId=:groupId", params,
 				new RowMapper<Notification>() {
 
 					public  Notification mapRow(ResultSet rs, int rowNum)
@@ -109,7 +109,7 @@ public class NotificationDao implements DaoInterface<Notification> {
 		
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("username", username);
-		String sql = "select * from Notifications where username =:username";
+		String sql = "select * from notifications where username =:username";
 		
 		return jdbc.query(sql,params , new RowMapper<Notification>() {
 
