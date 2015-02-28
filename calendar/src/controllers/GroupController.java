@@ -106,11 +106,14 @@ public class GroupController {
 		
 		/* put the group into the group members table*/
 		for(String item: userNames){
+			/*handle empty user input from create group form*/
+			if(!item.equals("no")){
 			System.out.println(item);
 			GroupMember member = new GroupMember();
 			member.setGroupId(groupId);
 			member.setUserName(item);
 			service.createGroupMember(member);
+			}
 		}
 		
 		

@@ -48,7 +48,10 @@
 	src='${pageContext.request.contextPath}/resources/js/jquery.multi-select.js'></script>
 
 <script type="text/javascript">
+
 	$(document).ready(function() {
+		
+		
 		$('#popup').popup({
 			outline : true, // optional
 			focusdelay : 400, // optional
@@ -64,12 +67,16 @@
 		$('#creategroup').click(function() {
 
 			$('#popup').popup('show');
+			
+		
 
 		});
 
 		$('#deletegroup').click(function() {
 
 			$('#popup2').popup('show');
+		
+		
 
 		});
 		
@@ -84,9 +91,12 @@
 			$('#popup2').popup('hide');
 
 		});
+		
+		
 
 		//initialize multiselect
 		$('#usernames').multiSelect();
+			
 		//initialize multiselect
 		$('#groupDelete').multiSelect();
 		
@@ -117,7 +127,7 @@
 							<label for="student">Pick Group Members</label> <select
 								id="usernames" multiple="multiple" name="usernames"
 								class="form-control">
-
+								<option value="no" selected>  </option>
 								<c:forEach var="user" items="${users}">
 									<option value="${user.getUserName()}">${user.getUserName()}
 										${user.getRoleId()}</option>
@@ -156,10 +166,10 @@
 					method="post">
 					<fieldset>
 						<div class="form-group">
-							<label for="groupDelete">Select Groups</label> <select
+							<label for="groupDelete">Select Groups</label> <select 
 								id="groupDelete" multiple="multiple" name="groupDelete"
 								class="form-control">
-
+								<option value="0" selected>  </option>
 								<c:forEach var="groupDelete" items="${groupsToDelete}">
 									<option value="${groupDelete.getGroupId()}">${groupDelete.getGroupName()}</option>
 
