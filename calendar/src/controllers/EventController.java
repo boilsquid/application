@@ -455,7 +455,7 @@ public class EventController {
 	@RequestMapping(value = "/getdata", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Object getMessages(Principal principal) {
-
+		
 		/*
 		 * get group name id get calender type tp show like is it just personal
 		 * calender, meeting calender or tutorial set the events to required
