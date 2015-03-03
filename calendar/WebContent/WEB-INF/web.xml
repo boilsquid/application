@@ -37,12 +37,13 @@
 		classpath:webConfig/service-config.xml
 		classpath:webConfig/email-config.xml
 		classpath:webConfig/security-context.xml
-		<!--  classpath:webConfig/datasource.xml-->
+		<!-- classpath:webConfig/datasource.xml-->
 		
 		</param-value>
   </context-param>
   
-<!-- <context-param>
+
+	<!--  <context-param>
   <param-name>spring.profiles.active</param-name>
   <param-value>dev</param-value>
   </context-param>-->

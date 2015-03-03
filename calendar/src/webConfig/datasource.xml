@@ -14,7 +14,7 @@
 		<!-- This sescion tells Spring context where to look for bean classes with 
 			appropriate annotations -->
 		<context:component-scan base-package="dao"></context:component-scan>
-		<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+		 <!--  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
 			<property name="driverClassName" value="com.mysql.jdbc.Driver"></property> 
 			<property name="url" value="jdbc:mysql://localhost:3306/calender"></property> 
 			<property name="password" value="pass"></property> <property name="username" 

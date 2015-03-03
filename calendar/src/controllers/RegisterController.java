@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +85,7 @@ public class RegisterController {
 	}
 
 	@RequestMapping(value = "/doregister", method = RequestMethod.POST)
-	public String doregister(Model model, @Valid User user, BindingResult result) {
+	public String doregister(Model model, @Valid User user, BindingResult result,HttpServletRequest request) {
 
 		/* validating email to be restricted in the domain of the college */
 		if (validation.isCollegeEmail(user.getEmail(), user.getRoleId()) == false) {
@@ -106,8 +107,11 @@ public class RegisterController {
 				/* enable user for testing purposes */
 				//user.setEnabled(true);
 				
+				String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
+				String contextPath= request.getContextPath();
+				
 				user.setActivationToken(token);
-				String url = "http://localhost:8080/calendar/useractivation?username="+ user.getUserName() +"&&token=" + token;
+				String url = baseUrl+contextPath+"/useractivation?username="+ user.getUserName() +"&&token=" + token;
 				
 				/*if the user is a lecturer give him access to all lectures*/
 				if(user.getRoleId().equals("lecturer")){

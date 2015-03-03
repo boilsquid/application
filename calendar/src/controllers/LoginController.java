@@ -52,11 +52,14 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/reset", method = RequestMethod.POST)
-	public String resetPassword(@RequestParam(value = "email", required = true) String userEmail, RedirectAttributes redirectAttributes){
+	public String resetPassword(@RequestParam(value = "email", required = true) String userEmail, RedirectAttributes redirectAttributes,HttpServletRequest request){
 		User user = service.findUser("email", userEmail);
 		if(user != null){
 			user.setPasswordResetToken(token);
-			String url = "http://localhost:8080/calendar/passwordreset?username="+ user.getUserName() +"&&token=" + token;
+			String baseUrl = String.format("%s://%s:%d/",request.getScheme(),  request.getServerName(), request.getServerPort());
+			String contextPath= request.getContextPath();
+			System.out.println("the conext path is: "+baseUrl);
+			String url =baseUrl+contextPath+"/passwordreset?username="+ user.getUserName() +"&&token=" + token;
 			service.updateUser(user);
 			service.passwordResetMail(userEmail, "springuccproject@gmail.com", "Password Reset", "Follow this link to reset password "+url);
 	        System.out.println(redirectAttributes);
